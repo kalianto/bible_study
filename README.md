@@ -1,6 +1,6 @@
 # bible_study
 
-A new Flutter project.
+Bible Study application.
 
 ## Getting Started
 
