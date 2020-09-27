@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "750701610384",
+    "firebase_url": "https://biblestudy-25252.firebaseio.com",
+    "project_id": "biblestudy-25252",
+    "storage_bucket": "biblestudy-25252.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750701610384:android:0c3e23a8d7e1e782b15f15",
+        "android_client_info": {
+          "package_name": "com.example.bible_study"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750701610384-js0ptlojhhc49slso66gu7bl4rc5ie0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANITmnvUaE3xscrgbRKRE_So81NtbuPFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750701610384-js0ptlojhhc49slso66gu7bl4rc5ie0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
