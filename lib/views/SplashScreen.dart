@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
-  Home({Key key, this.title}) : super(key: key);
+class SplashScreen extends StatelessWidget {
+  SplashScreen({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -24,31 +24,34 @@ Widget _buildHome(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          'Bible Study 1',
+          'BibleStudy',
           style: TextStyle(
-            // fontWeight: FontWeight.w100,
+            fontWeight: FontWeight.w900,
             color: Colors.blue[800],
-            fontSize: 48,
+            fontSize: 40.0,
+            // fontStyle: FontStyle.italic,
           ),
         ),
         Text(
-          'version 1.0 2',
+          'version 1.0',
           style: TextStyle(
             fontStyle: FontStyle.italic,
+            fontSize: 14.0,
           ),
         ),
         SizedBox(height: 50),
-        FlatButton(
+        FloatingActionButton.extended(
           onPressed: () {
             Navigator.pushNamed(context, '/login');
           },
-          child: Text(
+          label: Text(
             'START',
             style: TextStyle(
-              fontSize: 20,
-              color: Colors.blue,
+              fontSize: 24,
+              color: Colors.white,
             ),
           ),
+          backgroundColor: Colors.amber[600],
         )
       ],
     ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart' as Auth;
+// import 'package:firebase_auth/firebase_auth.dart' as Auth;
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -35,7 +35,12 @@ class _RegisterState extends State<RegisterPage> {
                     fontStyle: FontStyle.italic,
                   ),
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 50.0),
+                Text(
+                  'Enter your details below to register your details',
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(height: 20.0),
                 TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
@@ -55,39 +60,55 @@ class _RegisterState extends State<RegisterPage> {
                   obscureText: true, // this is password field
                 ),
                 SizedBox(height: 12.0),
-                FlatButton(
-                  child: Text(
-                    'REGISTER',
-                    style: TextStyle(
-                      fontSize: 20,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text(
+                        'Already had account?',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
                     ),
-                  ),
-                  onPressed: () async {
-                    try {
-                      Auth.User user = (await Auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
-                        email: _usernameController.text,
-                        password: _passwordController.text,
-                      ))
-                          .user;
-                      if (user != null) {
-                        // UserUpdateInfo updateUser = UserUpdateInfo();
-                        // updateUser.displayName = _usernameController.text;
-                        // user.updateProfile(updateUser);
-                        // Navigator.of(context).pushNamed(AppRoutes.menu);
-                        print('User');
-                        print(user);
-                      }
-                    } catch (e) {
-                      print('Error');
-                      print(_usernameController.text);
-                      print(e);
-                      _usernameController.text = "";
-                      _passwordController.text = "";
-                      // _repasswordController.text = "";
-                      // _emailController.text = "";
-                      // TODO: alertdialog with error
-                    }
-                  },
+                    FlatButton(
+                      child: Text(
+                        'REGISTER',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      onPressed: () async {
+                        // try {
+                        //   Auth.User user = (await Auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
+                        //     email: _usernameController.text,
+                        //     password: _passwordController.text,
+                        //   ))
+                        //       .user;
+                        //   if (user != null) {
+                        //     // UserUpdateInfo updateUser = UserUpdateInfo();
+                        //     // updateUser.displayName = _usernameController.text;
+                        //     // user.updateProfile(updateUser);
+                        //     // Navigator.of(context).pushNamed(AppRoutes.menu);
+                        //     print('User');
+                        //     print(user);
+                        //   }
+                        // } catch (e) {
+                        //   print('Error');
+                        //   print(_usernameController.text);
+                        //   print(e);
+                        //   _usernameController.text = "";
+                        //   _passwordController.text = "";
+                        //   // _repasswordController.text = "";
+                        //   // _emailController.text = "";
+                        //   // TODO: alertdialog with error
+                        // }
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

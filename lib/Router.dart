@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'views/Login.dart';
-import 'views/Register.dart';
-import 'views/ErrorLoading.dart';
-import 'views/Home.dart';
+import 'package:bible_study/views/Login.dart';
+import 'package:bible_study/views/Register.dart';
+import 'package:bible_study/views/ErrorLoading.dart';
+import 'package:bible_study/views/Home.dart';
+import 'package:bible_study/views/SplashScreen.dart';
 
 class SlideFromRoute extends PageRouteBuilder {
   final Widget widget;
@@ -79,7 +80,7 @@ class ScaleRoute extends PageRouteBuilder {
   );
 }
 
-class Router {
+class BaseRouter {
   static Route<dynamic> route(RouteSettings settings) {
     switch (settings.name) {
       // case '/settings':
@@ -100,9 +101,12 @@ class Router {
       case '/login':
         return ScaleRoute(page: LoginPage());
         break;
+      case '/home':
+        return ScaleRoute(page: Home(title: 'Home'));
+        break;
       case '/':
       default:
-        return SlideFromRoute(widget: Home(title: 'BibleStudy'), direction: 'left');
+        return SlideFromRoute(widget: SplashScreen(title: 'BibleStudy'), direction: 'left');
         break;
     }
   }
