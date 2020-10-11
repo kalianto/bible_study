@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
 // import 'package:http/http.dart' as http;
@@ -77,7 +76,7 @@ class _LoginState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/register');
+                        Navigator.popAndPushNamed(context, '/register');
                       },
                     ),
                     FlatButton(

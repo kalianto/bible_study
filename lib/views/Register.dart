@@ -71,7 +71,7 @@ class _RegisterState extends State<RegisterPage> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login');
+                        Navigator.popAndPushNamed(context, '/login');
                       },
                     ),
                     FlatButton(
@@ -82,6 +82,7 @@ class _RegisterState extends State<RegisterPage> {
                         ),
                       ),
                       onPressed: () async {
+                        Navigator.pushNamed(context, '/home');
                         // try {
                         //   Auth.User user = (await Auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
                         //     email: _usernameController.text,

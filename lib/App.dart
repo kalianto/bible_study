@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-// import 'package:bible_study/views/ErrorLoading.dart';
 import 'package:bible_study/Router.dart';
+import 'package:global_configuration/global_configuration.dart';
 
 class BibleStudy extends StatelessWidget {
   // root of BibleStudy application
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Bible Study',
+      title: GlobalConfiguration().getValue('appName'),
       theme: ThemeData(
         primarySwatch: Colors.blue,
         primaryColor: Colors.blue[800],

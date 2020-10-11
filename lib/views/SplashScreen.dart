@@ -4,27 +4,26 @@ class SplashScreen extends StatelessWidget {
   SplashScreen({Key key, this.title}) : super(key: key);
 
   final String title;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //   title: Text(this.title),
-        // ),
-        body: _buildHome(context)
-      ),
+          // appBar: AppBar(
+          //   title: Text(this.title),
+          // ),
+          body: _buildHome(context, this.title),
+        ),
     );
   }
 }
 
-Widget _buildHome(BuildContext context) {
+Widget _buildHome(BuildContext context, String title) {
   return Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          'BibleStudy',
+          title,
           style: TextStyle(
             fontWeight: FontWeight.w900,
             color: Colors.blue[800],
@@ -42,7 +41,8 @@ Widget _buildHome(BuildContext context) {
         SizedBox(height: 50),
         FloatingActionButton.extended(
           onPressed: () {
-            Navigator.pushNamed(context, '/login');
+            // Navigator.pushNamed(context, '/login');
+            Navigator.pushNamed(context, '/home');
           },
           label: Text(
             'START',
