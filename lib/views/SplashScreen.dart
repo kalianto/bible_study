@@ -8,9 +8,6 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          // appBar: AppBar(
-          //   title: Text(this.title),
-          // ),
           body: _buildHome(context, this.title),
         ),
     );
@@ -28,7 +25,6 @@ Widget _buildHome(BuildContext context, String title) {
             fontWeight: FontWeight.w900,
             color: Colors.blue[800],
             fontSize: 40.0,
-            // fontStyle: FontStyle.italic,
           ),
         ),
         Text(
@@ -41,7 +37,6 @@ Widget _buildHome(BuildContext context, String title) {
         SizedBox(height: 50),
         FloatingActionButton.extended(
           onPressed: () {
-            // Navigator.pushNamed(context, '/login');
             Navigator.pushNamed(context, '/home');
           },
           label: Text(
