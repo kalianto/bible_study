@@ -19,6 +19,7 @@ class AppTheme {
   static const Color spacer = Color(0xFFF2F2F2);
   static const Color primarySwatch = Colors.blue;
   static const Color primaryColor = Color(0xFF1565C0);
+  static const Color nearlyDarkBlue = Color(0xFF2633C5);
 
   static const String fontName = 'FiraSansCondensed';
 

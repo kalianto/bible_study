@@ -1,5 +1,5 @@
 import 'package:bible_study/AppTheme.dart';
-import 'package:bible_study/custom_drawer/home_drawer.dart';
+import 'package:bible_study/common/home_drawer.dart';
 import 'package:flutter/material.dart';
 
 class DrawerUserController extends StatefulWidget {
