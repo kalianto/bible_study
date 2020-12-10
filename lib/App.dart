@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:bible_study/AppTheme.dart';
 import 'package:bible_study/Router.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:bible_study/AppTheme.dart';
 
 class BibleStudy extends StatelessWidget {
   // root of BibleStudy application
