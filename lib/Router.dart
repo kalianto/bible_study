@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:bible_study/views/Login.dart';
-import 'package:bible_study/views/Register.dart';
+import 'package:bible_study/views/Register/index.dart';
 import 'package:bible_study/views/ErrorLoading.dart';
-import 'package:bible_study/views/Home.dart';
-import 'package:bible_study/views/Settings.dart';
-import 'package:bible_study/views/Profile.dart';
+import 'package:bible_study/views/Home/index.dart';
+import 'package:bible_study/views/Settings/index.dart';
+import 'package:bible_study/views/Profile/index.dart';
 import 'package:bible_study/views/SplashScreen.dart';
 import 'package:global_configuration/global_configuration.dart';
 
@@ -40,7 +40,7 @@ class SlideFromRoute extends PageRouteBuilder {
               child: child,
             );
           },
-          transitionDuration: new Duration(milliseconds: 450),
+          transitionDuration: new Duration(milliseconds: 150),
         );
 }
 
