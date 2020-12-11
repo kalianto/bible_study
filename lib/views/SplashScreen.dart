@@ -4,12 +4,13 @@ class SplashScreen extends StatelessWidget {
   SplashScreen({Key key, this.title}) : super(key: key);
 
   final String title;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: _buildHome(context, this.title),
-        ),
+        body: _buildHome(context, this.title),
+      ),
     );
   }
 }

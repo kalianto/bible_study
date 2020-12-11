@@ -56,7 +56,7 @@ class _HomeState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Doris Suhardi',
+                        'Phoebe Mockingbird',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: AppTheme.nearlyBlack,
@@ -64,7 +64,7 @@ class _HomeState extends State<HomePage> {
                         ),
                       ),
                       Text(
-                        '0430355556',
+                        '0430111111',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: AppTheme.lightText,

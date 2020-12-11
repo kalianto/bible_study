@@ -21,14 +21,14 @@ class HomeDrawer extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
             child: ListTile(
               title: Text(
-                'Doris Suhardi',
+                'Phoebe Mockingbird',
                 style: TextStyle(
                   fontSize: 22,
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              subtitle: Text('0430355556'),
+              subtitle: Text('0430111111'),
               leading: CircleAvatar(
                 child: Icon(
                   Icons.person,
