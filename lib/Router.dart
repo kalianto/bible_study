@@ -8,6 +8,38 @@ import 'package:bible_study/views/Profile/index.dart';
 import 'package:bible_study/views/SplashScreen.dart';
 import 'package:global_configuration/global_configuration.dart';
 
+class BaseRouter {
+  static Route<dynamic> route(RouteSettings settings) {
+    switch (settings.name) {
+      case '/settings':
+        //return ScaleRoute(page: SettingPage());
+        return SlideFromRoute(widget: SettingsPage(), direction: 'right');
+        break;
+      case '/profile':
+        // return ScaleRoute(page: ProfilePage());
+        return SlideFromRoute(widget: Profile(), direction: 'right');
+        // return MaterialPageRoute(builder: (_) => MyProfile());
+        break;
+      case '/register':
+        return ScaleRoute(page: RegisterPage());
+        break;
+      case '/error':
+        return ScaleRoute(page: ErrorLoading(title: 'Loading Error'));
+        break;
+      case '/login':
+        return ScaleRoute(page: LoginPage());
+        break;
+      case '/home':
+        return ScaleRoute(page: Home(title: 'Home'));
+        break;
+      case '/':
+      default:
+        return SlideFromRoute(widget: SplashScreen(title: GlobalConfiguration().getValue('appName')), direction: 'left');
+        break;
+    }
+  }
+}
+
 class SlideFromRoute extends PageRouteBuilder {
   final Widget widget;
   final String direction;
@@ -46,6 +78,7 @@ class SlideFromRoute extends PageRouteBuilder {
 
 class ScaleRoute extends PageRouteBuilder {
   final Widget page;
+
   ScaleRoute({this.page})
       : super(
           pageBuilder: (
@@ -74,36 +107,4 @@ class ScaleRoute extends PageRouteBuilder {
           ),
           transitionDuration: new Duration(milliseconds: 500),
         );
-}
-
-class BaseRouter {
-  static Route<dynamic> route(RouteSettings settings) {
-    switch (settings.name) {
-      case '/settings':
-        //return ScaleRoute(page: SettingPage());
-        return SlideFromRoute(widget: SettingsPage(), direction: 'right');
-        break;
-      case '/profile':
-        // return ScaleRoute(page: ProfilePage());
-        return SlideFromRoute(widget: ProfilePage(), direction: 'right');
-        // return MaterialPageRoute(builder: (_) => MyProfile());
-        break;
-      case '/register':
-        return ScaleRoute(page: RegisterPage());
-        break;
-      case '/error':
-        return ScaleRoute(page: ErrorLoading(title: 'Loading Error'));
-        break;
-      case '/login':
-        return ScaleRoute(page: LoginPage());
-        break;
-      case '/home':
-        return ScaleRoute(page: Home(title: 'Home'));
-        break;
-      case '/':
-      default:
-        return SlideFromRoute(widget: SplashScreen(title: GlobalConfiguration().getValue('appName')), direction: 'left');
-        break;
-    }
-  }
 }

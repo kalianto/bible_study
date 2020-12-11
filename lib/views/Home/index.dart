@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:bible_study/AppTheme.dart';
 import 'package:bible_study/views/Home/drawer.dart';
 import 'package:bible_study/views/Home/home.dart';
+import 'package:bible_study/common/bottom_bar.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
 
   final String title;
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -21,7 +23,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     animationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
-    topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
+    topBarAnimation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
 
     scrollController.addListener(() {
       if (scrollController.offset >= 24) {
@@ -74,6 +77,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           ],
         ),
         drawer: HomeDrawer(),
+        bottomNavigationBar: BottomBar(),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         // backgroundColor: Colors.black,
       ),
     );

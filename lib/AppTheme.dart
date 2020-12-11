@@ -113,14 +113,14 @@ class AppTheme {
 
   static const TextStyle headline1 = TextStyle(
     fontFamily: fontName,
-    fontSize: 96.0, 
+    fontSize: 96.0,
     fontWeight: FontWeight.w900,
     letterSpacing: -1.5,
   );
 
   static const TextStyle headline2 = TextStyle(
     fontFamily: fontName,
-    fontSize: 60.0, 
+    fontSize: 60.0,
     fontWeight: FontWeight.w900,
     letterSpacing: -0.5,
   );
@@ -131,21 +131,21 @@ class AppTheme {
     fontWeight: FontWeight.normal,
     letterSpacing: 0,
   );
-  
+
   static const TextStyle headline4 = TextStyle(
     fontFamily: fontName,
     fontSize: 34.0,
     fontWeight: FontWeight.normal,
     letterSpacing: 0.25,
   );
-  
+
   static const TextStyle headline5 = TextStyle(
     fontFamily: fontName,
     fontSize: 24.0,
     fontWeight: FontWeight.normal,
     letterSpacing: 0.0,
   );
-  
+
   static const TextStyle headline6 = TextStyle(
     fontFamily: fontName,
     fontSize: 20.0,

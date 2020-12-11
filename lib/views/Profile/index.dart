@@ -2,12 +2,12 @@ import 'dart:ui';
 import 'package:bible_study/AppTheme.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<ProfilePage> {
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -71,7 +71,7 @@ class _ProfileState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Doris Suhardi',
+                          'Maggie ',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: AppTheme.nearlyBlack,
@@ -79,7 +79,7 @@ class _ProfileState extends State<ProfilePage> {
                           ),
                         ),
                         Text(
-                          '0430355556',
+                          '0430111111',
                           style: TextStyle(
                             fontWeight: FontWeight.w100,
                             color: AppTheme.darkerText,
