@@ -21,6 +21,14 @@ class AppTheme {
   static const Color primaryColor = Color(0xFF1565C0);
   static const Color nearlyDarkBlue = Color(0xFF2633C5);
 
+  static const Color redText = Color(0xFFff595e);
+  static const Color yellowText = Color(0xFFffca3a);
+  static const Color greenText = Color(0xFF8ac926);
+  static const Color blueText = Color(0xFF1982c4);
+  static const Color purpleText = Color(0xFF6a4c93);
+
+
+
   static const String fontName = 'FiraSansCondensed';
 
   static const TextTheme textTheme = TextTheme(

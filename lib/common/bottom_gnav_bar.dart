@@ -1,5 +1,7 @@
+import 'package:bible_study/AppTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomGNavBar extends StatefulWidget {
   @override
@@ -45,23 +47,31 @@ class _BottomGNavBarState extends State<BottomGNavBar> with TickerProviderStateM
               iconSize: 24,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               duration: Duration(milliseconds: 800),
-              tabBackgroundColor: Colors.blue,
+              // tabBackgroundColor: Colors.blue,
               tabs: [
                 GButton(
-                  icon: Icons.home,
-                  text: 'Home',
+                  icon: FontAwesomeIcons.home,
+                  text: ' Home',
+                  iconColor: AppTheme.blueText,
+                  backgroundColor: AppTheme.blueText,
                 ),
                 GButton(
-                  icon: Icons.alarm,
+                  icon: FontAwesomeIcons.bell,
                   text: 'Notifications',
+                  iconColor: AppTheme.yellowText,
+                  backgroundColor: AppTheme.yellowText,
                 ),
                 GButton(
-                  icon: Icons.event,
+                  icon: FontAwesomeIcons.bible,
                   text: 'Reading',
+                  iconColor: AppTheme.greenText,
+                  backgroundColor: AppTheme.greenText,
                 ),
                 GButton(
-                  icon: Icons.face,
-                  text: 'COOL',
+                  icon: FontAwesomeIcons.users,
+                  text: '  COOL',
+                  iconColor: AppTheme.redText,
+                  backgroundColor: AppTheme.redText,
                 ),
               ],
               selectedIndex: _selectedIndex,

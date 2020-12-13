@@ -3,6 +3,7 @@ import 'package:bible_study/AppTheme.dart';
 import 'package:bible_study/views/Home/drawer.dart';
 import 'package:bible_study/views/Home/home.dart';
 import 'package:bible_study/common/bottom_gnav_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -103,7 +104,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   height: 38,
                   width: 38,
                   child: IconButton(
-                    icon: const Icon(Icons.menu),
+                    icon: const Icon(FontAwesomeIcons.bars),
                     onPressed: _openHomeDrawer,
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                     color: Colors.black,
