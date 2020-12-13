@@ -59,7 +59,7 @@ class _SettingsState extends State<SettingsPage> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      'Phoebe Mockingbird',
+                      'Oliver Mockingbird',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.white,

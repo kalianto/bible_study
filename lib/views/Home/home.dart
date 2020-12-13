@@ -34,18 +34,18 @@ class _HomeState extends State<HomePage> {
                   Container(
                     height: 50,
                     width: 50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: AppTheme.grey.withOpacity(0.6),
-                          offset: const Offset(2.0, 4.0),
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
+                    // decoration: BoxDecoration(
+                    //   shape: BoxShape.circle,
+                    //   boxShadow: <BoxShadow>[
+                    //     BoxShadow(
+                    //       color: AppTheme.grey.withOpacity(0.6),
+                    //       offset: const Offset(2.0, 4.0),
+                    //       blurRadius: 8,
+                    //     ),
+                    //   ],
+                    // ),
                     child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(40.0)),
                       child: Image.asset('assets/images/userImage.png'),
                     ),
                   ),
@@ -56,7 +56,7 @@ class _HomeState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Phoebe Mockingbird',
+                        'Oliver Mockingbird',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: AppTheme.nearlyBlack,

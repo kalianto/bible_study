@@ -64,7 +64,7 @@ class HomeDrawer extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 4),
                     child: Text(
-                      'Phoebe Mockingbird',
+                      'Oliver Mockingbird',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppTheme.grey,

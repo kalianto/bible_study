@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bible_study/AppTheme.dart';
 import 'package:bible_study/views/Home/drawer.dart';
 import 'package:bible_study/views/Home/home.dart';
-import 'package:bible_study/common/bottom_bar.dart';
+import 'package:bible_study/common/bottom_gnav_bar.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -77,11 +77,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           ],
         ),
         drawer: HomeDrawer(),
-        bottomNavigationBar: BottomBar(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: BottomGNavBar(),
+        // floatingActionButton: FloatingActionButton(
+        //   child: Icon(Icons.add),
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         // backgroundColor: Colors.black,
       ),
     );
