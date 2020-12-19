@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:bible_study/views/Login.dart';
-import 'package:bible_study/views/Register/index.dart';
-import 'package:bible_study/views/ErrorLoading.dart';
-import 'package:bible_study/views/Home/index.dart';
-import 'package:bible_study/views/Settings/index.dart';
-import 'package:bible_study/views/Profile/index.dart';
-import 'package:bible_study/views/SplashScreen.dart';
+import 'package:bible_study/views/login.dart';
+import 'package:bible_study/views/register/index.dart';
+import 'package:bible_study/views/error_loading.dart';
+import 'package:bible_study/views/home/index.dart';
+import 'package:bible_study/views/settings/index.dart';
+import 'package:bible_study/views/profile/index.dart';
+import 'package:bible_study/views/splash_screen.dart';
 import 'package:global_configuration/global_configuration.dart';
 
 class BaseRouter {

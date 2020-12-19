@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bible_study/AppTheme.dart';
-import 'package:bible_study/Router.dart';
+import 'package:bible_study/app_theme.dart';
+import 'package:bible_study/router.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:bible_study/AppTheme.dart';
 
 class BibleStudy extends StatelessWidget {
   // root of BibleStudy application

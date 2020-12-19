@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bible_study/AppTheme.dart';
+import 'package:bible_study/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerList {
@@ -19,8 +19,8 @@ class HomeDrawer extends StatelessWidget {
 
   final List<DrawerList> drawerList = <DrawerList>[
     DrawerList(Icon(FontAwesomeIcons.userCircle, color: AppTheme.redText), 'Profile', '/profile'),
-    DrawerList(Icon(FontAwesomeIcons.envelope, color: AppTheme.yellowText), 'Messages', '/messages'),
-    DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL', '/group'),
+    DrawerList(Icon(FontAwesomeIcons.envelope, color: AppTheme.yellowText), 'Messages', '/login'),
+    DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL', '/register'),
     DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.blueText), 'Settings', '/settings'),
   ];
 
@@ -85,8 +85,8 @@ class HomeDrawer extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppTheme.nearlyWhite,
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0),
                   ),
                 ),
                 child: ListView.builder(

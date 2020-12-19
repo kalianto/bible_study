@@ -1,7 +1,7 @@
 import 'dart:ui';
-import 'package:bible_study/AppTheme.dart';
+import 'package:bible_study/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:bible_study/views/Home/daily_reading.dart';
+import 'package:bible_study/views/home/daily_reading.dart';
 
 class HomePage extends StatefulWidget {
   @override

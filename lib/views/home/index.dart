@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bible_study/AppTheme.dart';
-import 'package:bible_study/views/Home/drawer.dart';
-import 'package:bible_study/views/Home/home.dart';
+import 'package:bible_study/app_theme.dart';
+import 'package:bible_study/views/home/drawer.dart';
+import 'package:bible_study/views/home/home.dart';
 import 'package:bible_study/common/bottom_gnav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -70,7 +70,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
-            HomePage(),
+            // HomePage(),
             customAppBar(),
             SizedBox(
               height: MediaQuery.of(context).padding.bottom,

@@ -1,4 +1,4 @@
-import 'package:bible_study/AppTheme.dart';
+import 'package:bible_study/app_theme.dart';
 import 'package:bible_study/common/home_drawer.dart';
 import 'package:flutter/material.dart';
 
