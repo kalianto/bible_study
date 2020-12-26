@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../app_theme.dart';
-import '../../common/bottom_gnav_bar.dart';
-import 'drawer.dart';
-import 'home.dart';
-import 'daily_reading.dart';
+import '../app_theme.dart';
 
-class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
+class ChildPageAppBar extends StatefulWidget {
+  ChildPageAppBar({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _HomeState createState() => _HomeState();
+  _ChildPageAppBarState createState() => _ChildPageAppBarState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class _ChildPageAppBarState extends State<ChildPageAppBar> with TickerProviderStateMixin {
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   AnimationController animationController;
   Animation<double> topBarAnimation;
   double topBarOpacity = 1.0;
@@ -54,53 +51,18 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
   }
 
-  // opening the home drawer
-  void _openHomeDrawer() {
-    _scaffoldKey.currentState.openDrawer();
-  }
-
   @override
   void dispose() {
     animationController.dispose();
     super.dispose();
   }
 
-  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        key: _scaffoldKey,
-        body: Stack(
-          children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.width / 1.5,
-              width: MediaQuery.of(context).size.width,
-              color: AppTheme.purple,
-            ),
-            homeAppBar(),
-            DailyReading(scrollController: scrollController, animationController: animationController),
-            SizedBox(
-              height: MediaQuery.of(context).padding.bottom,
-            )
-          ],
-        ),
-        drawer: HomeDrawer(),
-        bottomNavigationBar: BottomGNavBar(),
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.add),
-        // ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // backgroundColor: Colors.black,
-      ),
-    );
-  }
-
-  Widget homeAppBar() {
     return Container(
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: 10, //MediaQuery.of(context).padding.top,
+            height: MediaQuery.of(context).padding.top,
           ),
           Padding(
             padding: EdgeInsets.only(left: 16, right: 16, top: 16 - 8.0 * topBarOpacity, bottom: 12 - 8.0 * topBarOpacity),
@@ -111,24 +73,24 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   height: 38,
                   width: 38,
                   child: IconButton(
-                    icon: const Icon(FontAwesomeIcons.bars),
-                    onPressed: _openHomeDrawer,
+                    icon: const Icon(FontAwesomeIcons.arrowLeft),
+                    onPressed: () => Navigator.of(context).pop(),
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                    color: AppTheme.orange,
+                    color: Colors.black,
                   ),
                 ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Daily Reading',
+                      widget.title,
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         fontFamily: AppTheme.fontName,
                         fontWeight: FontWeight.w700,
                         fontSize: 22 + 6 - 6 * topBarOpacity,
                         letterSpacing: 1.2,
-                        color: AppTheme.orange,
+                        color: AppTheme.darkerText,
                       ),
                     ),
                   ),

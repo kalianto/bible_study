@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:bible_study/views/login.dart';
-import 'package:bible_study/views/register/index.dart';
-import 'package:bible_study/views/error_loading.dart';
-import 'package:bible_study/views/home/index.dart';
-import 'package:bible_study/views/settings/index.dart';
-import 'package:bible_study/views/profile/index.dart';
-import 'package:bible_study/views/splash_screen.dart';
 import 'package:global_configuration/global_configuration.dart';
+
+import 'views/login.dart';
+import 'views/register/index.dart';
+import 'views/error_loading.dart';
+import 'views/home/index.dart';
+import 'views/settings/index.dart';
+import 'views/profile/index.dart';
+import 'views/splash_screen.dart';
 
 class BaseRouter {
   static Route<dynamic> route(RouteSettings settings) {
@@ -105,6 +106,6 @@ class ScaleRoute extends PageRouteBuilder {
             ),
             child: child,
           ),
-          transitionDuration: new Duration(milliseconds: 500),
+          transitionDuration: new Duration(milliseconds: 300),
         );
 }

@@ -1,7 +1,8 @@
 import 'dart:ui';
-import 'package:bible_study/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:bible_study/views/home/daily_reading.dart';
+
+import '../../app_theme.dart';
+// import 'daily_reading.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,24 +12,27 @@ class HomePage extends StatefulWidget {
 class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: _buildPage(context),
-      ),
-    );
-  }
-
-  Widget _buildPage(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(
-          top: AppBar().preferredSize.height + MediaQuery.of(context).padding.top + 32,
-          bottom: 62 + MediaQuery.of(context).padding.bottom,
-        ),
+        // padding: EdgeInsets.only(
+        //   top: AppBar().preferredSize.height + MediaQuery.of(context).padding.top + 32,
+        //   bottom: 62 + MediaQuery.of(context).padding.bottom,
+        // ),
         child: Wrap(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: Card(
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    child: Text('This is home page', style: AppTheme.textTheme.headline5,),
+                  ),
+                ),
+              ),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
@@ -74,9 +78,11 @@ class _HomeState extends State<HomePage> {
                     ],
                   )),
                 ],
-              ),
-            ),
-          ],
-        ));
+              )
+            ],
+          ),
+        )
+      ],
+    ));
   }
 }

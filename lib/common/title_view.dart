@@ -1,5 +1,6 @@
-import 'package:bible_study/app_theme.dart';
 import 'package:flutter/material.dart';
+
+import '../app_theme.dart';
 
 class TitleView extends StatelessWidget {
   final String titleTxt;

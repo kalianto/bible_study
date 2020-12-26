@@ -1,6 +1,9 @@
 import 'dart:ui';
-import 'package:bible_study/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../app_theme.dart';
+import '../../common/child_page_appbar.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -12,12 +15,19 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: _buildPage(context),
-      ),
+          body: Column(
+        children: <Widget>[
+          ChildPageAppBar(title: 'Profile'),
+          profileHome(context),
+          // SizedBox(
+          //   height: MediaQuery.of(context).padding.bottom,
+          // )
+        ],
+      )),
     );
   }
 
-  Widget _buildPage(BuildContext context) {
+  Widget profileHome(BuildContext context) {
     return Container(
         child: Wrap(
       children: <Widget>[
@@ -38,8 +48,8 @@ class _ProfileState extends State<Profile> {
                   boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: AppTheme.grey.withOpacity(0.6),
-                      offset: Offset(1.1, 1.1),
-                      blurRadius: 6.0,
+                      offset: Offset(0.2, 0.2),
+                      blurRadius: 2.0,
                     ),
                   ],
                 ),
@@ -108,8 +118,8 @@ class _ProfileState extends State<Profile> {
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: AppTheme.grey.withOpacity(0.4),
-                  offset: Offset(1.1, 1.1),
-                  blurRadius: 10.0,
+                  offset: Offset(2, 2),
+                  blurRadius: 2.0,
                 ),
               ],
             ),
@@ -277,6 +287,172 @@ class _ProfileState extends State<Profile> {
                   ),
                 )
               ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 0, bottom: 24, left: 24, right: 24),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 12, bottom: 12, left: 12, right: 12),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Padding(
+                    // padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              height: 48,
+                              width: 2,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF87A0E5).withOpacity(0.5),
+                                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4, bottom: 2),
+                                    child: Text(
+                                      'Eaten',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: AppTheme.fontName,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        letterSpacing: -0.1,
+                                        color: AppTheme.grey.withOpacity(0.5),
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      SizedBox(width: 28, height: 28, child: Icon(Icons.message)),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 4, bottom: 3),
+                                        child: Text(
+                                          'Another Text',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: AppTheme.fontName,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                            color: AppTheme.darkerText,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 4, bottom: 3),
+                                        child: Text(
+                                          'Kcal',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: AppTheme.fontName,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            letterSpacing: -0.2,
+                                            color: AppTheme.grey.withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              height: 48,
+                              width: 2,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFF56E98).withOpacity(0.5),
+                                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4, bottom: 2),
+                                    child: Text(
+                                      'Burned',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: AppTheme.fontName,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        letterSpacing: -0.1,
+                                        color: AppTheme.grey.withOpacity(0.5),
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        width: 28,
+                                        height: 28,
+                                        child: Icon(Icons.dashboard),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 4, bottom: 3),
+                                        child: Text(
+                                          'Just A Text',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: AppTheme.fontName,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                            color: AppTheme.darkerText,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 8, bottom: 3),
+                                        child: Text(
+                                          'Kcal',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: AppTheme.fontName,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            letterSpacing: -0.2,
+                                            color: AppTheme.grey.withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  )),
+                ],
+              ),
             ),
           ),
         ),

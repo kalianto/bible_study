@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:device_info/device_info.dart';
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
 // import 'package:http/http.dart' as http;
-import 'package:device_info/device_info.dart';
+
+import '../app_theme.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -47,18 +49,20 @@ class _LoginState extends State<LoginPage> {
                 TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                    // border: OutlineInputBorder(),
                     labelText: 'Email Address',
                     // icon: Icon(Icons.person),
-                    filled: true,
+                    // filled: true,
+                    enabledBorder: AppTheme.inputBorder,
+                    focusedBorder: AppTheme.inputBorder,
                   ),
                 ),
-                SizedBox(height: 12.0),
+                SizedBox(height: 20.0),
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    filled: true,
-                    // border: OutlineInputBorder(),
+                    // filled: true,
+                    enabledBorder: AppTheme.inputBorder,
+                    focusedBorder: AppTheme.inputBorder,
                     labelText: 'Password',
                     // icon: Icon(Icons.lock),
                   ),

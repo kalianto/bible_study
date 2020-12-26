@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
 
+import '../../app_theme.dart';
+
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
@@ -44,16 +46,21 @@ class _RegisterState extends State<RegisterPage> {
                 TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                    // border: OutlineInputBorder(),
+                    enabledBorder: AppTheme.inputBorder,
+                    focusedBorder: AppTheme.inputBorder,
                     labelText: 'Email Address',
                     // icon: Icon(Icons.person),
                   ),
                 ),
-                SizedBox(height: 12.0),
+                SizedBox(height: 20.0),
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    // border: OutlineInputBorder(),
+                    enabledBorder: AppTheme.inputBorder,
+                    focusedBorder: AppTheme.inputBorder,
+                    border: AppTheme.inputBorder,
+                    filled: true,
+                    fillColor: Colors.blue[100].withOpacity(0.3),
                     labelText: 'Password',
                     // icon: Icon(Icons.lock),
                   ),

@@ -1,11 +1,12 @@
-import 'package:bible_study/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:bible_study/views/home/index.dart';
-import 'package:bible_study/views/profile/index.dart';
-import 'package:bible_study/views/settings/index.dart';
-import 'package:bible_study/views/register/index.dart';
+
+import '../app_theme.dart';
+import '../views/home/index.dart';
+import '../views/profile/index.dart';
+import '../views/settings/index.dart';
+import '../views/register/index.dart';
 
 class BottomGNavBar extends StatefulWidget {
   @override
@@ -57,7 +58,7 @@ class _BottomGNavBarState extends State<BottomGNavBar> with TickerProviderStateM
               gap: 6,
               activeColor: Colors.white,
               iconSize: 24,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               duration: Duration(milliseconds: 800),
               // tabBackgroundColor: Colors.blue,
               tabs: [
@@ -97,8 +98,7 @@ class _BottomGNavBarState extends State<BottomGNavBar> with TickerProviderStateM
               onTabChange: (index) {
                 setState(() {
                   _selectedIndex = index;
-                  print('Current Index is ');
-                  print(index);
+                  print('Current Index is $index');
                 });
               }),
         ),

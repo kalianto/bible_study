@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bible_study/app_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../app_theme.dart';
 
 class DrawerList {
   DrawerList(
@@ -33,7 +34,7 @@ class HomeDrawer extends StatelessWidget {
   Widget _buildDrawer(BuildContext context) {
     return Drawer(
       child: Container(
-        color: AppTheme.blueText,
+        color: AppTheme.darkGreen,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
