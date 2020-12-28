@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 import '../../common/bottom_gnav_bar.dart';
 import 'drawer.dart';
-import 'home.dart';
 import 'daily_reading.dart';
 
 class Home extends StatefulWidget {
@@ -73,7 +72,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         body: Stack(
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.width / 1.5,
+              height: MediaQuery.of(context).size.width / 2,
               width: MediaQuery.of(context).size.width,
               color: AppTheme.purple,
             ),

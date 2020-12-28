@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
@@ -18,6 +19,7 @@ class _LoginState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.white,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -30,7 +32,7 @@ class _LoginState extends State<LoginPage> {
                   'BibleStudy',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue[800],
+                    color: AppTheme.darkGreen,
                     fontSize: 36,
                   ),
                 ),
@@ -38,12 +40,16 @@ class _LoginState extends State<LoginPage> {
                   'version 1.0',
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
+                    color: AppTheme.darkGreen,
                   ),
                 ),
                 SizedBox(height: 50.0),
                 Text(
                   'Enter your details below to sign in',
                   textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: AppTheme.darkGreen,
+                  ),
                 ),
                 SizedBox(height: 20.0),
                 TextField(
@@ -54,6 +60,9 @@ class _LoginState extends State<LoginPage> {
                     // filled: true,
                     enabledBorder: AppTheme.inputBorder,
                     focusedBorder: AppTheme.inputBorder,
+                    labelStyle: TextStyle(
+                      color: AppTheme.darkGreen,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -64,6 +73,9 @@ class _LoginState extends State<LoginPage> {
                     enabledBorder: AppTheme.inputBorder,
                     focusedBorder: AppTheme.inputBorder,
                     labelText: 'Password',
+                    labelStyle: TextStyle(
+                      color: AppTheme.darkGreen,
+                    ),
                     // icon: Icon(Icons.lock),
                   ),
                   obscureText: true, // this is password field
@@ -76,7 +88,7 @@ class _LoginState extends State<LoginPage> {
                       child: Text(
                         'Don\'t have account?',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: AppTheme.blueText,
                         ),
                       ),
                       onPressed: () {
@@ -88,6 +100,8 @@ class _LoginState extends State<LoginPage> {
                         'LOGIN',
                         style: TextStyle(
                           fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.blueText,
                         ),
                       ),
                       onPressed: () async {

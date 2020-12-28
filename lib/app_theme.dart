@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -8,7 +9,8 @@ class AppTheme {
   static const Color white = Color(0xFFFFFFFF);
   static const Color nearlyBlack = Color(0xFF213333);
   static const Color grey = Color(0xFF3A5160);
-  static const Color dark_grey = Color(0xFF313A44);
+  static const Color darkGrey = Color(0xFF313A44);
+  static const Color lightGrey = Color(0xFFCCCCCC);
 
   static const Color darkText = Color(0xFF253840);
   static const Color darkerText = Color(0xFF17262A);
@@ -37,7 +39,6 @@ class AppTheme {
   static const Color green = Color(0xFF99DB31);
   static const Color lightGreen = Color(0xFFDCF6DF);
   static const Color darkGreen = Color(0xFF73AB75);
-
 
   static const String fontName = 'FiraSansCondensed';
 
@@ -174,15 +175,32 @@ class AppTheme {
   static const OutlineInputBorder inputBorder = OutlineInputBorder(
     borderRadius: const BorderRadius.all(Radius.circular(20.0)),
     borderSide: BorderSide(
-      color: Colors.blue,
+      color: darkGreen,
       width: 3.0,
     ),
   );
 
   static const OutlineInputBorder inputBorderless = OutlineInputBorder(
     borderSide: BorderSide(
-      color: Colors.blue,
+      color: white,
       width: 0.0,
     ),
+  );
+
+  static final BoxDecoration boxDecoration = BoxDecoration(
+    color: AppTheme.white,
+    borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(4.0),
+      bottomLeft: Radius.circular(4.0),
+      bottomRight: Radius.circular(4.0),
+      topRight: Radius.circular(4.0),
+    ),
+    boxShadow: <BoxShadow>[
+      BoxShadow(
+        color: grey.withOpacity(0.3),
+        offset: Offset(2, 2),
+        blurRadius: 2.0,
+      )
+    ],
   );
 }

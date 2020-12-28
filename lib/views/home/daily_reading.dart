@@ -1,5 +1,6 @@
 // import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 
 class DailyReading extends StatefulWidget {
@@ -18,14 +19,14 @@ class _DailyReadingState extends State<DailyReading> {
   @override
   void initState() {
     listViews.add(readingItem(1));
-    listViews.add(SizedBox(height: 20));
+    listViews.add(SizedBox(height: 10));
     listViews.add(readingItem(2));
-    listViews.add(SizedBox(height: 20));
+    listViews.add(SizedBox(height: 10));
     listViews.add(readingItem(3));
-    listViews.add(SizedBox(height: 20));
+    listViews.add(SizedBox(height: 10));
     listViews.add(readingItem(4));
-    listViews.add(SizedBox(height: 20));
-    listViews.add(readingItem(5));
+    // listViews.add(SizedBox(height: 20));
+    // listViews.add(readingItem(5));
     super.initState();
   }
 
@@ -72,22 +73,7 @@ class _DailyReadingState extends State<DailyReading> {
 
   Widget readingItem(int index) {
     return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(4.0),
-          bottomLeft: Radius.circular(4.0),
-          bottomRight: Radius.circular(4.0),
-          topRight: Radius.circular(4.0),
-        ),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: AppTheme.grey.withOpacity(0.2),
-            offset: Offset(2, 2),
-            blurRadius: 2.0,
-          ),
-        ],
-      ),
+      decoration: AppTheme.boxDecoration,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -98,10 +84,12 @@ class _DailyReadingState extends State<DailyReading> {
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: <Widget>[
-                  //boxRowContainer(),
-                  //SizedBox(height: 8),
+                  // boxRowContainer(),
+                  // boxRowContainer(),
+                  // Divider(),
                   boxRow(index),
-                  SizedBox(height: 8),
+                  // boxRow(index),
+                  // SizedBox(height: 8),
                   // boxRowContainer(),
                 ],
               ),
@@ -117,14 +105,6 @@ class _DailyReadingState extends State<DailyReading> {
       color: AppTheme.grey.withOpacity(0.1),
       child: Row(
         children: <Widget>[
-          // Container(
-          //   height: 48,
-          //   width: 2,
-          //   decoration: BoxDecoration(
-          //     color: AppTheme.mandarin,
-          //     borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          //   ),
-          // ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -134,14 +114,14 @@ class _DailyReadingState extends State<DailyReading> {
                 Padding(
                   padding: const EdgeInsets.only(left: 4, bottom: 2),
                   child: Text(
-                    'Eaten',
+                    'Mazmur 91',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: AppTheme.fontName,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       fontSize: 16,
-                      letterSpacing: -0.1,
-                      color: AppTheme.grey.withOpacity(0.5),
+                      letterSpacing: 1.0,
+                      color: AppTheme.purple,
                     ),
                   ),
                 ),
@@ -149,7 +129,7 @@ class _DailyReadingState extends State<DailyReading> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    SizedBox(width: 28, height: 28, child: Icon(Icons.message)),
+                    SizedBox(width: 28, height: 28, child: FaIcon(FontAwesomeIcons.bible)),
                     Padding(
                       padding: const EdgeInsets.only(left: 4, bottom: 3),
                       child: Text(
@@ -157,9 +137,9 @@ class _DailyReadingState extends State<DailyReading> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: AppTheme.fontName,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: AppTheme.darkerText,
+                          // fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: AppTheme.grey,
                         ),
                       ),
                     ),
@@ -206,16 +186,16 @@ class _DailyReadingState extends State<DailyReading> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(left: 4, bottom: 2),
+                padding: const EdgeInsets.only(left: 0, bottom: 2),
                 child: Text(
-                  'Burned $index',
-                  textAlign: TextAlign.center,
+                  'Amsal 31',
+                  textAlign: TextAlign.left,
                   style: TextStyle(
                     fontFamily: AppTheme.fontName,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    letterSpacing: -0.1,
-                    color: AppTheme.grey.withOpacity(0.5),
+                    letterSpacing: 1.0,
+                    color: AppTheme.darkGreen,
                   ),
                 ),
               ),
@@ -224,9 +204,12 @@ class _DailyReadingState extends State<DailyReading> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   SizedBox(
-                    width: 28,
-                    height: 28,
-                    child: Icon(Icons.dashboard),
+                    width: 24,
+                    height: 24,
+                    child: FaIcon(
+                      FontAwesomeIcons.bible,
+                      size: 18,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 4, bottom: 3),

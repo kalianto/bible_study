@@ -17,9 +17,7 @@ class BaseRouter {
         return SlideFromRoute(widget: SettingsPage(), direction: 'right');
         break;
       case '/profile':
-        // return ScaleRoute(page: ProfilePage());
         return SlideFromRoute(widget: Profile(), direction: 'right');
-        // return MaterialPageRoute(builder: (_) => MyProfile());
         break;
       case '/register':
         return ScaleRoute(page: RegisterPage());
