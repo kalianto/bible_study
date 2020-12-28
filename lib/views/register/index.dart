@@ -1,15 +1,14 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
-// import 'package:http/http.dart' as http;
-import 'package:device_info/device_info.dart';
 
-class LoginPage extends StatefulWidget {
+import '../../app_theme.dart';
+
+class RegisterPage extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _LoginState extends State<LoginPage> {
+class _RegisterState extends State<RegisterPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -40,25 +39,30 @@ class _LoginState extends State<LoginPage> {
                 ),
                 SizedBox(height: 50.0),
                 Text(
-                  'Enter your details below to sign in',
+                  'Enter your details below to register your details',
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 20.0),
                 TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                    // border: OutlineInputBorder(),
+                    enabledBorder: AppTheme.inputBorder,
+                    focusedBorder: AppTheme.inputBorder,
                     labelText: 'Email Address',
-                    // icon: Icon(Icons.person),
                     filled: true,
+                    fillColor:AppTheme.lightGreen,
+                    // icon: Icon(Icons.person),
                   ),
                 ),
-                SizedBox(height: 12.0),
+                SizedBox(height: 20.0),
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
+                    enabledBorder: AppTheme.inputBorder,
+                    focusedBorder: AppTheme.inputBorder,
+                    border: AppTheme.inputBorder,
                     filled: true,
-                    // border: OutlineInputBorder(),
+                    fillColor:AppTheme.lightGreen,
                     labelText: 'Password',
                     // icon: Icon(Icons.lock),
                   ),
@@ -70,41 +74,26 @@ class _LoginState extends State<LoginPage> {
                   children: <Widget>[
                     FlatButton(
                       child: Text(
-                        'Don\'t have account?',
+                        'Already had account?',
                         style: TextStyle(
                           color: Colors.blue,
                         ),
                       ),
                       onPressed: () {
-                        Navigator.popAndPushNamed(context, '/register');
+                        Navigator.popAndPushNamed(context, '/login');
                       },
                     ),
                     FlatButton(
                       child: Text(
-                        'LOGIN',
+                        'REGISTER',
                         style: TextStyle(
                           fontSize: 20,
                         ),
                       ),
                       onPressed: () async {
-                        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-                        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-                        print('Running on ${androidInfo.model}');
-                        print('Android Info');
-                        print(Platform.isAndroid);
-                        print('Device Info');
-                        print(deviceInfo.hashCode);
+                        Navigator.pushNamed(context, '/home');
                         // try {
-                        //   var url = 'http://localhost:3001/auth';
-                        //   var response = await http.post(url, body: {});
-                        //   print("RESPONSE");
-                        //   print(response);
-                        // } catch (e) {
-                        //   print("LOGIN ERROR");
-                        //   print(e);
-                        // }
-                        // try {
-                        //   Auth.User user = (await Auth.FirebaseAuth.instance.signInWithEmailAndPassword(
+                        //   Auth.User user = (await Auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
                         //     email: _usernameController.text,
                         //     password: _passwordController.text,
                         //   ))

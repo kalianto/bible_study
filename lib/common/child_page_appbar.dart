@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:bible_study/AppTheme.dart';
-import 'package:bible_study/views/Home/drawer.dart';
-import 'package:bible_study/views/Home/home.dart';
-import 'package:bible_study/common/bottom_bar.dart';
+import 'package:flutter/rendering.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
+import '../app_theme.dart';
+
+class ChildPageAppBar extends StatefulWidget {
+  ChildPageAppBar({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _HomeState createState() => _HomeState();
+  _ChildPageAppBarState createState() => _ChildPageAppBarState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class _ChildPageAppBarState extends State<ChildPageAppBar> with TickerProviderStateMixin {
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   AnimationController animationController;
   Animation<double> topBarAnimation;
   double topBarOpacity = 1.0;
@@ -51,43 +51,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
   }
 
-  // opening the home drawer
-  void _openHomeDrawer() {
-    _scaffoldKey.currentState.openDrawer();
-  }
-
   @override
   void dispose() {
     animationController.dispose();
     super.dispose();
   }
 
-  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        key: _scaffoldKey,
-        body: Stack(
-          children: <Widget>[
-            HomePage(),
-            customAppBar(),
-            SizedBox(
-              height: MediaQuery.of(context).padding.bottom,
-            )
-          ],
-        ),
-        drawer: HomeDrawer(),
-        bottomNavigationBar: BottomBar(),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // backgroundColor: Colors.black,
-      ),
-    );
-  }
-
-  Widget customAppBar() {
     return Container(
       child: Column(
         children: <Widget>[
@@ -103,8 +73,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   height: 38,
                   width: 38,
                   child: IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: _openHomeDrawer,
+                    icon: const Icon(FontAwesomeIcons.arrowLeft),
+                    onPressed: () => Navigator.of(context).pop(),
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                     color: Colors.black,
                   ),
@@ -113,7 +83,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Daily Reading',
+                      widget.title,
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         fontFamily: AppTheme.fontName,

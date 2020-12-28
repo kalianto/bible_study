@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:bible_study/AppTheme.dart';
-import 'package:bible_study/Router.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:bible_study/AppTheme.dart';
+
+import 'app_theme.dart';
+import 'router.dart';
 
 class BibleStudy extends StatelessWidget {
-  // root of BibleStudy application
+  /// root of BibleStudy application
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

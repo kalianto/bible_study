@@ -1,3 +1,4 @@
+import 'package:bible_study/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -24,15 +25,17 @@ Widget _buildHome(BuildContext context, String title) {
           title,
           style: TextStyle(
             fontWeight: FontWeight.w900,
-            color: Colors.blue[800],
+            color: AppTheme.darkGreen,
             fontSize: 40.0,
+            letterSpacing: 14.0,
           ),
         ),
         Text(
-          'version 1.0',
+          'COmmunity Of Love',
           style: TextStyle(
             fontStyle: FontStyle.italic,
             fontSize: 14.0,
+            color: AppTheme.darkGreen,
           ),
         ),
         SizedBox(height: 50),
@@ -47,7 +50,7 @@ Widget _buildHome(BuildContext context, String title) {
               color: Colors.white,
             ),
           ),
-          backgroundColor: Colors.amber[600],
+          backgroundColor: AppTheme.mandarin,
         )
       ],
     ),

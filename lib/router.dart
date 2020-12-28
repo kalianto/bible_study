@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:bible_study/views/Login.dart';
-import 'package:bible_study/views/Register/index.dart';
-import 'package:bible_study/views/ErrorLoading.dart';
-import 'package:bible_study/views/Home/index.dart';
-import 'package:bible_study/views/Settings/index.dart';
-import 'package:bible_study/views/Profile/index.dart';
-import 'package:bible_study/views/SplashScreen.dart';
 import 'package:global_configuration/global_configuration.dart';
+
+import 'views/login.dart';
+import 'views/register/index.dart';
+import 'views/error_loading.dart';
+import 'views/home/index.dart';
+import 'views/settings/index.dart';
+import 'views/profile/index.dart';
+import 'views/splash_screen.dart';
 
 class BaseRouter {
   static Route<dynamic> route(RouteSettings settings) {
@@ -16,9 +17,7 @@ class BaseRouter {
         return SlideFromRoute(widget: SettingsPage(), direction: 'right');
         break;
       case '/profile':
-        // return ScaleRoute(page: ProfilePage());
         return SlideFromRoute(widget: Profile(), direction: 'right');
-        // return MaterialPageRoute(builder: (_) => MyProfile());
         break;
       case '/register':
         return ScaleRoute(page: RegisterPage());
@@ -105,6 +104,6 @@ class ScaleRoute extends PageRouteBuilder {
             ),
             child: child,
           ),
-          transitionDuration: new Duration(milliseconds: 500),
+          transitionDuration: new Duration(milliseconds: 300),
         );
 }
