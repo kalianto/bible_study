@@ -12,7 +12,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   AnimationController animationController;
-  bool _selectedPage;
+  bool _editing;
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -24,19 +24,19 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    super.initState();
     animationController =
         AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
-    _selectedPage = true;
+    _editing = false;
     _firstNameController.text = 'Maggie';
     _lastNameController.text = 'Smith';
     _emailController.text = 'test@example.com';
-    super.initState();
   }
 
   @override
   void dispose() {
-    animationController.dispose();
     super.dispose();
+    animationController.dispose();
   }
 
   @override
@@ -58,13 +58,13 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   }
 
   Widget loadProfile(BuildContext context) {
-    print('Selected Page: $_selectedPage');
+    print('Selected Page: $_editing');
     return Container(
       child: AnimatedCrossFade(
         duration: const Duration(milliseconds: 500),
         firstChild: viewProfile(context),
         secondChild: editProfile(context),
-        crossFadeState: _selectedPage ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        crossFadeState: _editing ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       ),
     );
     // return editProfile(context);
@@ -99,6 +99,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 labelText: 'First Name',
                 filled: true,
                 fillColor: AppTheme.notWhite,
+                enabled: _editing,
                 // icon: Icon(Icons.person),
               ),
             ),
@@ -111,6 +112,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 labelText: 'Last Name',
                 filled: true,
                 fillColor: AppTheme.notWhite,
+                enabled: _editing,
                 // icon: Icon(Icons.person),
               ),
             ),
@@ -124,6 +126,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 filled: true,
                 fillColor: AppTheme.notWhite,
                 labelText: 'Email',
+                enabled: _editing,
                 // icon: Icon(Icons.lock),
               ),
             ),
@@ -137,6 +140,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 filled: true,
                 fillColor: AppTheme.notWhite,
                 labelText: 'Mobile',
+                enabled: _editing,
                 // icon: Icon(Icons.lock),
               ),
             ),
@@ -165,6 +169,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 filled: true,
                 fillColor: AppTheme.notWhite,
                 labelText: 'Address',
+                enabled: _editing,
                 // icon: Icon(Icons.lock),
               ),
             ),
@@ -178,6 +183,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 filled: true,
                 fillColor: AppTheme.notWhite,
                 labelText: 'Suburb',
+                enabled: _editing,
                 // icon: Icon(Icons.lock),
               ),
             ),
@@ -194,6 +200,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                     filled: true,
                     fillColor: AppTheme.notWhite,
                     labelText: 'State',
+                    enabled: _editing,
                     // icon: Icon(Icons.lock),
                   ),
                 )),
@@ -208,6 +215,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                     filled: true,
                     fillColor: AppTheme.notWhite,
                     labelText: 'Postcode',
+                    enabled: _editing,
                     // icon: Icon(Icons.lock),
                   ),
                 )),
@@ -215,17 +223,18 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
             ),
             SizedBox(height: 20.0),
             Center(
-              child: RaisedButton(
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = !_selectedPage;
-                  });
-                },
-                textColor: Colors.white,
-                padding: const EdgeInsets.all(0.0),
-                child: Text('SAVE', style: TextStyle(fontSize: 20)),
-                color: AppTheme.primarySwatch,
-              ),
+              child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _editing = !_editing;
+                    });
+                  },
+                  child: Text('SAVE', style: TextStyle(fontSize: 20)),
+                  style: ButtonStyle(
+                    // textColor: Colors.white,
+                    // padding: const EdgeInsets.all(0.0),
+                    backgroundColor: MaterialStateProperty.all<Color>(AppTheme.primarySwatch),
+                  )),
             ),
           ]),
     );
@@ -465,29 +474,27 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         ),
                       ],
                     )),
-                    _selectedPage
-                        ? FlatButton(
-                            padding: const EdgeInsets.all(0),
-                            child: Text(
-                              'Edit',
-                              style: TextStyle(
-                                color: AppTheme.blueText,
-                              ),
-                            ),
+                    _editing
+                        ? CloseButton(
                             onPressed: () {
                               setState(() {
-                                _selectedPage = !_selectedPage;
-                              });
-                            },
-                          )
-                        : CloseButton(
-                            onPressed: () {
-                              setState(() {
-                                _selectedPage = !_selectedPage;
+                                _editing = !_editing;
                               });
                             },
                             color: AppTheme.redText,
                             // padding: const EdgeInsets.all(0),
+                          )
+                        : IconButton(
+                            icon: FaIcon(
+                              FontAwesomeIcons.pen,
+                              size: 18,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _editing = !_editing;
+                              });
+                            },
+                            // color: AppTheme.primarySwatch,
                           ),
                   ],
                 ),
