@@ -40,7 +40,8 @@ class AppTheme {
   static const Color lightGreen = Color(0xFFDCF6DF);
   static const Color darkGreen = Color(0xFF73AB75);
 
-  static const String fontName = 'FiraSansCondensed';
+  // static const String fontName = 'FiraSansCondensed';
+  static const String fontName = 'FiraSans';
 
   static const TextTheme textTheme = TextTheme(
     headline1: headline1,

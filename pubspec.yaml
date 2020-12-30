@@ -81,19 +81,45 @@ flutter:
         - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-BoldItalic.ttf
           weight: 600
         - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Italic.ttf
-    # - family: Lato
-    #   fonts:
-    #     - asset: assets/fonts/Lato/Lato-Regular.ttf
-    #     - asset: assets/fonts/Lato/Lato-Bold.ttf
-    #     - asset: assets/fonts/Lato/Lato-BoldItalic.ttf
-    #     - asset: assets/fonts/Lato/Lato-Black.ttf
-    #     - asset: assets/fonts/Lato/Lato-BlackItalic.ttf
-    #     - asset: assets/fonts/Lato/Lato-Italic.ttf
-    #     - asset: assets/fonts/Lato/Lato-Light.ttf
-    #     - asset: assets/fonts/Lato/Lato-LightItalic.ttf
-    #     - asset: assets/fonts/Lato/Lato-Thin.ttf
-    #     - asset: assets/fonts/Lato/Lato-ThinItalic.ttf
-    
+    - family: FiraSans
+      fonts:
+        - asset: assets/fonts/FiraSans/FiraSans-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/FiraSans/FiraSans-ThinItalic.ttf
+          weight: 100
+        - asset: assets/fonts/FiraSans/FiraSans-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/FiraSans/FiraSans-ExtraLightItalic.ttf
+          weight: 200
+        - asset: assets/fonts/FiraSans/FiraSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/FiraSans/FiraSans-LightItalic.ttf
+          weight: 300
+        - asset: assets/fonts/FiraSans/FiraSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/FiraSans/FiraSans-Italic.ttf
+          weight: 400
+        - asset: assets/fonts/FiraSans/FiraSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/FiraSans/FiraSans-MediumItalic.ttf
+          weight: 500
+        - asset: assets/fonts/FiraSans/FiraSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/FiraSans/FiraSans-SemiBoldItalic.ttf
+          weight: 600
+        - asset: assets/fonts/FiraSans/FiraSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/FiraSans/FiraSans-BoldItalic.ttf
+          weight: 700
+        - asset: assets/fonts/FiraSans/FiraSans-ExtraBold.ttf
+          weight: 700
+        - asset: assets/fonts/FiraSans/FiraSans-ExtraBoldItalic.ttf
+          weight: 700
+        - asset: assets/fonts/FiraSans/FiraSans-Black.ttf
+          weight: 900
+        - asset: assets/fonts/FiraSans/FiraSans-BlackItalic.ttf
+          weight: 900
+
     
   #
   # For details regarding fonts from package dependencies,

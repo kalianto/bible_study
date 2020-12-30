@@ -23,6 +23,8 @@ class HomeDrawer extends StatelessWidget {
     DrawerList(Icon(FontAwesomeIcons.envelope, color: AppTheme.yellowText), 'Messages', '/login'),
     DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL', '/register'),
     DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.blueText), 'Settings', '/settings'),
+    DrawerList(
+        Icon(FontAwesomeIcons.fileAlt, color: AppTheme.purpleText), 'Sample Pages', '/pages'),
   ];
 
   @override
@@ -97,7 +99,9 @@ class HomeDrawer extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
                       leading: drawerList[index].icon,
-                      title: Text(drawerList[index].title, style: TextStyle(fontSize: 20)),
+                      title: Text(drawerList[index].title,
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
                       onTap: () {
                         Navigator.of(context).popAndPushNamed(drawerList[index].link);
                       },

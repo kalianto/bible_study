@@ -8,6 +8,7 @@ import 'views/home/index.dart';
 import 'views/settings/index.dart';
 import 'views/profile/index.dart';
 import 'views/cool_group/index.dart';
+import 'views/samples/index.dart';
 import 'views/splash_screen.dart';
 
 class BaseRouter {
@@ -22,6 +23,9 @@ class BaseRouter {
         break;
       case '/cool-group':
         return SlideFromRoute(widget: CoolGroup(), direction: 'right');
+        break;
+      case '/pages':
+        return SlideFromRoute(widget: SamplePages(), direction: 'right');
         break;
       case '/register':
         return ScaleRoute(page: RegisterPage());

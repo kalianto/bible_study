@@ -119,7 +119,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     icon: const Icon(FontAwesomeIcons.bars),
                     onPressed: _openHomeDrawer,
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                    color: AppTheme.orange,
+                    color: AppTheme.cyan,
                   ),
                 ),
                 Expanded(
@@ -133,7 +133,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         fontWeight: FontWeight.w600,
                         fontSize: 22 + 6 - 6 * topBarOpacity,
                         letterSpacing: 1.2,
-                        color: AppTheme.orange,
+                        color: AppTheme.cyan,
                       ),
                     ),
                   ),

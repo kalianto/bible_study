@@ -43,17 +43,43 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              ChildPageAppBar(title: 'Profile'),
-              profileHeader(context),
-              loadProfile(context),
-            ],
+          // body: buildColumn(context))
+          body: buildStack(context))
+    );
+  }
+
+  Widget buildStack(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          height: MediaQuery.of(context).size.width / 2,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.zero,
+                topRight: Radius.zero,
+                bottomLeft: Radius.circular(145),
+                bottomRight: Radius.zero
+            ),
+            color: AppTheme.darkGreen,
           ),
         ),
-      )),
+        ChildPageAppBar(title: 'Profile'),
+      ],
+    );
+  }
+
+  Widget buildColumn(BuildContext context) {
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ChildPageAppBar(title: 'Profile'),
+            profileHeader(context),
+            loadProfile(context),
+          ],
+        ),
+      ),
     );
   }
 
