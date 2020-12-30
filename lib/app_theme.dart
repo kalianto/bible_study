@@ -57,32 +57,13 @@ class AppTheme {
     button: button,
   );
 
-  static const TextStyle display1 = TextStyle(
-    // h4 -> display1
-    fontFamily: fontName,
-    fontWeight: FontWeight.bold,
-    fontSize: 36,
-    letterSpacing: 0.4,
-    height: 0.9,
-    color: darkerText,
-  );
-
-  static const TextStyle title = TextStyle(
-    // h6 -> title
-    fontFamily: fontName,
-    fontWeight: FontWeight.bold,
-    fontSize: 16,
-    letterSpacing: 0.18,
-    color: darkerText,
-  );
-
   static const TextStyle subtitle1 = TextStyle(
     // subtitle2 -> subtitle
     fontFamily: fontName,
     fontWeight: FontWeight.w400,
     fontSize: 16,
     letterSpacing: 0.15,
-    color: darkText,
+    // color: darkText,
   );
 
   static const TextStyle subtitle2 = TextStyle(
@@ -91,7 +72,7 @@ class AppTheme {
     fontWeight: FontWeight.w400,
     fontSize: 14,
     letterSpacing: 0.1,
-    color: darkText,
+    // color: darkText,
   );
 
   static const TextStyle button = TextStyle(
@@ -100,7 +81,7 @@ class AppTheme {
     fontWeight: FontWeight.w400,
     fontSize: 14,
     letterSpacing: 1.25,
-    color: darkText,
+    // color: darkText,
   );
 
   static const TextStyle body2 = TextStyle(
@@ -109,7 +90,7 @@ class AppTheme {
     fontWeight: FontWeight.w400,
     fontSize: 14,
     letterSpacing: 0.2,
-    color: darkText,
+    // color: darkText,
   );
 
   static const TextStyle body1 = TextStyle(
@@ -118,7 +99,7 @@ class AppTheme {
     fontWeight: FontWeight.w400,
     fontSize: 16,
     letterSpacing: -0.05,
-    color: darkText,
+    // color: darkText,
   );
 
   static const TextStyle caption = TextStyle(
@@ -127,7 +108,7 @@ class AppTheme {
     fontWeight: FontWeight.w400,
     fontSize: 12,
     letterSpacing: 0.2,
-    color: lightText, // was lightText
+    // color: lightText, // was lightText
   );
 
   static const TextStyle headline1 = TextStyle(

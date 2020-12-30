@@ -77,7 +77,9 @@ flutter:
       fonts:
         - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Regular.ttf
         - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Bold.ttf
+          weight: 600
         - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-BoldItalic.ttf
+          weight: 600
         - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Italic.ttf
     # - family: Lato
     #   fonts:

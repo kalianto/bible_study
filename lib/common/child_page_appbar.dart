@@ -22,9 +22,10 @@ class _ChildPageAppBarState extends State<ChildPageAppBar> with TickerProviderSt
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
-    topBarAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
+    animationController =
+        AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
+    topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
 
     scrollController.addListener(() {
       if (scrollController.offset >= 24) {
@@ -62,10 +63,14 @@ class _ChildPageAppBarState extends State<ChildPageAppBar> with TickerProviderSt
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: MediaQuery.of(context).padding.top,
+            height: MediaQuery.of(context).padding.top + 10,
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 16 - 8.0 * topBarOpacity, bottom: 12 - 8.0 * topBarOpacity),
+            padding: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16 - 8.0 * topBarOpacity,
+                bottom: 12 - 8.0 * topBarOpacity),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

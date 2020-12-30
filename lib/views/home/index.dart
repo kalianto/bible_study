@@ -24,9 +24,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
-    topBarAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
+    animationController =
+        AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
+    topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
 
     scrollController.addListener(() {
       if (scrollController.offset >= 24) {
@@ -77,7 +78,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
               color: AppTheme.purple,
             ),
             homeAppBar(),
-            DailyReading(scrollController: scrollController, animationController: animationController),
+            DailyReading(
+                scrollController: scrollController, animationController: animationController),
             SizedBox(
               height: MediaQuery.of(context).padding.bottom,
             )
@@ -102,7 +104,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             height: 10, //MediaQuery.of(context).padding.top,
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 16 - 8.0 * topBarOpacity, bottom: 12 - 8.0 * topBarOpacity),
+            padding: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16 - 8.0 * topBarOpacity,
+                bottom: 12 - 8.0 * topBarOpacity),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -124,7 +130,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         fontFamily: AppTheme.fontName,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         fontSize: 22 + 6 - 6 * topBarOpacity,
                         letterSpacing: 1.2,
                         color: AppTheme.orange,

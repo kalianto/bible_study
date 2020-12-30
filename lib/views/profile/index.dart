@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../app_theme.dart';
@@ -400,31 +400,34 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
               ),
               SizedBox(height: 16),
               Container(
-                child: Row(children: <Widget>[
-                  Container(
-                    child: FaIcon(
-                      FontAwesomeIcons.grinHearts,
-                      color: AppTheme.darkGreen,
-                      size: 18,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(width: 2, color: AppTheme.darkGreen),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                  child: Row(children: <Widget>[
+                Container(
+                  child: FaIcon(
+                    FontAwesomeIcons.grinHearts,
+                    color: AppTheme.darkGreen,
+                    size: 18,
                   ),
-                  Container(width: 10),
-                  Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('You haven\'t joined any group',
-                              style: TextStyle(color: AppTheme.darkGreen)),
-                        ]),
-                  )
-                ]),
-              ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(width: 2, color: AppTheme.darkGreen),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                ),
+                Container(width: 10),
+                Expanded(
+                  child: RichText(
+                      text: TextSpan(
+                    style: TextStyle(color: AppTheme.darkGreen, fontFamily: AppTheme.fontName),
+                    children: <TextSpan>[
+                      TextSpan(text: 'You haven\'t joined any group. '),
+                      TextSpan(text: 'Join Now', style: TextStyle(color: AppTheme.blueText),
+                      recognizer: TapGestureRecognizer()..onTap = () {
+                        Navigator.of(context).pushNamed('/cool-group');
+                      })
+                    ],
+                  )),
+                ),
+              ]))
             ]));
   }
 
