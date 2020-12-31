@@ -42,29 +42,38 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          // body: buildColumn(context))
-          body: buildStack(context))
-    );
+        child: Scaffold(
+            //body: buildColumn(context),
+            body: buildStack(context)
+    ));
   }
 
   Widget buildStack(BuildContext context) {
     return Stack(
       children: <Widget>[
         Container(
-          height: MediaQuery.of(context).size.width / 2,
+          height: 205,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.zero,
                 topRight: Radius.zero,
-                bottomLeft: Radius.circular(145),
-                bottomRight: Radius.zero
-            ),
+                bottomLeft: Radius.elliptical(650, 350),
+                bottomRight: Radius.zero),
             color: AppTheme.darkGreen,
           ),
         ),
         ChildPageAppBar(title: 'Profile'),
+        Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                profileHeader(context),
+                loadProfile(context),
+            ])
+          ),
+        ),
       ],
     );
   }
@@ -308,7 +317,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('Full Name', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text('${_firstNameController.text} ${_lastNameController.text}'),
+                          Text('${_firstNameController.text} ${_lastNameController.text}',
+                              style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
                 ]),
@@ -335,7 +345,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('Email Address', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text(_emailController.text),
+                          Text(_emailController.text,
+                              style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
                 ]),
@@ -362,7 +373,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('Mobile Number', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text(_mobileController.text),
+                          Text(_mobileController.text,
+                              style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
                 ]),
@@ -405,7 +417,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                           Text(_addressController.text,
                               style: TextStyle(color: AppTheme.darkGreen)),
                           Text(
-                              '${_suburbController.text}, ${_stateController.text} ${_postcodeController.text}'),
+                              '${_suburbController.text}, ${_stateController.text} ${_postcodeController.text}',
+                              style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
                 ]),
@@ -446,10 +459,13 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                     style: TextStyle(color: AppTheme.darkGreen, fontFamily: AppTheme.fontName),
                     children: <TextSpan>[
                       TextSpan(text: 'You haven\'t joined any group. '),
-                      TextSpan(text: 'Join Now', style: TextStyle(color: AppTheme.blueText),
-                      recognizer: TapGestureRecognizer()..onTap = () {
-                        Navigator.of(context).pushNamed('/cool-group');
-                      })
+                      TextSpan(
+                          text: 'Join Now',
+                          style: TextStyle(color: AppTheme.blueText, fontWeight: FontWeight.w600),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context).pushNamed('/cool-group');
+                            })
                     ],
                   )),
                 ),
@@ -496,7 +512,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         Text(
                           _emailController.text,
                           style: TextStyle(
-                            fontWeight: FontWeight.w100,
+                            fontWeight: FontWeight.w400,
                             color: AppTheme.darkerText,
                             fontSize: 14,
                           ),

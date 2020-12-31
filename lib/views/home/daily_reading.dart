@@ -39,10 +39,10 @@ class _DailyReadingState extends State<DailyReading> {
 
   @override
   Widget build(BuildContext context) {
-    return buildReadingIteam();
+    return buildReadingItem();
   }
 
-  Widget buildReadingIteam() {
+  Widget buildReadingItem() {
     return FutureBuilder<bool>(
         future: getData(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {

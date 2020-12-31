@@ -5,6 +5,7 @@ import '../../app_theme.dart';
 import '../../common/bottom_gnav_bar.dart';
 import 'drawer.dart';
 import 'daily_reading.dart';
+import 'today_reading.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -72,17 +73,18 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.width / 2,
-              width: MediaQuery.of(context).size.width,
-              color: AppTheme.purple,
-            ),
+            // Container(
+            //   height: MediaQuery.of(context).size.width / 2,
+            //   width: MediaQuery.of(context).size.width,
+            //   color: AppTheme.purple,
+            // ),
             homeAppBar(),
-            DailyReading(
-                scrollController: scrollController, animationController: animationController),
-            SizedBox(
-              height: MediaQuery.of(context).padding.bottom,
-            )
+            TodayReading(),
+            // DailyReading(
+            //     scrollController: scrollController, animationController: animationController),
+            // SizedBox(
+            //   height: MediaQuery.of(context).padding.bottom,
+            // )
           ],
         ),
         drawer: HomeDrawer(),
@@ -119,7 +121,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     icon: const Icon(FontAwesomeIcons.bars),
                     onPressed: _openHomeDrawer,
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                    color: AppTheme.cyan,
+                    color: AppTheme.purple,
                   ),
                 ),
                 Expanded(
@@ -133,7 +135,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         fontWeight: FontWeight.w600,
                         fontSize: 22 + 6 - 6 * topBarOpacity,
                         letterSpacing: 1.2,
-                        color: AppTheme.cyan,
+                        color: AppTheme.purple,
                       ),
                     ),
                   ),

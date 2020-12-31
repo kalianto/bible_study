@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -17,21 +18,75 @@ class _SamplePagesState extends State<SamplePages> {
             body: Stack(
       children: <Widget>[
         Container(
-          height: MediaQuery.of(context).size.width / 1.7,
+          height: 245,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            // borderRadius: BorderRadius.only(
-            //     topLeft: Radius.zero,
-            //     topRight: Radius.zero,
-            //     bottomLeft: Radius.circular(145),
-            //     bottomRight: Radius.zero),
             color: AppTheme.purple,
           ),
         ),
         ChildPageAppBar(title: 'Sample Pages', textColor: AppTheme.white),
-        buildCategoriesList(context),
+        buildPageContent(context),
       ],
     )));
+  }
+
+  Widget buildPageContent(BuildContext context) {
+    return Container(
+        child: Column(
+      children: <Widget>[
+        buildCategoriesList(context),
+        SizedBox(height: 10),
+        buildInfoBox(context),
+      ],
+    ));
+  }
+
+  Widget buildInfoBox(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppTheme.purple,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.0),
+            bottomLeft: Radius.circular(10.0),
+            bottomRight: Radius.circular(10.0),
+            topRight: Radius.circular(10.0),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('Keep it up!',
+                      style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.notWhite)),
+                  SizedBox(height: 6),
+                  Text(
+                    'You have completed 6 readings this week',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400, color: AppTheme.lightGrey, fontSize: 12),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppTheme.cyan,
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+              ),
+              child: FaIcon(FontAwesomeIcons.arrowRight, color: AppTheme.white,),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildCategoriesList(BuildContext context) {

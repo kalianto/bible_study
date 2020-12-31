@@ -73,14 +73,14 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: FiraSansCondensed
-      fonts:
-        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Regular.ttf
-        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Bold.ttf
-          weight: 600
-        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-BoldItalic.ttf
-          weight: 600
-        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Italic.ttf
+#    - family: FiraSansCondensed
+#      fonts:
+#        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Regular.ttf
+#        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Bold.ttf
+#          weight: 600
+#        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-BoldItalic.ttf
+#          weight: 600
+#        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Italic.ttf
     - family: FiraSans
       fonts:
         - asset: assets/fonts/FiraSans/FiraSans-Thin.ttf
