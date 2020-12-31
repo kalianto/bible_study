@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../app_theme.dart';
@@ -12,7 +12,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   AnimationController animationController;
-  bool _selectedPage;
+  bool _editing;
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -24,47 +24,82 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    super.initState();
     animationController =
         AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
-    _selectedPage = true;
+    _editing = false;
     _firstNameController.text = 'Maggie';
     _lastNameController.text = 'Smith';
     _emailController.text = 'test@example.com';
-    super.initState();
   }
 
   @override
   void dispose() {
-    animationController.dispose();
     super.dispose();
+    animationController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              ChildPageAppBar(title: 'Profile'),
-              profileHeader(context),
-              loadProfile(context),
-            ],
+        child: Scaffold(
+            //body: buildColumn(context),
+            body: buildStack(context)
+    ));
+  }
+
+  Widget buildStack(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          height: 205,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.zero,
+                topRight: Radius.zero,
+                bottomLeft: Radius.elliptical(650, 350),
+                bottomRight: Radius.zero),
+            color: AppTheme.darkGreen,
           ),
         ),
-      )),
+        ChildPageAppBar(title: 'Profile'),
+        Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                profileHeader(context),
+                loadProfile(context),
+            ])
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildColumn(BuildContext context) {
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ChildPageAppBar(title: 'Profile'),
+            profileHeader(context),
+            loadProfile(context),
+          ],
+        ),
+      ),
     );
   }
 
   Widget loadProfile(BuildContext context) {
-    print('Selected Page: $_selectedPage');
+    print('Selected Page: $_editing');
     return Container(
       child: AnimatedCrossFade(
         duration: const Duration(milliseconds: 500),
         firstChild: viewProfile(context),
         secondChild: editProfile(context),
-        crossFadeState: _selectedPage ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        crossFadeState: _editing ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       ),
     );
     // return editProfile(context);
@@ -99,6 +134,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 labelText: 'First Name',
                 filled: true,
                 fillColor: AppTheme.notWhite,
+                enabled: _editing,
                 // icon: Icon(Icons.person),
               ),
             ),
@@ -111,6 +147,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 labelText: 'Last Name',
                 filled: true,
                 fillColor: AppTheme.notWhite,
+                enabled: _editing,
                 // icon: Icon(Icons.person),
               ),
             ),
@@ -124,6 +161,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 filled: true,
                 fillColor: AppTheme.notWhite,
                 labelText: 'Email',
+                enabled: _editing,
                 // icon: Icon(Icons.lock),
               ),
             ),
@@ -137,6 +175,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 filled: true,
                 fillColor: AppTheme.notWhite,
                 labelText: 'Mobile',
+                enabled: _editing,
                 // icon: Icon(Icons.lock),
               ),
             ),
@@ -165,6 +204,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 filled: true,
                 fillColor: AppTheme.notWhite,
                 labelText: 'Address',
+                enabled: _editing,
                 // icon: Icon(Icons.lock),
               ),
             ),
@@ -178,6 +218,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 filled: true,
                 fillColor: AppTheme.notWhite,
                 labelText: 'Suburb',
+                enabled: _editing,
                 // icon: Icon(Icons.lock),
               ),
             ),
@@ -194,6 +235,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                     filled: true,
                     fillColor: AppTheme.notWhite,
                     labelText: 'State',
+                    enabled: _editing,
                     // icon: Icon(Icons.lock),
                   ),
                 )),
@@ -208,6 +250,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                     filled: true,
                     fillColor: AppTheme.notWhite,
                     labelText: 'Postcode',
+                    enabled: _editing,
                     // icon: Icon(Icons.lock),
                   ),
                 )),
@@ -215,17 +258,18 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
             ),
             SizedBox(height: 20.0),
             Center(
-              child: RaisedButton(
-                onPressed: () {
-                  setState(() {
-                    _selectedPage = !_selectedPage;
-                  });
-                },
-                textColor: Colors.white,
-                padding: const EdgeInsets.all(0.0),
-                child: Text('SAVE', style: TextStyle(fontSize: 20)),
-                color: AppTheme.primarySwatch,
-              ),
+              child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _editing = !_editing;
+                    });
+                  },
+                  child: Text('SAVE', style: TextStyle(fontSize: 20)),
+                  style: ButtonStyle(
+                    // textColor: Colors.white,
+                    // padding: const EdgeInsets.all(0.0),
+                    backgroundColor: MaterialStateProperty.all<Color>(AppTheme.primarySwatch),
+                  )),
             ),
           ]),
     );
@@ -273,7 +317,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('Full Name', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text('${_firstNameController.text} ${_lastNameController.text}'),
+                          Text('${_firstNameController.text} ${_lastNameController.text}',
+                              style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
                 ]),
@@ -300,7 +345,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('Email Address', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text(_emailController.text),
+                          Text(_emailController.text,
+                              style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
                 ]),
@@ -327,7 +373,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('Mobile Number', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text(_mobileController.text),
+                          Text(_mobileController.text,
+                              style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
                 ]),
@@ -370,7 +417,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                           Text(_addressController.text,
                               style: TextStyle(color: AppTheme.darkGreen)),
                           Text(
-                              '${_suburbController.text}, ${_stateController.text} ${_postcodeController.text}'),
+                              '${_suburbController.text}, ${_stateController.text} ${_postcodeController.text}',
+                              style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
                 ]),
@@ -391,31 +439,37 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
               ),
               SizedBox(height: 16),
               Container(
-                child: Row(children: <Widget>[
-                  Container(
-                    child: FaIcon(
-                      FontAwesomeIcons.grinHearts,
-                      color: AppTheme.darkGreen,
-                      size: 18,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(width: 2, color: AppTheme.darkGreen),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                  child: Row(children: <Widget>[
+                Container(
+                  child: FaIcon(
+                    FontAwesomeIcons.grinHearts,
+                    color: AppTheme.darkGreen,
+                    size: 18,
                   ),
-                  Container(width: 10),
-                  Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('You haven\'t joined any group',
-                              style: TextStyle(color: AppTheme.darkGreen)),
-                        ]),
-                  )
-                ]),
-              ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(width: 2, color: AppTheme.darkGreen),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                ),
+                Container(width: 10),
+                Expanded(
+                  child: RichText(
+                      text: TextSpan(
+                    style: TextStyle(color: AppTheme.darkGreen, fontFamily: AppTheme.fontName),
+                    children: <TextSpan>[
+                      TextSpan(text: 'You haven\'t joined any group. '),
+                      TextSpan(
+                          text: 'Join Now',
+                          style: TextStyle(color: AppTheme.blueText, fontWeight: FontWeight.w600),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context).pushNamed('/cool-group');
+                            })
+                    ],
+                  )),
+                ),
+              ]))
             ]));
   }
 
@@ -458,36 +512,34 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         Text(
                           _emailController.text,
                           style: TextStyle(
-                            fontWeight: FontWeight.w100,
+                            fontWeight: FontWeight.w400,
                             color: AppTheme.darkerText,
                             fontSize: 14,
                           ),
                         ),
                       ],
                     )),
-                    _selectedPage
-                        ? FlatButton(
-                            padding: const EdgeInsets.all(0),
-                            child: Text(
-                              'Edit',
-                              style: TextStyle(
-                                color: AppTheme.blueText,
-                              ),
-                            ),
+                    _editing
+                        ? CloseButton(
                             onPressed: () {
                               setState(() {
-                                _selectedPage = !_selectedPage;
-                              });
-                            },
-                          )
-                        : CloseButton(
-                            onPressed: () {
-                              setState(() {
-                                _selectedPage = !_selectedPage;
+                                _editing = !_editing;
                               });
                             },
                             color: AppTheme.redText,
                             // padding: const EdgeInsets.all(0),
+                          )
+                        : IconButton(
+                            icon: FaIcon(
+                              FontAwesomeIcons.pen,
+                              size: 18,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _editing = !_editing;
+                              });
+                            },
+                            // color: AppTheme.primarySwatch,
                           ),
                   ],
                 ),

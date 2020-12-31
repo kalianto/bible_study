@@ -18,15 +18,10 @@ class _DailyReadingState extends State<DailyReading> {
 
   @override
   void initState() {
-    listViews.add(readingItem(1));
-    listViews.add(SizedBox(height: 10));
-    listViews.add(readingItem(2));
-    listViews.add(SizedBox(height: 10));
-    listViews.add(readingItem(3));
-    listViews.add(SizedBox(height: 10));
-    listViews.add(readingItem(4));
-    // listViews.add(SizedBox(height: 20));
-    // listViews.add(readingItem(5));
+    for (var i = 1; i < 5; i++) {
+      listViews.add(readingItem(i));
+      listViews.add(SizedBox(height: 10));
+    }
     super.initState();
   }
 
@@ -44,10 +39,10 @@ class _DailyReadingState extends State<DailyReading> {
 
   @override
   Widget build(BuildContext context) {
-    return buildListItem();
+    return buildReadingItem();
   }
 
-  Widget buildListItem() {
+  Widget buildReadingItem() {
     return FutureBuilder<bool>(
         future: getData(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -194,7 +189,7 @@ class _DailyReadingState extends State<DailyReading> {
                     fontFamily: AppTheme.fontName,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    letterSpacing: 1.0,
+                    // letterSpacing: 1.0,
                     color: AppTheme.darkGreen,
                   ),
                 ),

@@ -17,42 +17,48 @@ class SplashScreen extends StatelessWidget {
 }
 
 Widget _buildHome(BuildContext context, String title) {
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.w900,
-            color: AppTheme.darkGreen,
-            fontSize: 40.0,
-            letterSpacing: 14.0,
-          ),
-        ),
-        Text(
-          'COmmunity Of Love',
-          style: TextStyle(
-            fontStyle: FontStyle.italic,
-            fontSize: 14.0,
-            color: AppTheme.darkGreen,
-          ),
-        ),
-        SizedBox(height: 50),
-        FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.pushNamed(context, '/home');
-          },
-          label: Text(
-            'START',
+  return Container(
+    decoration: BoxDecoration(
+      color: AppTheme.purple,
+    ),
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            title,
             style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
+              fontWeight: FontWeight.w900,
+              color: AppTheme.notWhite,
+              fontSize: 40.0,
+              letterSpacing: 14.0,
             ),
           ),
-          backgroundColor: AppTheme.mandarin,
-        )
-      ],
+          Text(
+            'COmmunity Of Love',
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+              fontSize: 14.0,
+              color: AppTheme.notWhite,
+            ),
+          ),
+          SizedBox(height: 50),
+          FloatingActionButton.extended(
+            onPressed: () {
+              Navigator.pushNamed(context, '/home');
+            },
+            label: Text(
+              'START',
+              style: TextStyle(
+                fontSize: 24,
+                color: AppTheme.yellowText,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            backgroundColor: AppTheme.blueText.withOpacity(0.8),
+          )
+        ],
+      ),
     ),
   );
 }

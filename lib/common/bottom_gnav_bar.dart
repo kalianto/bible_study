@@ -50,13 +50,13 @@ class _BottomGNavBarState extends State<BottomGNavBar> with TickerProviderStateM
     return Container(
       height: 70.0,
       // height: 10 * SizeConfig.heightMultiplier,
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))]),
+      decoration: BoxDecoration(color: AppTheme.notWhite, boxShadow: [BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))]),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 4),
           child: GNav(
               gap: 6,
-              activeColor: Colors.white,
+              activeColor: AppTheme.notWhite,
               iconSize: 24,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               duration: Duration(milliseconds: 800),
@@ -65,8 +65,8 @@ class _BottomGNavBarState extends State<BottomGNavBar> with TickerProviderStateM
                 GButton(
                     icon: FontAwesomeIcons.home,
                     text: ' Home',
-                    iconColor: AppTheme.blueText,
-                    backgroundColor: AppTheme.blueText,
+                    iconColor: AppTheme.primarySwatch,
+                    backgroundColor: AppTheme.primarySwatch,
                     onPressed: () {
                       Navigator.of(context).popAndPushNamed('/home');
                     }),

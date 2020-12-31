@@ -5,9 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../app_theme.dart';
 
 class ChildPageAppBar extends StatefulWidget {
-  ChildPageAppBar({Key key, this.title}) : super(key: key);
+  ChildPageAppBar({Key key, this.title, this.textColor}) : super(key: key);
 
   final String title;
+  final Color textColor;
 
   @override
   _ChildPageAppBarState createState() => _ChildPageAppBarState();
@@ -19,12 +20,15 @@ class _ChildPageAppBarState extends State<ChildPageAppBar> with TickerProviderSt
   Animation<double> topBarAnimation;
   double topBarOpacity = 1.0;
   final ScrollController scrollController = ScrollController();
+  Color _titleColor;
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
-    topBarAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
+    _titleColor = widget.textColor ?? AppTheme.darkerText;
+    animationController =
+        AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
+    topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
 
     scrollController.addListener(() {
       if (scrollController.offset >= 24) {
@@ -62,10 +66,14 @@ class _ChildPageAppBarState extends State<ChildPageAppBar> with TickerProviderSt
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: MediaQuery.of(context).padding.top,
+            height: MediaQuery.of(context).padding.top + 10,
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 16 - 8.0 * topBarOpacity, bottom: 12 - 8.0 * topBarOpacity),
+            padding: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16 - 8.0 * topBarOpacity,
+                bottom: 12 - 8.0 * topBarOpacity),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -76,7 +84,7 @@ class _ChildPageAppBarState extends State<ChildPageAppBar> with TickerProviderSt
                     icon: const Icon(FontAwesomeIcons.arrowLeft),
                     onPressed: () => Navigator.of(context).pop(),
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                    color: Colors.black,
+                    color: _titleColor,
                   ),
                 ),
                 Expanded(
@@ -90,7 +98,7 @@ class _ChildPageAppBarState extends State<ChildPageAppBar> with TickerProviderSt
                         fontWeight: FontWeight.w700,
                         fontSize: 22 + 6 - 6 * topBarOpacity,
                         letterSpacing: 1.2,
-                        color: AppTheme.darkerText,
+                        color: _titleColor,
                       ),
                     ),
                   ),

@@ -5,6 +5,7 @@ import '../../app_theme.dart';
 import '../../common/bottom_gnav_bar.dart';
 import 'drawer.dart';
 import 'daily_reading.dart';
+import 'today_reading.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -24,9 +25,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
-    topBarAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
+    animationController =
+        AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
+    topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController, curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
 
     scrollController.addListener(() {
       if (scrollController.offset >= 24) {
@@ -71,16 +73,18 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.width / 2,
-              width: MediaQuery.of(context).size.width,
-              color: AppTheme.purple,
-            ),
+            // Container(
+            //   height: MediaQuery.of(context).size.width / 2,
+            //   width: MediaQuery.of(context).size.width,
+            //   color: AppTheme.purple,
+            // ),
             homeAppBar(),
-            DailyReading(scrollController: scrollController, animationController: animationController),
-            SizedBox(
-              height: MediaQuery.of(context).padding.bottom,
-            )
+            TodayReading(),
+            // DailyReading(
+            //     scrollController: scrollController, animationController: animationController),
+            // SizedBox(
+            //   height: MediaQuery.of(context).padding.bottom,
+            // )
           ],
         ),
         drawer: HomeDrawer(),
@@ -102,7 +106,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             height: 10, //MediaQuery.of(context).padding.top,
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 16 - 8.0 * topBarOpacity, bottom: 12 - 8.0 * topBarOpacity),
+            padding: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16 - 8.0 * topBarOpacity,
+                bottom: 12 - 8.0 * topBarOpacity),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -113,7 +121,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     icon: const Icon(FontAwesomeIcons.bars),
                     onPressed: _openHomeDrawer,
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                    color: AppTheme.orange,
+                    color: AppTheme.purple,
                   ),
                 ),
                 Expanded(
@@ -124,10 +132,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         fontFamily: AppTheme.fontName,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         fontSize: 22 + 6 - 6 * topBarOpacity,
                         letterSpacing: 1.2,
-                        color: AppTheme.orange,
+                        color: AppTheme.purple,
                       ),
                     ),
                   ),
