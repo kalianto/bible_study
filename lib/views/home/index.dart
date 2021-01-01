@@ -79,7 +79,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             //   color: AppTheme.purple,
             // ),
             homeAppBar(),
-            TodayReading(),
+            buildHomeContent(context),
+            // TodayReading(),
             // DailyReading(
             //     scrollController: scrollController, animationController: animationController),
             // SizedBox(
@@ -96,6 +97,22 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         // backgroundColor: Colors.black,
       ),
     );
+  }
+
+  Widget buildHomeContent(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.only(top: 80, bottom: 0),
+        child: SingleChildScrollView(
+          child: Column(children: <Widget>[
+            Container(child: TodayReading()),
+            SizedBox(height: 20),
+            // Container(child: TodayReading()),
+            // SizedBox(height: 20),
+          ]),
+        ));
+        // child: Container(
+        //   child: DailyReading(
+        //     scrollController: scrollController, animationController: animationController)));
   }
 
   Widget homeAppBar() {

@@ -25,7 +25,7 @@ class _TodayReadingState extends State<TodayReading> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.only(top: 80, left: 24, right: 24),
+        padding: const EdgeInsets.only(left: 24, right: 24),
         // color: AppTheme.lightGrey,
         // height: 360,
         child: Column(children: <Widget>[
@@ -49,11 +49,12 @@ class _TodayReadingState extends State<TodayReading> {
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width / 2.4,
-                    height: 140,
+                    height: 150,
                     padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 10),
                     decoration: BoxDecoration(
                       color: AppTheme.lightGreen.withOpacity(0.8),
                       borderRadius: AppTheme.borderRadius2,
+                      border: Border.all(width: 2, color: AppTheme.darkGreen.withOpacity(0.5)),
                     ),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                       Text('Ayub 42', style: widget.chapterNameStyle),
@@ -75,10 +76,11 @@ class _TodayReadingState extends State<TodayReading> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     width: MediaQuery.of(context).size.width / 2.4,
-                    height: 140,
+                    height: 150,
                     decoration: BoxDecoration(
                       color: AppTheme.purple.withOpacity(0.2),
                       borderRadius: AppTheme.borderRadius2,
+                      border: Border.all(width: 2, color: AppTheme.purple.withOpacity(0.5)),
                     ),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                       Row(children: <Widget>[
@@ -124,11 +126,12 @@ class _TodayReadingState extends State<TodayReading> {
                 children: <Widget>[
                   Container(
                       width: MediaQuery.of(context).size.width / 2.4,
-                      height: 140,
+                      height: 150,
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: AppTheme.yellowText.withOpacity(0.2),
                         borderRadius: AppTheme.borderRadius2,
+                        border: Border.all(width: 2, color: AppTheme.yellowText.withOpacity(0.5)),
                       ),
                       child:
                           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -141,10 +144,11 @@ class _TodayReadingState extends State<TodayReading> {
                   Container(
                       padding: const EdgeInsets.all(20),
                       width: MediaQuery.of(context).size.width / 2.4,
-                      height: 140,
+                      height: 150,
                       decoration: BoxDecoration(
                         color: AppTheme.blueText.withOpacity(0.2),
                         borderRadius: AppTheme.borderRadius2,
+                        border: Border.all(width: 2, color: AppTheme.blueText.withOpacity(0.5)),
                       ),
                       child:
                           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -152,30 +156,6 @@ class _TodayReadingState extends State<TodayReading> {
                       ]))
                 ],
               ),
-              // Column(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: <Widget>[
-              //     Container(
-              //       width: MediaQuery.of(context).size.width / 2.4,
-              //       height: 260,
-              //       padding: const EdgeInsets.all(20),
-              //       decoration: BoxDecoration(
-              //         color: AppTheme.blueText.withOpacity(0.2),
-              //         borderRadius: AppTheme.borderRadius2,
-              //       ),
-              //       child: Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: <Widget>[
-              //           Container(child: Expanded(child: Text('Amsal', style: AppTheme.subtitle1))),
-              //           Divider(color: AppTheme.grey),
-              //           Container(child: Expanded(child: Text('Mazmur', style: AppTheme.subtitle1))),
-              //         ],
-              //       )
-              //     ),
-              //   ],
-              // ),
             ],
           ))
         ]));

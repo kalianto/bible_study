@@ -50,7 +50,7 @@ class _DailyReadingState extends State<DailyReading> {
             return const SizedBox();
           } else {
             return Container(
-              padding: const EdgeInsets.only(top: 60, left: 14, right: 14),
+              padding: const EdgeInsets.only(left: 14, right: 14),
               child: ListView.builder(
                 controller: widget.scrollController,
                 scrollDirection: Axis.vertical,
