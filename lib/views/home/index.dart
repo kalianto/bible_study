@@ -74,9 +74,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         body: Stack(
           children: <Widget>[
             // Container(
-            //   height: MediaQuery.of(context).size.width / 2,
+            //   height: 105,
             //   width: MediaQuery.of(context).size.width,
-            //   color: AppTheme.purple,
+            //   // color: AppTheme.purple,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.only(
+            //         topLeft: Radius.zero,
+            //         topRight: Radius.zero,
+            //         bottomLeft: Radius.circular(90),
+            //         bottomRight: Radius.circular(90)),
+            //     color: AppTheme.purple,
+            //   ),
             // ),
             homeAppBar(),
             buildHomeContent(context),
@@ -102,17 +110,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget buildHomeContent(BuildContext context) {
     return Container(
         padding: const EdgeInsets.only(top: 80, bottom: 0),
-        child: SingleChildScrollView(
-          child: Column(children: <Widget>[
-            Container(child: TodayReading()),
-            SizedBox(height: 20),
-            // Container(child: TodayReading()),
-            // SizedBox(height: 20),
-          ]),
-        ));
-        // child: Container(
-        //   child: DailyReading(
-        //     scrollController: scrollController, animationController: animationController)));
+        // child: SingleChildScrollView(
+        //   child: Column(children: <Widget>[
+        //     Container(child: TodayReading()),
+        //     SizedBox(height: 20),
+        //     // Container(child: TodayReading()),
+        //     // SizedBox(height: 20),
+        //   ]),
+        // ));
+        child: Container(
+          child: DailyReading(
+            scrollController: scrollController, animationController: animationController)));
   }
 
   Widget homeAppBar() {

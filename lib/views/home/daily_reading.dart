@@ -80,7 +80,7 @@ class _DailyReadingState extends State<DailyReading> {
               child: Column(
                 children: <Widget>[
                   // boxRowContainer(),
-                  // boxRowContainer(),
+                  boxRowContainer(),
                   // Divider(),
                   boxRow(index),
                   // boxRow(index),

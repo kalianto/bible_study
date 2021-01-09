@@ -54,7 +54,7 @@ class _TodayReadingState extends State<TodayReading> {
                     decoration: BoxDecoration(
                       color: AppTheme.lightGreen.withOpacity(0.8),
                       borderRadius: AppTheme.borderRadius2,
-                      border: Border.all(width: 2, color: AppTheme.darkGreen.withOpacity(0.5)),
+                      // border: Border.all(width: 2, color: AppTheme.darkGreen.withOpacity(0.5)),
                     ),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                       Text('Ayub 42', style: widget.chapterNameStyle),
@@ -80,7 +80,7 @@ class _TodayReadingState extends State<TodayReading> {
                     decoration: BoxDecoration(
                       color: AppTheme.purple.withOpacity(0.2),
                       borderRadius: AppTheme.borderRadius2,
-                      border: Border.all(width: 2, color: AppTheme.purple.withOpacity(0.5)),
+                      // border: Border.all(width: 2, color: AppTheme.purple.withOpacity(0.5)),
                     ),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                       Row(children: <Widget>[
@@ -131,7 +131,7 @@ class _TodayReadingState extends State<TodayReading> {
                       decoration: BoxDecoration(
                         color: AppTheme.yellowText.withOpacity(0.2),
                         borderRadius: AppTheme.borderRadius2,
-                        border: Border.all(width: 2, color: AppTheme.yellowText.withOpacity(0.5)),
+                        // border: Border.all(width: 2, color: AppTheme.yellowText.withOpacity(0.5)),
                       ),
                       child:
                           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -148,7 +148,7 @@ class _TodayReadingState extends State<TodayReading> {
                       decoration: BoxDecoration(
                         color: AppTheme.blueText.withOpacity(0.2),
                         borderRadius: AppTheme.borderRadius2,
-                        border: Border.all(width: 2, color: AppTheme.blueText.withOpacity(0.5)),
+                        // border: Border.all(width: 2, color: AppTheme.blueText.withOpacity(0.5)),
                       ),
                       child:
                           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[

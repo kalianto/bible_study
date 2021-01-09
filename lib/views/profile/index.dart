@@ -1,16 +1,21 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
 import '../../common/child_page_appbar.dart';
+import '../../models/profile.dart';
 
-class Profile extends StatefulWidget {
+
+class ProfilePage extends StatefulWidget {
   @override
-  _ProfileState createState() => _ProfileState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> with TickerProviderStateMixin {
+class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin {
   AnimationController animationController;
   bool _editing;
   final _firstNameController = TextEditingController();
@@ -28,15 +33,20 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
     animationController =
         AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
     _editing = false;
-    _firstNameController.text = 'Maggie';
-    _lastNameController.text = 'Smith';
-    _emailController.text = 'test@example.com';
+    _loadProfile();
   }
 
   @override
   void dispose() {
     super.dispose();
     animationController.dispose();
+  }
+
+  void _loadProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = '_profile';
+    Profile profile = (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
+    _setProfile(profile);
   }
 
   @override
@@ -103,6 +113,19 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
       ),
     );
     // return editProfile(context);
+  }
+
+  void _setProfile(Profile profile) {
+    setState(() {
+      _firstNameController.text = profile.firstName ?? null;
+      _lastNameController.text = profile.lastName ?? null;
+      _emailController.text = profile.email ?? null;
+      _mobileController.text = profile.mobile ?? null;
+      _suburbController.text = profile.suburb ?? null;
+      _addressController.text = profile.address ?? null;
+      _stateController.text = profile.state ?? null;
+      _postcodeController.text = profile.postcode ?? null;
+    });
   }
 
   Widget editProfile(BuildContext context) {
@@ -259,10 +282,29 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
             SizedBox(height: 20.0),
             Center(
               child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+
+                    final prefs = await SharedPreferences.getInstance();
+                    final key = '_profile';
+                    Profile updatedProfile = new Profile(
+                      email: _emailController.text,
+                      firstName: _firstNameController.text,
+                      lastName: _lastNameController.text,
+                      mobile: _mobileController.text,
+                      address: _addressController.text,
+                      suburb: _suburbController.text,
+                      state: _stateController.text,
+                      postcode: _postcodeController.text,
+                    );
+                    /// save profile to SharedPreferences
+                    prefs.setString(key, jsonEncode(updatedProfile.toJson()));
+                    /// Update State for the form controller
+                    _setProfile(updatedProfile);
+
                     setState(() {
                       _editing = !_editing;
                     });
+
                   },
                   child: Text('SAVE', style: TextStyle(fontSize: 20)),
                   style: ButtonStyle(
@@ -373,7 +415,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('Mobile Number', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text(_mobileController.text,
+                          Text(_mobileController.text ?? '',
                               style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
@@ -417,7 +459,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                           Text(_addressController.text,
                               style: TextStyle(color: AppTheme.darkGreen)),
                           Text(
-                              '${_suburbController.text}, ${_stateController.text} ${_postcodeController.text}',
+                              '${_suburbController.text}${_stateController.text == '' ? "" : ","}  ${_stateController.text} ${_postcodeController.text}',
                               style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
