@@ -15,9 +15,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   Profile profile;
   String errorMessage;
+  bool isLoggedIn;
 
   @override
   void initState() {
@@ -42,9 +42,12 @@ class _SplashScreenState extends State<SplashScreen> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final key = '_profile';
-      Profile _profile = (prefs.getString(key) != null) ? Profile.fromJson(jsonDecode(prefs.getString(key))) : new Profile();
+      Profile _profile = (prefs.getString(key) != null)
+          ? Profile.fromJson(jsonDecode(prefs.getString(key)))
+          : new Profile();
       setState(() {
         profile = _profile;
+        isLoggedIn = prefs.getBool('_isLoggedIn') ?? false;
       });
     } catch (e) {
       print(e.toString());
@@ -83,10 +86,12 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 50),
             FloatingActionButton.extended(
               onPressed: () async {
-                if (profile.email == null) {
+                if (!isLoggedIn) {
+                  Navigator.pushNamed(context, '/login');
+                } else if (profile.email == null) {
                   Navigator.pushNamed(context, '/register');
-                // } else if (profile.email == '') {
-                //   Navigator.pushNamed(context, '/login');
+                  // } else if (profile.email == '') {
+                  //   Navigator.pushNamed(context, '/login');
                 } else {
                   Navigator.pushNamed(context, '/home');
                 }
@@ -103,9 +108,10 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Container(
               padding: const EdgeInsets.only(top: 20),
-              child: Text(errorMessage ?? '', style: TextStyle(
-                color: AppTheme.notWhite,
-              )),
+              child: Text(errorMessage ?? '',
+                  style: TextStyle(
+                    color: AppTheme.notWhite,
+                  )),
             )
           ],
         ),
