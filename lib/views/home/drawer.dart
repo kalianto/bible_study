@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
 
@@ -145,7 +146,7 @@ class HomeDrawer extends StatelessWidget {
   Widget buildSignOutMenu(BuildContext context) {
     return ListTile(
       title: Text(
-        'Sign Out',
+        'Log Out',
         style: TextStyle(
           fontFamily: AppTheme.fontName,
           fontWeight: FontWeight.w600,
@@ -159,7 +160,38 @@ class HomeDrawer extends StatelessWidget {
         color: AppTheme.grey,
         size: 20,
       ),
-      onTap: () {},
+      onTap: () {
+        _showLogoutDialog(context);
+      },
     );
+  }
+
+  Future<bool> _showLogoutDialog(BuildContext context) async {
+    return showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+              child: AlertDialog(
+            title: Text('Log out'),
+            content: Text('Are you sure?'),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setBool('_isLoggedIn', false);
+                    Navigator.of(context).popAndPushNamed('/');
+                    return true;
+                  },
+                  child: Text('Yes')),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    return false;
+                  },
+                  child: Text('No'))
+            ],
+          ));
+        });
   }
 }

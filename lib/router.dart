@@ -19,7 +19,7 @@ class BaseRouter {
         return SlideFromRoute(widget: SettingsPage(), direction: 'right');
         break;
       case '/profile':
-        return SlideFromRoute(widget: Profile(), direction: 'right');
+        return SlideFromRoute(widget: ProfilePage(), direction: 'right');
         break;
       case '/cool-group':
         return SlideFromRoute(widget: CoolGroup(), direction: 'right');

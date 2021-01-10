@@ -3,10 +3,10 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../app_theme.dart';
-import '../views/home/index.dart';
-import '../views/profile/index.dart';
-import '../views/settings/index.dart';
-import '../views/register/index.dart';
+// import '../views/home/index.dart';
+// import '../views/profile/index.dart';
+// import '../views/settings/index.dart';
+// import '../views/register/index.dart';
 
 class BottomGNavBar extends StatefulWidget {
   @override
@@ -30,13 +30,13 @@ class _BottomGNavBarState extends State<BottomGNavBar> with TickerProviderStateM
     super.dispose();
   }
 
-  List<Widget> _widgetOptions = <Widget>[
-    Home(),
-    Profile(),
-    SettingsPage(),
-    RegisterPage(),
-
-  ];
+  // List<Widget> _widgetOptions = <Widget>[
+  //   Home(),
+  //   Profile(),
+  //   SettingsPage(),
+  //   RegisterPage(),
+  //
+  // ];
 
   @override
   Widget build(BuildContext context) {

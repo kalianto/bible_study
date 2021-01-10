@@ -1,11 +1,15 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
 // import 'package:http/http.dart' as http;
 
 import '../app_theme.dart';
+import '../models/profile.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,6 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  String errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -145,11 +150,45 @@ class _LoginState extends State<LoginPage> {
                         //   // _emailController.text = "";
                         //   // TODO: alertdialog with error
                         // }
+                        final prefs = await SharedPreferences.getInstance();
+                        final key = '_profile';
+                        Profile profile = (prefs.getString(key) != null)
+                            ? Profile.fromJson(jsonDecode(prefs.getString(key)))
+                            : new Profile();
+                        final _isLoggedIn = '_loggedIn';
+                        bool isLoggedIn = prefs.getBool(_isLoggedIn) ?? false;
+                        print('Profile:');
+                        print(profile);
+                        print ('Is Logged In: $isLoggedIn');
+                        if (profile.email == null) {
+                          setState(() {
+                            errorMessage =
+                                'There is no profile found. Please register to use this app.';
+                          });
+                          print('Profile email is: ${profile.email}');
+                        } else if (profile.email == _usernameController.text) {
+                          prefs.setBool(_isLoggedIn, true);
+                          print('Profile email is: ${profile.email} == ${_usernameController.text}');
+                          Navigator.of(context).popAndPushNamed('/home');
+                        } else {
+                          setState(() {
+                            errorMessage = 'Username or email address is incorrect';
+                          });
+                          print('What happened here?');
+                        }
                       },
                     ),
                   ],
                 ),
               ],
+            ),
+            Container(
+              padding: const EdgeInsets.only(top: 20),
+              alignment: Alignment.center,
+              child: Text(errorMessage ?? '',
+                  style: TextStyle(
+                    color: AppTheme.redText,
+                  )),
             ),
             SizedBox(height: 120.0),
           ],

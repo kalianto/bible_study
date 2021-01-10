@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
 
@@ -50,7 +53,7 @@ class _RegisterState extends State<RegisterPage> {
                     focusedBorder: AppTheme.inputBorder,
                     labelText: 'Email Address',
                     filled: true,
-                    fillColor:AppTheme.lightGreen,
+                    fillColor: AppTheme.lightGreen,
                     // icon: Icon(Icons.person),
                   ),
                 ),
@@ -62,7 +65,7 @@ class _RegisterState extends State<RegisterPage> {
                     focusedBorder: AppTheme.inputBorder,
                     border: AppTheme.inputBorder,
                     filled: true,
-                    fillColor:AppTheme.lightGreen,
+                    fillColor: AppTheme.lightGreen,
                     labelText: 'Password',
                     // icon: Icon(Icons.lock),
                   ),
@@ -91,7 +94,7 @@ class _RegisterState extends State<RegisterPage> {
                         ),
                       ),
                       onPressed: () async {
-                        Navigator.pushNamed(context, '/home');
+                        //Navigator.pushNamed(context, '/home');
                         // try {
                         //   Auth.User user = (await Auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
                         //     email: _usernameController.text,
@@ -116,6 +119,10 @@ class _RegisterState extends State<RegisterPage> {
                         //   // _emailController.text = "";
                         //   // TODO: alertdialog with error
                         // }
+                        final prefs = await SharedPreferences.getInstance();
+                        final key = '_profile';
+                        prefs.setString(key, jsonEncode({'email': _usernameController.text}));
+                        Navigator.popAndPushNamed(context, '/home');
                       },
                     ),
                   ],
