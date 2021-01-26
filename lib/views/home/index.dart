@@ -4,8 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 import '../../common/bottom_gnav_bar.dart';
 import 'drawer.dart';
-import 'daily_reading.dart';
-import 'today_reading.dart';
+// import 'daily_reading.dart';
+// import 'today_reading.dart';
+import 'reading_item.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -110,17 +111,18 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget buildHomeContent(BuildContext context) {
     return Container(
         padding: const EdgeInsets.only(top: 80, bottom: 0),
-        // child: SingleChildScrollView(
-        //   child: Column(children: <Widget>[
-        //     Container(child: TodayReading()),
-        //     SizedBox(height: 20),
-        //     // Container(child: TodayReading()),
-        //     // SizedBox(height: 20),
-        //   ]),
-        // ));
-        child: Container(
-          child: DailyReading(
-            scrollController: scrollController, animationController: animationController)));
+        child: SingleChildScrollView(
+          child: Column(children: <Widget>[
+            // Container(child: TodayReading()),
+            Container(child: ReadingItem()),
+            SizedBox(height: 20),
+            // Container(child: TodayReading()),
+            // SizedBox(height: 20),
+          ]),
+        ));
+        // child: Container(
+        //   child: DailyReading(
+        //     scrollController: scrollController, animationController: animationController)));
   }
 
   Widget homeAppBar() {

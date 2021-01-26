@@ -1,10 +1,19 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
+class AppColorTheme {
+  final Color lightColor;
+  final Color darkColor;
+  AppColorTheme({
+    this.darkColor,
+    this.lightColor,
+  });
+}
+
 class AppTheme {
   AppTheme._();
 
-  /// white colour
+   /// white colour
   static const Color notWhite = Color(0xFFEDF0F2);
   static const Color spacer = Color(0xFFF2F2F2);
   static const Color nearlyWhite = Color(0xFFFEFEFE);
