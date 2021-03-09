@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/profile.dart';
 import '../../app_theme.dart';
+import '../../app_config.dart';
 
 class DrawerList {
   DrawerList(
@@ -179,7 +182,7 @@ class HomeDrawer extends StatelessWidget {
               FlatButton(
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
-                    prefs.setBool('_isLoggedIn', false);
+                    prefs.setBool(AppConfig.isLoggedIn, false);
                     Navigator.of(context).popAndPushNamed('/');
                     return true;
                   },

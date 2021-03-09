@@ -9,12 +9,16 @@ class ReadingItem extends StatefulWidget {
 }
 
 class _ReadingItemState extends State<ReadingItem> {
-  String today;
+  DateTime today;
 
   @override
   void initState() {
-    today = DateFormat('dd MMM yyyy').format(DateTime.now());
     super.initState();
+    today = new DateTime.now();
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('dd MMM yyyy').format(date);
   }
 
   Widget _buildItem(BuildContext context, AppColorTheme colorTheme) {
@@ -46,7 +50,9 @@ class _ReadingItemState extends State<ReadingItem> {
                           children: <Widget>[
                             Text('Mazmur 14: 1 - 14',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w500, color: colorTheme.darkColor)),
+                                    fontWeight: FontWeight.w500,
+                                    color: colorTheme.darkColor,
+                                    fontSize: 16)),
                             SizedBox(height: 6),
                             Text(
                               'You have completed 6 readings this week',
@@ -59,17 +65,30 @@ class _ReadingItemState extends State<ReadingItem> {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: colorTheme.darkColor,
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                        ),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
                         child: FaIcon(
-                          FontAwesomeIcons.arrowRight,
-                          color: AppTheme.white,
+                          // FontAwesomeIcons.solidCheckCircle,
+                          FontAwesomeIcons.arrowAltCircleRight,
+                          color: colorTheme.darkColor,
                         ),
                       ),
                     ]))));
+  }
+
+  void previousDay() {
+    print('called previous day');
+    print(today);
+    setState(() {
+      today = today.subtract(const Duration(days: 1));
+    });
+  }
+
+  void nextDay() {
+    print('called next day');
+    print(today);
+    setState(() {
+      today = today.add(const Duration(days: 1));
+    });
   }
 
   @override
@@ -80,15 +99,24 @@ class _ReadingItemState extends State<ReadingItem> {
         // height: 360,
         child: Column(children: <Widget>[
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-            FaIcon(FontAwesomeIcons.angleLeft),
+            IconButton(
+              icon: FaIcon(FontAwesomeIcons.angleLeft),
+              onPressed: previousDay,
+            ),
             Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(today,
-                    style: TextStyle(
-                        color: AppTheme.darkGrey, fontSize: 16, fontWeight: FontWeight.w600))),
-            FaIcon(FontAwesomeIcons.angleRight),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(_formatDate(today),
+                  style: TextStyle(
+                      color: AppTheme.darkGrey, fontSize: 16, fontWeight: FontWeight.w600
+                  )
+              ),
+            ),
+            IconButton(
+              icon: FaIcon(FontAwesomeIcons.angleRight),
+              onPressed: nextDay,
+            ),
           ]),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Column(children: <Widget>[
             _buildItem(context,
                 new AppColorTheme(darkColor: AppTheme.darkGreen, lightColor: AppTheme.lightGreen)),

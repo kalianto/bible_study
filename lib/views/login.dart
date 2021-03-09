@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:http/http.dart' as http;
 
 import '../app_theme.dart';
+import '../app_config.dart';
 import '../models/profile.dart';
 
 class LoginPage extends StatefulWidget {
@@ -151,15 +152,16 @@ class _LoginState extends State<LoginPage> {
                         //   // TODO: alertdialog with error
                         // }
                         final prefs = await SharedPreferences.getInstance();
-                        final key = '_profile';
+                        final key = AppConfig.profile;
                         Profile profile = (prefs.getString(key) != null)
                             ? Profile.fromJson(jsonDecode(prefs.getString(key)))
                             : new Profile();
-                        final _isLoggedIn = '_loggedIn';
+                        final _isLoggedIn = AppConfig.isLoggedIn;
                         bool isLoggedIn = prefs.getBool(_isLoggedIn) ?? false;
                         print('Profile:');
                         print(profile);
                         print ('Is Logged In: $isLoggedIn');
+
                         if (profile.email == null) {
                           setState(() {
                             errorMessage =

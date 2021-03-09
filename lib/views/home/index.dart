@@ -4,8 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 import '../../common/bottom_gnav_bar.dart';
 import 'drawer.dart';
+
 // import 'daily_reading.dart';
-// import 'today_reading.dart';
+import 'today_reading.dart';
 import 'reading_item.dart';
 
 class Home extends StatefulWidget {
@@ -98,7 +99,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           ],
         ),
         drawer: HomeDrawer(),
-        bottomNavigationBar: BottomGNavBar(),
+        // bottomNavigationBar: BottomGNavBar(),
         // floatingActionButton: FloatingActionButton(
         //   child: Icon(Icons.add),
         // ),
@@ -116,13 +117,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             // Container(child: TodayReading()),
             Container(child: ReadingItem()),
             SizedBox(height: 20),
-            // Container(child: TodayReading()),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+              Text('Rhema',
+                  style: TextStyle(
+                      color: AppTheme.darkGrey, fontSize: 18, fontWeight: FontWeight.w600)),
+            ])),
+            // Container(child: ReadingItem()),
             // SizedBox(height: 20),
           ]),
         ));
-        // child: Container(
-        //   child: DailyReading(
-        //     scrollController: scrollController, animationController: animationController)));
+    // child: Container(
+    //   child: DailyReading(
+    //     scrollController: scrollController, animationController: animationController)));
   }
 
   Widget homeAppBar() {
