@@ -91,6 +91,20 @@ class _ReadingItemState extends State<ReadingItem> {
     });
   }
 
+  void pickDate(BuildContext context) async {
+    print('Show calendar');
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: today,
+        firstDate: today.subtract(const Duration(days: 365)),
+        lastDate: today.add(const Duration(days: 365)),
+    );
+    if (picked != null && picked != today)
+      setState(() {
+        today = picked;
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -105,11 +119,15 @@ class _ReadingItemState extends State<ReadingItem> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(_formatDate(today),
+              child: TextButton(
+                child: Text(_formatDate(today),
                   style: TextStyle(
                       color: AppTheme.darkGrey, fontSize: 16, fontWeight: FontWeight.w600
                   )
+                ),
+                onPressed: () => pickDate(context),
               ),
+
             ),
             IconButton(
               icon: FaIcon(FontAwesomeIcons.angleRight),
