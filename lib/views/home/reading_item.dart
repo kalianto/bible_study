@@ -1,7 +1,9 @@
+import 'package:bible_study/providers/daily_reading.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
+import '../../models/daily_reading.dart';
 
 class ReadingItem extends StatefulWidget {
   @override
@@ -21,7 +23,7 @@ class _ReadingItemState extends State<ReadingItem> {
     return DateFormat('dd MMM yyyy').format(date);
   }
 
-  Widget _buildItem(BuildContext context, AppColorTheme colorTheme) {
+  Widget _buildItem(BuildContext context, AppColorTheme colorTheme, DailyReading item) {
     return Container(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: ClipPath(
@@ -48,7 +50,7 @@ class _ReadingItemState extends State<ReadingItem> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Mazmur 14: 1 - 14',
+                            Text(item.shortSummary(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     color: colorTheme.darkColor,
@@ -81,6 +83,7 @@ class _ReadingItemState extends State<ReadingItem> {
     setState(() {
       today = today.subtract(const Duration(days: 1));
     });
+    getDailyReadingSummary(today);
   }
 
   void nextDay() {
@@ -89,20 +92,31 @@ class _ReadingItemState extends State<ReadingItem> {
     setState(() {
       today = today.add(const Duration(days: 1));
     });
+    getDailyReadingSummary(today);
   }
 
   void pickDate(BuildContext context) async {
     print('Show calendar');
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: today,
-        firstDate: today.subtract(const Duration(days: 365)),
-        lastDate: today.add(const Duration(days: 365)),
+      context: context,
+      initialDate: today,
+      firstDate: today.subtract(const Duration(days: 365)),
+      lastDate: today.add(const Duration(days: 365)),
     );
-    if (picked != null && picked != today)
+    if (picked != null && picked != today) {
       setState(() {
         today = picked;
       });
+      getDailyReadingSummary(today);
+    }
+  }
+
+  Future<List<DailyReading>> getDailyReadingSummary(DateTime date) async {
+    var dbClient = DailyReadingProvider();
+    List<DailyReading> dailyReadingList = await dbClient.getDailyReading(date);
+    print('Daily Reading List');
+    print(dailyReadingList);
+    return dailyReadingList;
   }
 
   @override
@@ -121,13 +135,10 @@ class _ReadingItemState extends State<ReadingItem> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextButton(
                 child: Text(_formatDate(today),
-                  style: TextStyle(
-                      color: AppTheme.darkGrey, fontSize: 16, fontWeight: FontWeight.w600
-                  )
-                ),
+                    style: TextStyle(
+                        color: AppTheme.darkGrey, fontSize: 16, fontWeight: FontWeight.w600)),
                 onPressed: () => pickDate(context),
               ),
-
             ),
             IconButton(
               icon: FaIcon(FontAwesomeIcons.angleRight),
@@ -135,16 +146,44 @@ class _ReadingItemState extends State<ReadingItem> {
             ),
           ]),
           SizedBox(height: 10),
-          Column(children: <Widget>[
-            _buildItem(context,
-                new AppColorTheme(darkColor: AppTheme.darkGreen, lightColor: AppTheme.lightGreen)),
-            _buildItem(context,
-                new AppColorTheme(darkColor: AppTheme.blueText, lightColor: AppTheme.cyan)),
-            _buildItem(context,
-                new AppColorTheme(darkColor: AppTheme.redText, lightColor: AppTheme.lightOrange)),
-            _buildItem(context,
-                new AppColorTheme(darkColor: AppTheme.purpleText, lightColor: AppTheme.yellowText)),
-          ]),
+          // Column(children: <Widget>[
+          //   _buildItem(context,
+          //       new AppColorTheme(darkColor: AppTheme.darkGreen, lightColor: AppTheme.lightGreen)),
+          //   _buildItem(context,
+          //       new AppColorTheme(darkColor: AppTheme.blueText, lightColor: AppTheme.cyan)),
+          //   _buildItem(context,
+          //       new AppColorTheme(darkColor: AppTheme.redText, lightColor: AppTheme.lightOrange)),
+          //   _buildItem(context,
+          //       new AppColorTheme(darkColor: AppTheme.purpleText, lightColor: AppTheme.yellowText)),
+          // ]),
+          Column(children: <Widget>[_buildReadingItemSummary(context, today)]),
         ]));
+  }
+
+  Widget _buildReadingItemSummary(BuildContext context, DateTime date) {
+    return FutureBuilder(
+        future: getDailyReadingSummary(date),
+        builder: (context, snapshot) {
+          if (ConnectionState.active != null && !snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (ConnectionState.done != null && snapshot.hasError) {
+            return Center(child: Text(snapshot.error));
+          }
+
+          return ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return _buildItem(
+                  context,
+                  new AppColorTheme(
+                      darkColor: AppTheme.darkGreen, lightColor: AppTheme.lightGreen),
+                  snapshot.data[index]);
+            },
+          );
+        });
   }
 }
