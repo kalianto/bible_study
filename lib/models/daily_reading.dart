@@ -1,9 +1,11 @@
 class DailyReading {
   final int dateId;
+  final int sId;
   final String sBookName;
   final int sBookNum;
   final int sChapter;
   final int sVerse;
+  final int eId;
   final String eBookName;
   final int eBookNum;
   final int eChapter;
@@ -12,10 +14,12 @@ class DailyReading {
   final int orderBy;
 
   DailyReading({this.dateId,
+    this.sId,
     this.sBookName,
     this.sBookNum,
     this.sChapter,
     this.sVerse,
+    this.eId,
     this.eBookName,
     this.eBookNum,
     this.eChapter,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppColorTheme {
   final Color lightColor;
   final Color darkColor;
+
   AppColorTheme({
     this.darkColor,
     this.lightColor,
@@ -13,7 +14,7 @@ class AppColorTheme {
 class AppTheme {
   AppTheme._();
 
-   /// white colour
+  /// white colour
   static const Color notWhite = Color(0xFFEDF0F2);
   static const Color spacer = Color(0xFFF2F2F2);
   static const Color nearlyWhite = Color(0xFFFEFEFE);
@@ -219,4 +220,11 @@ class AppTheme {
     bottomRight: Radius.circular(10.0),
     topRight: Radius.circular(10.0),
   );
+
+  static final colorSet1 = [
+    {'darkColor': AppTheme.darkGreen, 'lightColor': AppTheme.lightGreen},
+    {'darkColor': AppTheme.blueText, 'lightColor': AppTheme.cyan},
+    {'darkColor': AppTheme.redText, 'lightColor': AppTheme.lightOrange},
+    {'darkColor': AppTheme.purpleText, 'lightColor': AppTheme.yellowText},
+  ];
 }

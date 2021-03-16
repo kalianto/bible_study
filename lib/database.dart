@@ -40,15 +40,4 @@ class DatabaseProvider {
     var taskDb = await openReadOnlyDatabase(path);
     return taskDb;
   }
-
-  Future countTable() async {
-    var dbClient = await db;
-    var res =
-    // await dbClient.rawQuery("""SELECT count(*) as count FROM sqlite_master
-    //      WHERE type = 'table'
-    //      AND name != 'android_metadata'
-    //      AND name != 'sqlite_sequence';""");
-    await dbClient.query('t_asv', columns: ['*'], where: 'id = ?', whereArgs: [1001010]);
-    return res[0]['t'];
-  }
 }

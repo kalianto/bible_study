@@ -34,7 +34,7 @@ class _ReadingItemState extends State<ReadingItem> {
             child: Container(
                 width: MediaQuery.of(context).size.width,
                 // height: 150,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                     color: colorTheme.lightColor.withOpacity(0.8),
                     border: Border(
@@ -50,53 +50,54 @@ class _ReadingItemState extends State<ReadingItem> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            SizedBox(height: 12),
                             Text(item.shortSummary(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     color: colorTheme.darkColor,
-                                    fontSize: 16)),
-                            SizedBox(height: 6),
-                            Text(
-                              'You have completed 6 readings this week',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: AppTheme.deactivatedText,
-                                  fontSize: 12),
-                            )
+                                    fontSize: 20)),
+                            // SizedBox(height: 6),
+                            // Text(
+                            //   'You have completed 6 readings this week',
+                            //   style: TextStyle(
+                            //       fontWeight: FontWeight.w400,
+                            //       color: AppTheme.deactivatedText,
+                            //       fontSize: 12),
+                            // )
                           ],
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.only(top: 5, bottom: 5),
-                        child: FaIcon(
-                          // FontAwesomeIcons.solidCheckCircle,
-                          FontAwesomeIcons.arrowAltCircleRight,
-                          color: colorTheme.darkColor,
-                        ),
+                        padding: const EdgeInsets.all(0),
+                        child: IconButton(
+
+                            padding: const EdgeInsets.all(0),
+                            icon: FaIcon(
+                              // FontAwesomeIcons.solidCheckCircle,
+                              FontAwesomeIcons.arrowAltCircleRight,
+                              color: colorTheme.darkColor,
+                            ),
+                            onPressed: () {
+                              print('Item');
+                              print(item);
+                            }),
                       ),
                     ]))));
   }
 
   void previousDay() {
-    print('called previous day');
-    print(today);
     setState(() {
       today = today.subtract(const Duration(days: 1));
     });
-    getDailyReadingSummary(today);
   }
 
   void nextDay() {
-    print('called next day');
-    print(today);
     setState(() {
       today = today.add(const Duration(days: 1));
     });
-    getDailyReadingSummary(today);
   }
 
   void pickDate(BuildContext context) async {
-    print('Show calendar');
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: today,
@@ -107,15 +108,12 @@ class _ReadingItemState extends State<ReadingItem> {
       setState(() {
         today = picked;
       });
-      getDailyReadingSummary(today);
     }
   }
 
   Future<List<DailyReading>> getDailyReadingSummary(DateTime date) async {
     var dbClient = DailyReadingProvider();
     List<DailyReading> dailyReadingList = await dbClient.getDailyReading(date);
-    print('Daily Reading List');
-    print(dailyReadingList);
     return dailyReadingList;
   }
 
@@ -146,16 +144,6 @@ class _ReadingItemState extends State<ReadingItem> {
             ),
           ]),
           SizedBox(height: 10),
-          // Column(children: <Widget>[
-          //   _buildItem(context,
-          //       new AppColorTheme(darkColor: AppTheme.darkGreen, lightColor: AppTheme.lightGreen)),
-          //   _buildItem(context,
-          //       new AppColorTheme(darkColor: AppTheme.blueText, lightColor: AppTheme.cyan)),
-          //   _buildItem(context,
-          //       new AppColorTheme(darkColor: AppTheme.redText, lightColor: AppTheme.lightOrange)),
-          //   _buildItem(context,
-          //       new AppColorTheme(darkColor: AppTheme.purpleText, lightColor: AppTheme.yellowText)),
-          // ]),
           Column(children: <Widget>[_buildReadingItemSummary(context, today)]),
         ]));
   }
@@ -165,7 +153,13 @@ class _ReadingItemState extends State<ReadingItem> {
         future: getDailyReadingSummary(date),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: Column(children: <Widget>[
+              SizedBox(height: 20),
+              CircularProgressIndicator(),
+              SizedBox(height: 40),
+              Text('Loading Daily Reading ...'),
+            ]));
           }
 
           if (ConnectionState.done != null && snapshot.hasError) {
@@ -180,7 +174,8 @@ class _ReadingItemState extends State<ReadingItem> {
               return _buildItem(
                   context,
                   new AppColorTheme(
-                      darkColor: AppTheme.darkGreen, lightColor: AppTheme.lightGreen),
+                      darkColor: AppTheme.colorSet1[index]['darkColor'],
+                      lightColor: AppTheme.colorSet1[index]['lightColor']),
                   snapshot.data[index]);
             },
           );
