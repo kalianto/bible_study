@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/profile.dart';
+import '../app_config.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key, this.title}) : super(key: key);
@@ -41,13 +42,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void _loadProfile() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final key = '_profile';
+      final key = AppConfig.profile;
       Profile _profile = (prefs.getString(key) != null)
           ? Profile.fromJson(jsonDecode(prefs.getString(key)))
           : new Profile();
       setState(() {
         profile = _profile;
-        isLoggedIn = prefs.getBool('_isLoggedIn') ?? false;
+        isLoggedIn = prefs.getBool(AppConfig.isLoggedIn) ?? false;
       });
     } catch (e) {
       print(e.toString());
@@ -86,6 +87,7 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 50),
             FloatingActionButton.extended(
               onPressed: () async {
+                await _loadProfile();
                 if (!isLoggedIn) {
                   Navigator.pushNamed(context, '/login');
                 } else if (profile.email == null) {
