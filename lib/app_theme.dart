@@ -227,4 +227,11 @@ class AppTheme {
     {'darkColor': AppTheme.redText, 'lightColor': AppTheme.lightOrange},
     {'darkColor': AppTheme.purpleText, 'lightColor': AppTheme.yellowText},
   ];
+
+  static final colorSet2 = [
+    {'darkColor': AppTheme.darkGrey, 'lightColor': AppTheme.lightGrey},
+    {'darkColor': AppTheme.darkGrey, 'lightColor': AppTheme.lightGrey},
+    {'darkColor': AppTheme.blueText, 'lightColor': AppTheme.cyan},
+    {'darkColor': AppTheme.darkGrey, 'lightColor': AppTheme.lightGrey},
+  ];
 }

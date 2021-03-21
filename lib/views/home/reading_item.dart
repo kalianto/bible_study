@@ -1,9 +1,9 @@
-import 'package:bible_study/providers/daily_reading.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 import '../../models/daily_reading.dart';
+import 'package:bible_study/providers/daily_reading.dart';
 
 class ReadingItem extends StatefulWidget {
   @override
@@ -70,17 +70,17 @@ class _ReadingItemState extends State<ReadingItem> {
                       Container(
                         padding: const EdgeInsets.all(0),
                         child: IconButton(
-
-                            padding: const EdgeInsets.all(0),
-                            icon: FaIcon(
-                              // FontAwesomeIcons.solidCheckCircle,
-                              FontAwesomeIcons.arrowAltCircleRight,
-                              color: colorTheme.darkColor,
-                            ),
-                            onPressed: () {
-                              print('Item');
-                              print(item);
-                            }),
+                          padding: const EdgeInsets.all(0),
+                          icon: FaIcon(
+                            // FontAwesomeIcons.solidCheckCircle,
+                            FontAwesomeIcons.arrowAltCircleRight,
+                            color: colorTheme.darkColor,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/bible-view', arguments: item);
+                          },
+                          splashColor: colorTheme.darkColor,
+                        ),
                       ),
                     ]))));
   }
@@ -174,8 +174,8 @@ class _ReadingItemState extends State<ReadingItem> {
               return _buildItem(
                   context,
                   new AppColorTheme(
-                      darkColor: AppTheme.colorSet1[index]['darkColor'],
-                      lightColor: AppTheme.colorSet1[index]['lightColor']),
+                      darkColor: AppTheme.colorSet2[index]['darkColor'],
+                      lightColor: AppTheme.colorSet2[index]['lightColor']),
                   snapshot.data[index]);
             },
           );
