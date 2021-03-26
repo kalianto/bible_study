@@ -233,13 +233,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.3.2+3"
-  scrollable_positioned_list:
+  scroll_to_index:
     dependency: "direct main"
     description:
-      name: scrollable_positioned_list
+      name: scroll_to_index
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.10"
+    version: "1.0.6"
   shared_preferences:
     dependency: "direct main"
     description:
