@@ -5,6 +5,7 @@ class DailyReading {
   final int sBookNum;
   final int sChapter;
   final int sVerse;
+  final String sVerseSummary;
   final int eId;
   final String eBookName;
   final int eBookNum;
@@ -19,6 +20,7 @@ class DailyReading {
     this.sBookNum,
     this.sChapter,
     this.sVerse,
+    this.sVerseSummary,
     this.eId,
     this.eBookName,
     this.eBookNum,
@@ -42,6 +44,10 @@ class DailyReading {
     }
 
     return startTitle + endTitle;
+  }
+
+  String firstVerse() {
+    return this.sVerseSummary;
   }
 }
 

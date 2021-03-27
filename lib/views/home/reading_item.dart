@@ -1,9 +1,10 @@
-import 'package:bible_study/providers/daily_reading.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 import '../../models/daily_reading.dart';
+import 'package:bible_study/providers/daily_reading.dart';
 
 class ReadingItem extends StatefulWidget {
   @override
@@ -31,58 +32,63 @@ class _ReadingItemState extends State<ReadingItem> {
                 shape: RoundedRectangleBorder(
               borderRadius: AppTheme.borderRadius2,
             )),
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                // height: 150,
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                    color: colorTheme.lightColor.withOpacity(0.8),
-                    border: Border(
-                      left: BorderSide(
-                          width: 10.0, color: colorTheme.darkColor, style: BorderStyle.solid),
-                    )),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(height: 12),
-                            Text(item.shortSummary(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: colorTheme.darkColor,
-                                    fontSize: 20)),
-                            // SizedBox(height: 6),
-                            // Text(
-                            //   'You have completed 6 readings this week',
-                            //   style: TextStyle(
-                            //       fontWeight: FontWeight.w400,
-                            //       color: AppTheme.deactivatedText,
-                            //       fontSize: 12),
-                            // )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(0),
-                        child: IconButton(
-
-                            padding: const EdgeInsets.all(0),
-                            icon: FaIcon(
-                              // FontAwesomeIcons.solidCheckCircle,
-                              FontAwesomeIcons.arrowAltCircleRight,
-                              color: colorTheme.darkColor,
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/bible-view', arguments: item);
+                },
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    // height: 150,
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: colorTheme.lightColor.withOpacity(0.8),
+                        border: Border(
+                          left: BorderSide(
+                              width: 10.0, color: colorTheme.darkColor, style: BorderStyle.solid),
+                        )),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 4),
+                                Text(item.shortSummary(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: colorTheme.darkColor,
+                                        fontSize: 18)),
+                                SizedBox(height: 8),
+                                Text(
+                                  item.firstVerse(),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: AppTheme.deactivatedText,
+                                      fontSize: 12),
+                                )
+                              ],
                             ),
-                            onPressed: () {
-                              print('Item');
-                              print(item);
-                            }),
-                      ),
-                    ]))));
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(0),
+                            child: IconButton(
+                              padding: const EdgeInsets.all(0),
+                              icon: FaIcon(
+                                // FontAwesomeIcons.solidCheckCircle,
+                                FontAwesomeIcons.arrowCircleRight,
+                                color: colorTheme.darkColor,
+                              ),
+                              // onPressed: () {
+                              //   Navigator.pushNamed(context, '/bible-view', arguments: item);
+                              // },
+                              splashColor: colorTheme.darkColor,
+                            ),
+                          ),
+                        ])))));
   }
 
   void previousDay() {
@@ -166,6 +172,24 @@ class _ReadingItemState extends State<ReadingItem> {
             return Center(child: Text(snapshot.error));
           }
 
+          if (ConnectionState.done != null && snapshot.data.length == 0) {
+            return Row(children: <Widget>[
+              Expanded(
+                  child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: AppTheme.redText.withOpacity(0.2),
+                        borderRadius: AppTheme.borderRadius,
+                      ),
+                      child: Column(children: <Widget>[
+                        Text('Unable to load item for',
+                            textAlign: TextAlign.center, style: AppTheme.subtitle1),
+                        SizedBox(height: 10),
+                        Text(_formatDate(today), style: AppTheme.headline6),
+                      ])))
+            ]);
+          }
+
           return ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -174,8 +198,8 @@ class _ReadingItemState extends State<ReadingItem> {
               return _buildItem(
                   context,
                   new AppColorTheme(
-                      darkColor: AppTheme.colorSet1[index]['darkColor'],
-                      lightColor: AppTheme.colorSet1[index]['lightColor']),
+                      darkColor: AppTheme.colorSet2[index]['darkColor'],
+                      lightColor: AppTheme.colorSet2[index]['lightColor']),
                   snapshot.data[index]);
             },
           );
