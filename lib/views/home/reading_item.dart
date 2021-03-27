@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -164,6 +165,29 @@ class _ReadingItemState extends State<ReadingItem> {
 
           if (ConnectionState.done != null && snapshot.hasError) {
             return Center(child: Text(snapshot.error));
+          }
+
+          print('ConnectionState');
+          print(ConnectionState.active != null);
+          print(ConnectionState.done != null);
+          print(ConnectionState.values);
+          print(snapshot.data.length);
+          if (ConnectionState.done != null && snapshot.data.length == 0) {
+            return Row(children: <Widget>[
+              Expanded(
+                  child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: AppTheme.redText.withOpacity(0.2),
+                        borderRadius: AppTheme.borderRadius,
+                      ),
+                      child: Column(children: <Widget>[
+                        Text('Unable to load item for',
+                            textAlign: TextAlign.center, style: AppTheme.subtitle1),
+                        SizedBox(height: 10),
+                        Text(_formatDate(today), style: AppTheme.headline6),
+                      ])))
+            ]);
           }
 
           return ListView.builder(

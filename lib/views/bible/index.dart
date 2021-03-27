@@ -36,7 +36,10 @@ class _BibleViewPageState extends State<BibleViewPage> {
     return SafeArea(
         child: Scaffold(
       key: _scaffoldKey,
-      body: _buildReadingView(context),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: _buildReadingView(context),
+      ),
     ));
   }
 
@@ -63,15 +66,18 @@ class _BibleViewPageState extends State<BibleViewPage> {
   Widget _getRow(int index, data) => _wrapScrollTag(
       index: index,
       child: Container(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Text(data[index].bookVerse.toString())),
-            Expanded(child: Text(data[index].bookText)),
+                padding: const EdgeInsets.only(left: 0, right: 6),
+                child: Text(
+                  data[index].bookVerse.toString(),
+                  style: AppTheme.body2,
+                )),
+            Expanded(child: Text(data[index].bookText, style: AppTheme.body1)),
           ],
         ),
       ));
@@ -94,7 +100,10 @@ class _BibleViewPageState extends State<BibleViewPage> {
           return Center(child: Text(snapshot.error));
         }
 
+        /// TODO: show Book Name: Chapter
+        /// TODO: show multiple chapter??
         return ListView.builder(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
             scrollDirection: Axis.vertical,
             controller: scrollController,
             shrinkWrap: true,
