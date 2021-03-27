@@ -32,58 +32,63 @@ class _ReadingItemState extends State<ReadingItem> {
                 shape: RoundedRectangleBorder(
               borderRadius: AppTheme.borderRadius2,
             )),
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                // height: 150,
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                    color: colorTheme.lightColor.withOpacity(0.8),
-                    border: Border(
-                      left: BorderSide(
-                          width: 10.0, color: colorTheme.darkColor, style: BorderStyle.solid),
-                    )),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(height: 12),
-                            Text(item.shortSummary(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: colorTheme.darkColor,
-                                    fontSize: 20)),
-                            // SizedBox(height: 6),
-                            // Text(
-                            //   'You have completed 6 readings this week',
-                            //   style: TextStyle(
-                            //       fontWeight: FontWeight.w400,
-                            //       color: AppTheme.deactivatedText,
-                            //       fontSize: 12),
-                            // )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(0),
-                        child: IconButton(
-                          padding: const EdgeInsets.all(0),
-                          icon: FaIcon(
-                            // FontAwesomeIcons.solidCheckCircle,
-                            FontAwesomeIcons.arrowAltCircleRight,
-                            color: colorTheme.darkColor,
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/bible-view', arguments: item);
+                },
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    // height: 150,
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: colorTheme.lightColor.withOpacity(0.8),
+                        border: Border(
+                          left: BorderSide(
+                              width: 10.0, color: colorTheme.darkColor, style: BorderStyle.solid),
+                        )),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 4),
+                                Text(item.shortSummary(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: colorTheme.darkColor,
+                                        fontSize: 18)),
+                                SizedBox(height: 8),
+                                Text(
+                                  item.firstVerse(),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: AppTheme.deactivatedText,
+                                      fontSize: 12),
+                                )
+                              ],
+                            ),
                           ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/bible-view', arguments: item);
-                          },
-                          splashColor: colorTheme.darkColor,
-                        ),
-                      ),
-                    ]))));
+                          Container(
+                            padding: const EdgeInsets.all(0),
+                            child: IconButton(
+                              padding: const EdgeInsets.all(0),
+                              icon: FaIcon(
+                                // FontAwesomeIcons.solidCheckCircle,
+                                FontAwesomeIcons.arrowCircleRight,
+                                color: colorTheme.darkColor,
+                              ),
+                              // onPressed: () {
+                              //   Navigator.pushNamed(context, '/bible-view', arguments: item);
+                              // },
+                              splashColor: colorTheme.darkColor,
+                            ),
+                          ),
+                        ])))));
   }
 
   void previousDay() {
@@ -167,11 +172,6 @@ class _ReadingItemState extends State<ReadingItem> {
             return Center(child: Text(snapshot.error));
           }
 
-          print('ConnectionState');
-          print(ConnectionState.active != null);
-          print(ConnectionState.done != null);
-          print(ConnectionState.values);
-          print(snapshot.data.length);
           if (ConnectionState.done != null && snapshot.data.length == 0) {
             return Row(children: <Widget>[
               Expanded(

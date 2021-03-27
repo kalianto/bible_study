@@ -13,8 +13,8 @@ class DailyReadingProvider {
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
         'select a.start as sId, a.end as eId, ' +
             'd.n as sBookName, b.b as sBookNum, b.c as sChapter , b.v as sVerse, ' +
-            'e.n as eBookName, c.b as eBookNum, c.c as eChapter, c.v as eVerse, ' +
-            'a.date as dateId, a.orderBy, a.groupId ' +
+            'b.t as sVerseSummary, e.n as eBookName, c.b as eBookNum, c.c as eChapter, ' +
+            'c.v as eVerse, a.date as dateId, a.orderBy, a.groupId ' +
             'from daily_reading a ' +
             'join t_asv b on a.start = b.id ' +
             'join t_asv c on a.end = c.id ' +
@@ -32,6 +32,7 @@ class DailyReadingProvider {
               sBookNum: res[i]["sBookNum"],
               sChapter: res[i]["sChapter"],
               sVerse: res[i]["sVerse"],
+              sVerseSummary: res[i]["sVerseSummary"],
               eId: res[i]["eId"],
               eBookName: res[i]["eBookName"],
               eBookNum: res[i]["eBookNum"],
