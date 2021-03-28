@@ -32,7 +32,7 @@ class _ReadingItemState extends State<ReadingItem> {
                 shape: RoundedRectangleBorder(
               borderRadius: AppTheme.borderRadius2,
             )),
-            child: GestureDetector(
+            child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, '/bible-view', arguments: item);
                 },

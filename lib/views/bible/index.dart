@@ -1,6 +1,7 @@
 import 'package:bible_study/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../models/bible_view.dart';
 import '../../models/daily_reading.dart';
@@ -20,7 +21,8 @@ class BibleViewPage extends StatefulWidget {
 class _BibleViewPageState extends State<BibleViewPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  var scrollController;
+  AutoScrollController scrollController;
+  double topBarOpacity = 1.0;
 
   @override
   void initState() {
@@ -36,11 +38,65 @@ class _BibleViewPageState extends State<BibleViewPage> {
     return SafeArea(
         child: Scaffold(
       key: _scaffoldKey,
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: _buildReadingView(context),
-      ),
+      body: Stack(children: <Widget>[
+        bibleViewAppBar(),
+        Container(
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
+          child: _buildReadingView(context),
+        ),
+      ]),
     ));
+  }
+
+  Widget bibleViewAppBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.darkGrey.withOpacity(0.4),
+      ),
+      height: 60,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16 - 8.0 * topBarOpacity,
+                bottom: 12 - 8.0 * topBarOpacity),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 38,
+                  width: 38,
+                  child: IconButton(
+                    icon: const Icon(FontAwesomeIcons.arrowLeft),
+                    onPressed: () => Navigator.of(context).pop(),
+                    tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                    color: AppTheme.darkGrey,
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.readingItem.shortSummary(),
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        fontFamily: AppTheme.fontName,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 22 + 6 - 6 * topBarOpacity,
+                        letterSpacing: 1.2,
+                        color: AppTheme.darkGrey,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Future _scrollToIndex(context) async {
