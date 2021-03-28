@@ -60,50 +60,70 @@ class HomeDrawer extends StatelessWidget {
     );
   }
 
+  Future<Profile> _loadProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = '_profile';
+    return (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
+  }
+
   Widget buildProfilePicture(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 200,
-      // padding: const EdgeInsets.only(top: 10.0),
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              height: 80,
-              width: 80,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: AppTheme.grey.withOpacity(0.6),
-                    offset: const Offset(2.0, 4.0),
-                    blurRadius: 8,
+    return FutureBuilder(
+        future: _loadProfile(),
+        builder: (context, snapshot) {
+          if (ConnectionState.active != null && !snapshot.hasData) {
+            return Center(
+                child: Column(children: <Widget>[
+                  SizedBox(height: 20),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 40),
+                  Text('Loading ...'),
+                ]));
+          }
+          return Container(
+            width: double.infinity,
+            height: 200,
+            // padding: const EdgeInsets.only(top: 10.0),
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: AppTheme.grey.withOpacity(0.6),
+                          offset: const Offset(2.0, 4.0),
+                          blurRadius: 8,
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(60.0)),
+                      child: Image.asset('assets/images/userImage.png'),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 4),
+                    child: Text(
+                      snapshot.data.fullName(),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.grey,
+                        fontSize: 18,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(60.0)),
-                child: Image.asset('assets/images/userImage.png'),
-              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8, left: 4),
-              child: Text(
-                'Oliver Mockingbird',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.grey,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
   Widget buildProfileMenu(BuildContext context) {
