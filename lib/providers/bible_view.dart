@@ -14,9 +14,8 @@ class BibleViewProvider {
             'a.t as bookText, b.n as bookName ' +
             'from t_asv a ' +
             'join key_english b on b.b = a.b ' +
-            // 'where a.id between ? and ?',
-            'where a.b = ? and a.c = ?',
-        [item.sBookNum, item.sChapter]);
+            'where ((a.b = ? and a.c = ?) OR (a.b = ? and a.c = ?))',
+        [item.sBookNum, item.sChapter, item.eBookNum, item.eChapter]);
 
     if (res.length > 0) {
       bibleViewList = List.generate(

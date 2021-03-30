@@ -138,6 +138,47 @@ class _BibleViewPageState extends State<BibleViewPage> {
         ),
       ));
 
+  Widget _getRowOnly(int index, BibleView data) => Container(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                padding: const EdgeInsets.only(left: 0, right: 6),
+                child: Text(
+                  data.bookVerse.toString(),
+                  style: AppTheme.body2,
+                )),
+            Expanded(child: Text(data.bookText, style: AppTheme.body1)),
+          ],
+        ),
+      );
+
+  Widget _getRowWithHeading(int index, BibleView data) => Column(children: <Widget>[
+        SizedBox(height: 10),
+        Container(
+            // padding: const EdgeInsets.only(top: 5, bottom: 5),
+            child:
+                Text(data.bookName + ' ' + data.bookChapter.toString(), style: AppTheme.headline5)),
+        SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    padding: const EdgeInsets.only(left: 0, right: 6),
+                    child: Text(
+                      data.bookVerse.toString(),
+                      style: AppTheme.body2,
+                    )),
+                Expanded(child: Text(data.bookText, style: AppTheme.body1)),
+              ]),
+        )
+      ]);
+
   Widget _buildReadingView(BuildContext context) {
     return FutureBuilder(
       future: getBookContent(),
@@ -165,7 +206,18 @@ class _BibleViewPageState extends State<BibleViewPage> {
             shrinkWrap: true,
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
-              return _getRow(index, snapshot.data);
+              if (snapshot.data[index].bookVerse == 1) {
+                return _wrapScrollTag(
+                  index: index,
+                  child: _getRowWithHeading(index, snapshot.data[index]),
+                );
+              }
+
+              return _wrapScrollTag(
+                index: index,
+                child: _getRowOnly(index, snapshot.data[index]),
+              );
+              // return _getRow(index, snapshot.data);
             });
       },
     );
