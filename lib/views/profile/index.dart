@@ -9,7 +9,6 @@ import '../../app_theme.dart';
 import '../../common/child_page_appbar.dart';
 import '../../models/profile.dart';
 
-
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -54,8 +53,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
     return SafeArea(
         child: Scaffold(
             //body: buildColumn(context),
-            body: buildStack(context)
-    ));
+            body: buildStack(context)));
   }
 
   Widget buildStack(BuildContext context) {
@@ -77,12 +75,10 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         Container(
           padding: const EdgeInsets.only(top: 50),
           child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                profileHeader(context),
-                loadProfile(context),
-            ])
-          ),
+              child: Column(children: <Widget>[
+            profileHeader(context),
+            loadProfile(context),
+          ])),
         ),
       ],
     );
@@ -283,7 +279,6 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
             Center(
               child: ElevatedButton(
                   onPressed: () async {
-
                     final prefs = await SharedPreferences.getInstance();
                     final key = '_profile';
                     Profile updatedProfile = new Profile(
@@ -296,15 +291,16 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                       state: _stateController.text,
                       postcode: _postcodeController.text,
                     );
+
                     /// save profile to SharedPreferences
                     prefs.setString(key, jsonEncode(updatedProfile.toJson()));
+
                     /// Update State for the form controller
                     _setProfile(updatedProfile);
 
                     setState(() {
                       _editing = !_editing;
                     });
-
                   },
                   child: Text('SAVE', style: TextStyle(fontSize: 20)),
                   style: ButtonStyle(
@@ -360,6 +356,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                         children: <Widget>[
                           Text('Full Name', style: TextStyle(color: AppTheme.darkGreen)),
                           Text('${_firstNameController.text} ${_lastNameController.text}',
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(fontWeight: FontWeight.w400)),
                         ]),
                   )
@@ -545,6 +542,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                       children: <Widget>[
                         Text(
                           '${_firstNameController.text} ${_lastNameController.text}',
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: AppTheme.nearlyBlack,

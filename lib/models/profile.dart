@@ -21,19 +21,26 @@ class Profile {
     this.postcode,
   });
 
+  String fullName() {
+    return this.firstName != null && this.lastName != null
+        ? this.firstName + ' ' + this.lastName
+        : 'Your Name';
+  }
+
   factory Profile.fromJson(Map<String, dynamic> json) {
     return Profile(
-        firstName: json['firstName'] as String,
-        lastName: json['lastName'] as String,
-        nickname: json['nickname'] as String,
-        email: json['email'] as String,
-        mobile: json['mobile'] as String,
-        address: json['address'] as String,
-        suburb: json['suburb'] as String,
-        state: json['state'] as String,
-        postcode: json['postcode'] as String,
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
+      nickname: json['nickname'] as String,
+      email: json['email'] as String,
+      mobile: json['mobile'] as String,
+      address: json['address'] as String,
+      suburb: json['suburb'] as String,
+      state: json['state'] as String,
+      postcode: json['postcode'] as String,
     );
   }
+
   // Profile.fromJson(Map<String, dynamic> json)
   //   : firstName = json['firstName'],
   //   lastName = json['lastName'],
