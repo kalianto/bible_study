@@ -1,11 +1,14 @@
 import 'package:bible_study/app_theme.dart';
+import 'package:bible_study/database.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../models/bible_view.dart';
+import '../../models/bible_version.dart';
 import '../../models/daily_reading.dart';
 import '../../providers/bible_view.dart';
+import '../../providers/bible_version.dart';
 
 class BibleViewPage extends StatefulWidget {
   BibleViewPage({Key, key, this.readingItem}) : super(key: Key);
@@ -24,12 +27,16 @@ class _BibleViewPageState extends State<BibleViewPage> {
   AutoScrollController scrollController;
   double topBarOpacity = 1.0;
 
+  List<BibleVersion> bibleVersionList = List();
+  int selectedBibleVersionIndex = 1;
+
   @override
   void initState() {
     super.initState();
     scrollController = AutoScrollController(
         viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.vertical);
+    // bibleVersionList =
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(context));
   }
 
@@ -80,7 +87,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       widget.readingItem.shortSummary(),
-                      textAlign: TextAlign.right,
+                      //textAlign: TextAlign.right,
                       style: TextStyle(
                         fontFamily: AppTheme.fontName,
                         fontWeight: FontWeight.w700,
@@ -91,6 +98,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
                     ),
                   ),
                 ),
+                buildBibleVersion(context),
               ],
             ),
           )
@@ -99,15 +107,48 @@ class _BibleViewPageState extends State<BibleViewPage> {
     );
   }
 
+  Widget buildBibleVersion(BuildContext context) {
+    return FutureBuilder(
+        future: getBibleVersion(),
+        builder: (context, snapshot) {
+          if (ConnectionState.active != null && !snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return Container(
+            child: DropdownButtonHideUnderline(
+                child: DropdownButton(
+              value: selectedBibleVersionIndex,
+              items: snapshot.data.map<DropdownMenuItem<int>>((item) {
+                return DropdownMenuItem<int>(child: Text(item.abbreviation, style: AppTheme.headline6), value: item.id);
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedBibleVersionIndex = value;
+                });
+              },
+            )),
+          );
+        });
+  }
+
+  Future<List<BibleVersion>> getBibleVersion() async {
+    var dbClient = BibleVersionProvider();
+    List<BibleVersion> bibleVersionList = await dbClient.getAllBibleVersion();
+    return bibleVersionList;
+  }
+
   Future _scrollToIndex(context) async {
     int index = widget.readingItem.sVerse - 1;
     await scrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
     scrollController.highlight(index);
   }
 
-  Future<List<BibleView>> getBookContent() async {
+  Future<List<BibleView>> getBookContent(int bibleVersion) async {
     var dbClient = BibleViewProvider();
-    List<BibleView> bibleViewList = await dbClient.getBibleView(widget.readingItem, 't_asv');
+    List<BibleView> bibleViewList = await dbClient.getBibleView(widget.readingItem, bibleVersion);
     return bibleViewList;
   }
 
@@ -118,25 +159,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
         child: child,
         highlightColor: AppTheme.darkGrey.withOpacity(0.5),
       );
-
-  Widget _getRow(int index, data) => _wrapScrollTag(
-      index: index,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-                padding: const EdgeInsets.only(left: 0, right: 6),
-                child: Text(
-                  data[index].bookVerse.toString(),
-                  style: AppTheme.body2,
-                )),
-            Expanded(child: Text(data[index].bookText, style: AppTheme.body1)),
-          ],
-        ),
-      ));
 
   Widget _getRowOnly(int index, BibleView data) => Container(
         padding: const EdgeInsets.all(8),
@@ -156,12 +178,10 @@ class _BibleViewPageState extends State<BibleViewPage> {
       );
 
   Widget _getRowWithHeading(int index, BibleView data) => Column(children: <Widget>[
-        SizedBox(height: 10),
         Container(
-            // padding: const EdgeInsets.only(top: 5, bottom: 5),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child:
                 Text(data.bookName + ' ' + data.bookChapter.toString(), style: AppTheme.headline5)),
-        SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.all(8),
           child: Row(
@@ -181,7 +201,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
 
   Widget _buildReadingView(BuildContext context) {
     return FutureBuilder(
-      future: getBookContent(),
+      future: getBookContent(selectedBibleVersionIndex),
       builder: (context, snapshot) {
         if (ConnectionState.active != null && !snapshot.hasData) {
           return Center(
