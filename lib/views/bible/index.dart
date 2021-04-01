@@ -30,6 +30,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
   List<BibleVersion> bibleVersionList = List();
   int selectedBibleVersionIndex = 1;
 
+  List<BibleView> selectedList = List();
+
   @override
   void initState() {
     super.initState();
@@ -122,7 +124,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
                 child: DropdownButton(
               value: selectedBibleVersionIndex,
               items: snapshot.data.map<DropdownMenuItem<int>>((item) {
-                return DropdownMenuItem<int>(child: Text(item.abbreviation, style: AppTheme.headline6), value: item.id);
+                return DropdownMenuItem<int>(
+                    child: Text(item.abbreviation, style: AppTheme.headline6), value: item.id);
               }).toList(),
               onChanged: (value) {
                 setState(() {
@@ -152,6 +155,11 @@ class _BibleViewPageState extends State<BibleViewPage> {
     return bibleViewList;
   }
 
+  bool isSelected(int id) {
+    if (selectedList.isEmpty) return false;
+    return selectedList.where((item) => item.id == id).length == 1;
+  }
+
   Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
         key: ValueKey(index),
         controller: scrollController,
@@ -160,20 +168,36 @@ class _BibleViewPageState extends State<BibleViewPage> {
         highlightColor: AppTheme.darkGrey.withOpacity(0.5),
       );
 
-  Widget _getRowOnly(int index, BibleView data) => Container(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-                padding: const EdgeInsets.only(left: 0, right: 6),
-                child: Text(
-                  data.bookVerse.toString(),
-                  style: AppTheme.body2,
-                )),
-            Expanded(child: Text(data.bookText, style: AppTheme.body1)),
-          ],
+  Widget _getRowOnly(int index, BibleView data) => InkWell(
+        onTap: () {
+          setState(() {
+            if(isSelected(data.id)) {
+              selectedList.removeWhere((item) => item.id == data.id);
+            } else {
+              selectedList.add(data);
+            }
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: isSelected(data.id)
+              ? BoxDecoration(
+                  color: AppTheme.darkGrey.withOpacity(0.5),
+                )
+              : BoxDecoration(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                  padding: const EdgeInsets.only(left: 0, right: 6),
+                  child: Text(
+                    data.bookVerse.toString(),
+                    style: AppTheme.body2,
+                  )),
+              Expanded(child: Text(data.bookText, style: AppTheme.body1)),
+            ],
+          ),
         ),
       );
 
@@ -182,21 +206,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
             padding: const EdgeInsets.symmetric(vertical: 20),
             child:
                 Text(data.bookName + ' ' + data.bookChapter.toString(), style: AppTheme.headline5)),
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                    padding: const EdgeInsets.only(left: 0, right: 6),
-                    child: Text(
-                      data.bookVerse.toString(),
-                      style: AppTheme.body2,
-                    )),
-                Expanded(child: Text(data.bookText, style: AppTheme.body1)),
-              ]),
-        )
+        _getRowOnly(index, data),
       ]);
 
   Widget _buildReadingView(BuildContext context) {
