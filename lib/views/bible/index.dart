@@ -87,16 +87,17 @@ class _BibleViewPageState extends State<BibleViewPage> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      widget.readingItem.shortSummary(),
-                      //textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontFamily: AppTheme.fontName,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 22 + 6 - 6 * topBarOpacity,
-                        letterSpacing: 1.2,
-                        color: AppTheme.darkGrey,
-                      ),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(widget.readingItem.shortSummary(),
+                          //textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontFamily: AppTheme.fontName,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 22 + 6 - 6 * topBarOpacity,
+                            letterSpacing: 1.2,
+                            color: AppTheme.darkGrey,
+                          )),
                     ),
                   ),
                 ),
@@ -171,7 +172,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
   Widget _getRowOnly(int index, BibleView data) => InkWell(
         onTap: () {
           setState(() {
-            if(isSelected(data.id)) {
+            if (isSelected(data.id)) {
               selectedList.removeWhere((item) => item.id == data.id);
             } else {
               selectedList.add(data);
