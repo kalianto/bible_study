@@ -90,25 +90,34 @@ class _LoginState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         'Don\'t have account?',
                         style: TextStyle(
-                          color: AppTheme.blueText,
+                          color: AppTheme.darkGreen,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       onPressed: () {
                         Navigator.popAndPushNamed(context, '/register');
                       },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(0),
+                      )
                     ),
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         'LOGIN',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.blueText,
+                          color: AppTheme.white,
                         ),
+                      ),
+                      style: TextButton.styleFrom(
+                        primary: AppTheme.darkGreen,
+                        backgroundColor: AppTheme.darkGreen,
+                        padding: const EdgeInsets.symmetric(horizontal: 20)
                       ),
                       onPressed: () async {
                         DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();

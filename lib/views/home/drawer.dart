@@ -73,11 +73,11 @@ class HomeDrawer extends StatelessWidget {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
                 child: Column(children: <Widget>[
-                  SizedBox(height: 20),
-                  CircularProgressIndicator(),
-                  SizedBox(height: 40),
-                  Text('Loading ...'),
-                ]));
+              SizedBox(height: 20),
+              CircularProgressIndicator(),
+              SizedBox(height: 40),
+              Text('Loading ...'),
+            ]));
           }
           return Container(
             width: double.infinity,
@@ -199,20 +199,26 @@ class HomeDrawer extends StatelessWidget {
             title: Text('Log out'),
             content: Text('Are you sure?'),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.setBool(AppConfig.isLoggedIn, false);
                     Navigator.of(context).popAndPushNamed('/');
                     return true;
                   },
-                  child: Text('Yes')),
-              FlatButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppTheme.darkGreen,
+                  ),
+                  child: Text('Yes', style: TextStyle(color: AppTheme.white))),
+              TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                     return false;
                   },
-                  child: Text('No'))
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppTheme.redText,
+                  ),
+                  child: Text('No', style: TextStyle(color: AppTheme.white)))
             ],
           ));
         });

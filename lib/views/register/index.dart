@@ -75,7 +75,7 @@ class _RegisterState extends State<RegisterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         'Already had account?',
                         style: TextStyle(
@@ -86,7 +86,7 @@ class _RegisterState extends State<RegisterPage> {
                         Navigator.popAndPushNamed(context, '/login');
                       },
                     ),
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         'REGISTER',
                         style: TextStyle(
