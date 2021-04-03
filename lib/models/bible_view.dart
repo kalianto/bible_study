@@ -5,6 +5,7 @@ class BibleView {
   final int bookChapter;
   final int bookVerse;
   final String bibleVersion;
+  final String bibleCode;
   final String bookText;
 
   BibleView({
@@ -14,6 +15,7 @@ class BibleView {
     this.bookChapter,
     this.bookVerse,
     this.bibleVersion,
+    this.bibleCode,
     this.bookText,
   });
 }

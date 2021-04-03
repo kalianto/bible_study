@@ -137,12 +137,17 @@ class _ReadingItemState extends State<ReadingItem> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: FlatButton(
+              child: TextButton(
                 child: Text(_formatDate(today),
                     style: TextStyle(
                         color: AppTheme.darkGrey, fontSize: 20, fontWeight: FontWeight.w600)),
                 onPressed: () => pickDate(context),
-                highlightColor: AppTheme.cyan.withOpacity(0.5),
+                style: TextButton.styleFrom(
+                  enableFeedback: true,
+                  primary: AppTheme.lightGreen,
+                  shadowColor: AppTheme.lightGreen,
+                  onSurface: AppTheme.lightGreen,
+                ),
               ),
             ),
             IconButton(

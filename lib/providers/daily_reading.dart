@@ -25,21 +25,22 @@ class DailyReadingProvider {
     if (res.length > 0) {
       dailyReadingList = List.generate(
           res.length,
-          (i) => DailyReading(
-              dateId: res[i]["dateId"],
-              sId: res[i]["sId"],
-              sBookName: res[i]["sBookName"],
-              sBookNum: res[i]["sBookNum"],
-              sChapter: res[i]["sChapter"],
-              sVerse: res[i]["sVerse"],
-              sVerseSummary: res[i]["sVerseSummary"],
-              eId: res[i]["eId"],
-              eBookName: res[i]["eBookName"],
-              eBookNum: res[i]["eBookNum"],
-              eChapter: res[i]["eChapter"],
-              eVerse: res[i]["eVerse"],
-              groupId: res[i]["groupId"],
-              orderBy: res[i]["orderBy"]));
+              (i) =>
+              DailyReading(
+                  dateId: res[i]["dateId"],
+                  sId: res[i]["sId"],
+                  sBookName: res[i]["sBookName"],
+                  sBookNum: res[i]["sBookNum"],
+                  sChapter: res[i]["sChapter"],
+                  sVerse: res[i]["sVerse"],
+                  sVerseSummary: res[i]["sVerseSummary"],
+                  eId: res[i]["eId"],
+                  eBookName: res[i]["eBookName"],
+                  eBookNum: res[i]["eBookNum"],
+                  eChapter: res[i]["eChapter"],
+                  eVerse: res[i]["eVerse"],
+                  groupId: res[i]["groupId"],
+                  orderBy: res[i]["orderBy"]));
     }
 
     return dailyReadingList;
