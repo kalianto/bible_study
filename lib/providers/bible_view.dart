@@ -18,7 +18,8 @@ class BibleViewProvider {
             'a.t as bookText, b.n as bookName ' +
             'from ${bibleVersion.table} a ' +
             'join ${bibleVersion.keyTable} b on b.b = a.b ' +
-            'where ((a.b = ? and a.c = ?) OR (a.b = ? and a.c = ?))',
+            'where ((a.b = ? and a.c = ?) OR (a.b = ? and a.c = ?))' +
+            'order by a.id ASC',
         [item.sBookNum, item.sChapter, item.eBookNum, item.eChapter]);
 
     if (res.length > 0) {
@@ -31,6 +32,7 @@ class BibleViewProvider {
                 bookChapter: res[k]["bookChapter"],
                 bookVerse: res[k]["bookVerse"],
                 bibleVersion: bibleVersion.table,
+                bibleCode: bibleVersion.abbreviation,
                 bookText: res[k]["bookText"],
               ));
 
