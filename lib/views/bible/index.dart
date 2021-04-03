@@ -1,9 +1,10 @@
 import 'package:bible_study/app_theme.dart';
-import 'package:bible_study/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:share/share.dart';
+import 'package:flutter/services.dart';
 
 import '../../models/bible_view.dart';
 import '../../models/bible_version.dart';
@@ -83,20 +84,98 @@ class _BibleViewPageState extends State<BibleViewPage> {
                         value: 'clear',
                         child: Text('Clear'),
                       ),
+                      const PopupMenuItem<String>(
+                        value: 'copy',
+                        child: Text('Copy'),
+                      ),
                       const PopupMenuItem<String>(value: 'share', child: Text('Share'))
                     ],
                     onSelected: (value) {
-                      if (value == 'clear') {
-                        setState(() {
-                          selectedList.clear();
-                        });
+                      String shareMessage = '';
+                      if (value != 'clear') {
+                        selectedList.sort((a, b) => a.id.compareTo(b.id));
+                        shareMessage = _generateShareMessage(selectedList);
                       }
+
+                      if (value == 'share') {
+                        // Share.share(shareMessage);
+                      }
+
+                      if (value == 'copy') {
+                        Clipboard.setData(new ClipboardData(text: shareMessage));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: const Text('Copied to clipboard'),
+                          duration: const Duration(seconds: 2),
+                        ));
+                      }
+
+                      setState(() {
+                        selectedList.clear();
+                      });
                     },
                   ),
                 ),
               ]),
           color: AppTheme.darkGreen.withOpacity(0.8),
         ));
+  }
+
+  String _generateShareMessage(List<BibleView> selectedList) {
+    String message = '';
+    if (selectedList.length == 0) {
+      return message;
+    }
+    List<String> uniqueChapters = selectedList
+        .map((item) => item.bookNum.toString() + item.bookChapter.toString())
+        .toSet()
+        .toList();
+
+    /// case 1: same book, same chapter, verses copied in sequence
+    /// case 2: same book, same chapter, verses not in sequence
+    /// case 3: same book, different chapter, verses copied in sequence
+    /// case 4: same book, different chapter, verses copied not in sequence
+    /// case 3: different book, verses copied in sequence
+    /// case 4: different book, verses copied not in sequence
+    message = message +
+        selectedList[0].bookName +
+        ' ' +
+        selectedList[0].bookChapter.toString() +
+        ':';
+
+    List<dynamic> verseList = new List();
+    List<String> textList = new List();
+
+    if (uniqueChapters.length == 1) {
+      verseList.add(selectedList[0].bookVerse);
+      textList.add(selectedList[0].bookText);
+      verseList.add('-');
+      for (var i = 1; i < selectedList.length; i++) {
+        if ((selectedList[i].bookVerse - selectedList[i-1].bookVerse) == 1) {
+          if (verseList.last is int) {
+            if (verseList[verseList.length - 2] == '-') {
+              verseList.removeLast();
+            } else if (verseList[verseList.length - 2] == ',') {
+              verseList.add('-');
+            }
+          }
+          verseList.add(selectedList[i].bookVerse);
+          textList.add(selectedList[i].bookText);
+        } else {
+          if (verseList.last == '-') {
+            verseList.removeLast();
+          }
+          verseList.add(',');
+          verseList.add(selectedList[i].bookVerse);
+          textList.add(selectedList[i].bookText);
+        }
+      }
+      message = message + verseList.join();
+      // message = message + '\n' + textList.join(' ');
+    } else {
+
+    }
+    print(message);
+    return message;
   }
 
   Widget bibleViewAppBar() {
@@ -109,26 +188,25 @@ class _BibleViewPageState extends State<BibleViewPage> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(
-                left: 16,
-                right: 16,
+                left: 10,
+                right: 10,
                 top: 16 - 8.0 * topBarOpacity,
                 bottom: 12 - 8.0 * topBarOpacity),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
-                  height: 38,
-                  width: 38,
-                  child: IconButton(
-                    icon: const Icon(FontAwesomeIcons.arrowLeft),
-                    onPressed: () => Navigator.of(context).pop(),
-                    tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                    color: AppTheme.darkGrey,
-                  ),
+                IconButton(
+                  icon: const Icon(FontAwesomeIcons.arrowLeft),
+                  iconSize: 22,
+                  onPressed: () => Navigator.of(context).pop(),
+                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  color: AppTheme.darkGrey,
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    child:
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                  Flexible(
+                    // padding: const EdgeInsets.all(8.0),
                     child: FittedBox(
                       fit: BoxFit.fitWidth,
                       child: Text(widget.readingItem.shortSummary(),
@@ -136,14 +214,14 @@ class _BibleViewPageState extends State<BibleViewPage> {
                           style: TextStyle(
                             fontFamily: AppTheme.fontName,
                             fontWeight: FontWeight.w700,
-                            fontSize: 22 + 6 - 6 * topBarOpacity,
+                            fontSize: 20,
                             letterSpacing: 1.2,
                             color: AppTheme.darkGrey,
                           )),
                     ),
                   ),
-                ),
-                buildBibleVersion(context),
+                  buildBibleVersion(context),
+                ])),
               ],
             ),
           )
@@ -162,7 +240,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
             );
           }
 
-          return Container(
+          return Align(
+            alignment: Alignment.centerRight,
             child: DropdownButtonHideUnderline(
                 child: DropdownButton(
               value: selectedBibleVersionIndex,
