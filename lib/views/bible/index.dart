@@ -129,6 +129,11 @@ class _BibleViewPageState extends State<BibleViewPage> {
         .map((item) => item.bookNum.toString() + item.bookChapter.toString())
         .toSet()
         .toList();
+    List<String> uniqueBooks = selectedList
+        .map((item) => item.bookNum.toString())
+        .toSet()
+        .toList();
+
 
     /// case 1: same book, same chapter, verses copied in sequence
     /// case 2: same book, same chapter, verses not in sequence
@@ -142,38 +147,54 @@ class _BibleViewPageState extends State<BibleViewPage> {
         selectedList[0].bookChapter.toString() +
         ':';
 
+    List<int> chapterList = new List();
+    chapterList.add(selectedList[0].bookChapter);
+
     List<dynamic> verseList = new List();
     List<String> textList = new List();
 
-    if (uniqueChapters.length == 1) {
-      verseList.add(selectedList[0].bookVerse);
-      textList.add(selectedList[0].bookText);
-      verseList.add('-');
-      for (var i = 1; i < selectedList.length; i++) {
-        if ((selectedList[i].bookVerse - selectedList[i-1].bookVerse) == 1) {
-          if (verseList.last is int) {
-            if (verseList[verseList.length - 2] == '-') {
-              verseList.removeLast();
-            } else if (verseList[verseList.length - 2] == ',') {
-              verseList.add('-');
-            }
-          }
-          verseList.add(selectedList[i].bookVerse);
-          textList.add(selectedList[i].bookText);
-        } else {
-          if (verseList.last == '-') {
-            verseList.removeLast();
-          }
-          verseList.add(',');
-          verseList.add(selectedList[i].bookVerse);
-          textList.add(selectedList[i].bookText);
+    verseList.add(selectedList[0].bookVerse);
+    textList.add(selectedList[0].bookText);
+    verseList.add('-');
+    for (var i = 1; i < selectedList.length; i++) {
+      // different chapter
+      if (selectedList[i].bookChapter != chapterList.last) {
+        chapterList.add(selectedList[i].bookChapter);
+        if (verseList.last == '-') {
+          verseList.removeLast();
         }
+        verseList.add(' | ');
+        verseList.add(selectedList[i].bookChapter.toString());
+        verseList.add(':');
       }
-      message = message + verseList.join();
-      // message = message + '\n' + textList.join(' ');
-    } else {
-
+      // add verse and text
+      if ((selectedList[i].bookVerse - selectedList[i-1].bookVerse) == 1) {
+        if (verseList.last is int) {
+          if (verseList[verseList.length - 2] == '-') {
+            verseList.removeLast();
+          } else if (verseList[verseList.length - 2] == ',' || verseList[verseList.length - 2] == ':') {
+            verseList.add('-');
+          }
+        }
+        verseList.add(selectedList[i].bookVerse);
+        textList.add(selectedList[i].bookText);
+      } else {
+        if (verseList.last == '-') {
+          verseList.removeLast();
+        }
+        if (verseList.last != ':') {
+          verseList.add(',');
+        }
+        verseList.add(selectedList[i].bookVerse);
+        textList.add(selectedList[i].bookText);
+      }
     }
+    // add bible version abbreviation
+    verseList.add(' (' + selectedList[0].bibleCode + ')');
+
+    message = message + verseList.join();
+    message = message + '\n' + textList.join(' ');
+
     print(message);
     return message;
   }
