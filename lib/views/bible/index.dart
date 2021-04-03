@@ -98,7 +98,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
                       }
 
                       if (value == 'share') {
-                        // Share.share(shareMessage);
+                        Share.share(shareMessage);
                       }
 
                       if (value == 'copy') {
@@ -120,83 +120,93 @@ class _BibleViewPageState extends State<BibleViewPage> {
         ));
   }
 
+  /// Generate share/copy message function
+  ///
+  /// case 1: same book, same chapter, verses copied in sequence
+  /// case 2: same book, same chapter, verses not in sequence
+  /// case 3: same book, different chapter, verses copied in sequence
+  /// case 4: same book, different chapter, verses copied not in sequence
+  /// case 3: different book, verses copied in sequence
+  /// case 4: different book, verses copied not in sequence
   String _generateShareMessage(List<BibleView> selectedList) {
-    String message = '';
     if (selectedList.length == 0) {
+      return '';
+    }
+
+    /// Function to craft the message
+    String buildMessage(List<BibleView> selectedList) {
+      String message = selectedList[0].bookName +
+          ' ' +
+          selectedList[0].bookChapter.toString() +
+          ':';
+      // chapter list for checking
+      List<int> chapterList = new List();
+      chapterList.add(selectedList[0].bookChapter);
+
+      // verse list for messge concatenation
+      List<dynamic> verseList = new List();
+      verseList.add(selectedList[0].bookVerse);
+      verseList.add('-');
+
+      // text list for bible content
+      List<String> textList = new List();
+      textList.add(selectedList[0].bookText);
+
+      for (var i = 1; i < selectedList.length; i++) {
+        // different chapter
+        if (selectedList[i].bookChapter != chapterList.last) {
+          chapterList.add(selectedList[i].bookChapter);
+          if (verseList.last == '-') {
+            verseList.removeLast();
+          }
+          verseList.add(' | ');
+          // verseList.add(selectedList[i].bookName + ' ');
+          verseList.add(selectedList[i].bookChapter.toString());
+          verseList.add(':');
+        }
+        // add verse and text
+        if ((selectedList[i].bookVerse - selectedList[i - 1].bookVerse) == 1) {
+          if (verseList.last is int) {
+            if (verseList[verseList.length - 2] == '-') {
+              verseList.removeLast();
+            } else
+            if (verseList[verseList.length - 2] == ',' || verseList[verseList.length - 2] == ':') {
+              verseList.add('-');
+            }
+          }
+          verseList.add(selectedList[i].bookVerse);
+          textList.add(selectedList[i].bookText);
+        } else {
+          if (verseList.last == '-') {
+            verseList.removeLast();
+          }
+          if (verseList.last != ':') {
+            verseList.add(',');
+          }
+          verseList.add(selectedList[i].bookVerse);
+          textList.add(selectedList[i].bookText);
+        }
+      }
+      // add bible version abbreviation
+      verseList.add(' (' + selectedList[0].bibleCode + ')');
+
+      message = message + verseList.join();
+      message = message + '\n' + textList.join(' ');
       return message;
     }
-    List<String> uniqueChapters = selectedList
-        .map((item) => item.bookNum.toString() + item.bookChapter.toString())
-        .toSet()
-        .toList();
-    List<String> uniqueBooks = selectedList
-        .map((item) => item.bookNum.toString())
+
+    List<int> uniqueBooks = selectedList
+        .map((item) => item.bookNum)
         .toSet()
         .toList();
 
+    List<dynamic> message = new List();
+    uniqueBooks.forEach((element) {
+      List<BibleView> bookItems = selectedList.where((item) => item.bookNum == element).toList();
+      message.add(buildMessage(bookItems));
+    });
 
-    /// case 1: same book, same chapter, verses copied in sequence
-    /// case 2: same book, same chapter, verses not in sequence
-    /// case 3: same book, different chapter, verses copied in sequence
-    /// case 4: same book, different chapter, verses copied not in sequence
-    /// case 3: different book, verses copied in sequence
-    /// case 4: different book, verses copied not in sequence
-    message = message +
-        selectedList[0].bookName +
-        ' ' +
-        selectedList[0].bookChapter.toString() +
-        ':';
-
-    List<int> chapterList = new List();
-    chapterList.add(selectedList[0].bookChapter);
-
-    List<dynamic> verseList = new List();
-    List<String> textList = new List();
-
-    verseList.add(selectedList[0].bookVerse);
-    textList.add(selectedList[0].bookText);
-    verseList.add('-');
-    for (var i = 1; i < selectedList.length; i++) {
-      // different chapter
-      if (selectedList[i].bookChapter != chapterList.last) {
-        chapterList.add(selectedList[i].bookChapter);
-        if (verseList.last == '-') {
-          verseList.removeLast();
-        }
-        verseList.add(' | ');
-        verseList.add(selectedList[i].bookChapter.toString());
-        verseList.add(':');
-      }
-      // add verse and text
-      if ((selectedList[i].bookVerse - selectedList[i-1].bookVerse) == 1) {
-        if (verseList.last is int) {
-          if (verseList[verseList.length - 2] == '-') {
-            verseList.removeLast();
-          } else if (verseList[verseList.length - 2] == ',' || verseList[verseList.length - 2] == ':') {
-            verseList.add('-');
-          }
-        }
-        verseList.add(selectedList[i].bookVerse);
-        textList.add(selectedList[i].bookText);
-      } else {
-        if (verseList.last == '-') {
-          verseList.removeLast();
-        }
-        if (verseList.last != ':') {
-          verseList.add(',');
-        }
-        verseList.add(selectedList[i].bookVerse);
-        textList.add(selectedList[i].bookText);
-      }
-    }
-    // add bible version abbreviation
-    verseList.add(' (' + selectedList[0].bibleCode + ')');
-
-    message = message + verseList.join();
-    message = message + '\n' + textList.join(' ');
-
-    print(message);
-    return message;
+    return message.join('\n');
   }
 
   Widget bibleViewAppBar() {
