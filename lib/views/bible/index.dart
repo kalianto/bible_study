@@ -1,5 +1,6 @@
 import 'package:bible_study/app_theme.dart';
 import 'package:bible_study/database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -54,7 +55,48 @@ class _BibleViewPageState extends State<BibleViewPage> {
           child: _buildReadingView(context),
         ),
       ]),
+      bottomNavigationBar: _buildBottomNavigationBar(context),
     ));
+  }
+
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    if (selectedList.isEmpty) {
+      return Padding(padding: const EdgeInsets.all(0));
+    }
+    return Padding(
+        padding: const EdgeInsets.all(0),
+        child: Container(
+          padding: const EdgeInsets.only(left: 14),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Text('${selectedList.length} verse' +
+                      (selectedList.length > 1 ? 's selected' : ' selected')),
+                ),
+                Container(
+                  child: PopupMenuButton(
+                    icon: const FaIcon(FontAwesomeIcons.ellipsisV, size: 16),
+                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                      const PopupMenuItem<String>(
+                        value: 'clear',
+                        child: Text('Clear'),
+                      ),
+                      const PopupMenuItem<String>(value: 'share', child: Text('Share'))
+                    ],
+                    onSelected: (value) {
+                      if (value == 'clear') {
+                        setState(() {
+                          selectedList.clear();
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ]),
+          color: AppTheme.darkGreen.withOpacity(0.8),
+        ));
   }
 
   Widget bibleViewAppBar() {
