@@ -1,4 +1,3 @@
-import 'package:bible_study/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -6,14 +5,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share/share.dart';
 import 'package:flutter/services.dart';
 
+import '../../app_theme.dart';
 import '../../models/bible_view.dart';
 import '../../models/bible_version.dart';
 import '../../models/daily_reading.dart';
 import '../../providers/bible_view.dart';
-import '../../providers/bible_version.dart';
+import 'bible_app_bar.dart';
 
 class BibleViewPage extends StatefulWidget {
-  BibleViewPage({Key, key, this.readingItem}) : super(key: Key);
+  BibleViewPage({Key key, this.readingItem}) : super(key: key);
 
   final DailyReading readingItem;
 
@@ -30,7 +30,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
   double topBarOpacity = 1.0;
 
   List<BibleVersion> bibleVersionList = List();
-  int selectedBibleVersionIndex = 1;
+  int selectedBibleVersionIndex = 8;
 
   List<BibleView> selectedList = List();
 
@@ -50,7 +50,12 @@ class _BibleViewPageState extends State<BibleViewPage> {
         child: Scaffold(
       key: _scaffoldKey,
       body: Stack(children: <Widget>[
-        bibleViewAppBar(),
+        //bibleViewAppBar(),
+        new BibleAppBar(
+          dailyReadingItem: widget.readingItem,
+          selectedIndex: selectedBibleVersionIndex,
+          setSelectedIndex: setSelectedIndex,
+        ),
         Container(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
           child: _buildReadingView(context),
@@ -135,10 +140,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
 
     /// Function to craft the message
     String buildMessage(List<BibleView> selectedList) {
-      String message = selectedList[0].bookName +
-          ' ' +
-          selectedList[0].bookChapter.toString() +
-          ':';
+      String message =
+          selectedList[0].bookName + ' ' + selectedList[0].bookChapter.toString() + ':';
       // chapter list for checking
       List<int> chapterList = new List();
       chapterList.add(selectedList[0].bookChapter);
@@ -169,8 +172,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
           if (verseList.last is int) {
             if (verseList[verseList.length - 2] == '-') {
               verseList.removeLast();
-            } else
-            if (verseList[verseList.length - 2] == ',' || verseList[verseList.length - 2] == ':') {
+            } else if (verseList[verseList.length - 2] == ',' ||
+                verseList[verseList.length - 2] == ':') {
               verseList.add('-');
             }
           }
@@ -187,21 +190,22 @@ class _BibleViewPageState extends State<BibleViewPage> {
           textList.add(selectedList[i].bookText);
         }
       }
-      // add bible version abbreviation
+
+      /// clean up extra '-'
       if (verseList.last == '-') {
         verseList.removeLast();
       }
+
+      /// add bible version abbreviation
       verseList.add(' (' + selectedList[0].bibleCode + ')');
 
+      /// join the message
       message = message + verseList.join();
       message = message + '\n' + textList.join(' ');
       return message;
     }
 
-    List<int> uniqueBooks = selectedList
-        .map((item) => item.bookNum)
-        .toSet()
-        .toList();
+    List<int> uniqueBooks = selectedList.map((item) => item.bookNum).toSet().toList();
 
     List<dynamic> message = new List();
     uniqueBooks.forEach((element) {
@@ -212,91 +216,10 @@ class _BibleViewPageState extends State<BibleViewPage> {
     return message.join('\n');
   }
 
-  Widget bibleViewAppBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.darkGrey.withOpacity(0.4),
-      ),
-      height: 60,
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 16 - 8.0 * topBarOpacity,
-                bottom: 12 - 8.0 * topBarOpacity),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                IconButton(
-                  icon: const Icon(FontAwesomeIcons.arrowLeft),
-                  iconSize: 22,
-                  onPressed: () => Navigator.of(context).pop(),
-                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                  color: AppTheme.darkGrey,
-                ),
-                Expanded(
-                    child:
-                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-                  Flexible(
-                    // padding: const EdgeInsets.all(8.0),
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(widget.readingItem.shortSummary(),
-                          //textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontFamily: AppTheme.fontName,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            letterSpacing: 1.2,
-                            color: AppTheme.darkGrey,
-                          )),
-                    ),
-                  ),
-                  buildBibleVersion(context),
-                ])),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget buildBibleVersion(BuildContext context) {
-    return FutureBuilder(
-        future: getBibleVersion(),
-        builder: (context, snapshot) {
-          if (ConnectionState.active != null && !snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return Align(
-            alignment: Alignment.centerRight,
-            child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-              value: selectedBibleVersionIndex,
-              items: snapshot.data.map<DropdownMenuItem<int>>((item) {
-                return DropdownMenuItem<int>(
-                    child: Text(item.abbreviation, style: AppTheme.headline6), value: item.id);
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedBibleVersionIndex = value;
-                });
-              },
-            )),
-          );
-        });
-  }
-
-  Future<List<BibleVersion>> getBibleVersion() async {
-    var dbClient = BibleVersionProvider();
-    List<BibleVersion> bibleVersionList = await dbClient.getAllBibleVersion();
-    return bibleVersionList;
+  void setSelectedIndex(int index) {
+    setState(() {
+      selectedBibleVersionIndex = index;
+    });
   }
 
   Future _scrollToIndex(context) async {

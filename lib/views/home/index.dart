@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../app_theme.dart';
-import '../../common/bottom_gnav_bar.dart';
+// import '../../common/bottom_gnav_bar.dart';
 import 'drawer.dart';
 
 // import 'daily_reading.dart';
-import 'today_reading.dart';
+// import 'today_reading.dart';
 import 'reading_item.dart';
 
 class Home extends StatefulWidget {
