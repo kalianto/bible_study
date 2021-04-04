@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:bible_study/app_config.dart';
+import 'package:bible_study/common/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   final _suburbController = TextEditingController();
   final _stateController = TextEditingController();
   final _postcodeController = TextEditingController();
+  String profileIcon = 'userImage.png';
 
   @override
   void initState() {
@@ -43,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
 
   void _loadProfile() async {
     final prefs = await SharedPreferences.getInstance();
-    final key = '_profile';
+    final key = AppConfig.profile;
     Profile profile = (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
     _setProfile(profile);
   }
@@ -121,6 +124,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
       _addressController.text = profile.address ?? null;
       _stateController.text = profile.state ?? null;
       _postcodeController.text = profile.postcode ?? null;
+      profileIcon = profile.profileIcon ?? 'userImage.png';
     });
   }
 
@@ -280,7 +284,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
               child: ElevatedButton(
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
-                    final key = '_profile';
+                    final key = AppConfig.profile;
                     Profile updatedProfile = new Profile(
                       email: _emailController.text,
                       firstName: _firstNameController.text,
@@ -290,6 +294,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                       suburb: _suburbController.text,
                       state: _stateController.text,
                       postcode: _postcodeController.text,
+                      profileIcon: profileIcon,
                     );
 
                     /// save profile to SharedPreferences
@@ -526,14 +531,22 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      height: 50,
-                      width: 50,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                        child: Image.asset('assets/images/userImage.png'),
-                      ),
-                    ),
+                    InkWell(
+                        onTap: () {
+                          if (_editing) {
+                            _showProfileIconDialog(context);
+                          }
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                            child: Image.asset(
+                              'assets/images/$profileIcon',
+                            ),
+                          ),
+                        )),
                     Container(width: 15.0),
                     Expanded(
                         child: Column(
@@ -589,5 +602,53 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         ),
       ],
     ));
+  }
+
+  List<SimpleDialogOption> _generateProfileIconList(BuildContext context) {
+    return List.generate(
+        8,
+        (i) => SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, 'userImage-${i + 1}.png');
+              },
+              child: Row(children: <Widget>[
+                Container(
+                    height: 32,
+                    width: 32,
+                    color: AppTheme.darkGrey.withOpacity(0.1),
+                    child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                          child: Image.asset(
+                            'assets/images/userImage-${i + 1}.png',
+                          ),
+                        ))),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text('Profile ${i + 1}'),
+                )
+              ]),
+            ));
+  }
+
+  _showProfileIconDialog(BuildContext context) {
+    SimpleDialog dialog = SimpleDialog(
+      title: const Text('Select Profile Icon'),
+      children: _generateProfileIconList(context),
+    );
+
+    Future futureValue = showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return dialog;
+        });
+
+    futureValue.then((newProfileIcon) {
+      /// save profile icon to sharedPreference
+      setState(() {
+        profileIcon = newProfileIcon;
+      });
+    });
   }
 }
