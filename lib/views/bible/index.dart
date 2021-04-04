@@ -188,6 +188,9 @@ class _BibleViewPageState extends State<BibleViewPage> {
         }
       }
       // add bible version abbreviation
+      if (verseList.last == '-') {
+        verseList.removeLast();
+      }
       verseList.add(' (' + selectedList[0].bibleCode + ')');
 
       message = message + verseList.join();
