@@ -8,7 +8,7 @@ class Profile {
   final String suburb;
   final String state;
   final String postcode;
-  final String imageFile;
+  final String profileIcon;
 
   Profile({
     this.firstName,
@@ -20,7 +20,7 @@ class Profile {
     this.suburb,
     this.state,
     this.postcode,
-    this.imageFile,
+    this.profileIcon,
   });
 
   String fullName() {
@@ -40,7 +40,7 @@ class Profile {
       suburb: json['suburb'] as String,
       state: json['state'] as String,
       postcode: json['postcode'] as String,
-      imageFile: json['imageFile'] as String,
+      profileIcon: json['profileIcon'] as String,
     );
   }
 
@@ -61,6 +61,6 @@ class Profile {
         'suburb': suburb,
         'state': state,
         'postcode': postcode,
-        'imageFile': imageFile,
+        'profileIcon': profileIcon,
       };
 }
