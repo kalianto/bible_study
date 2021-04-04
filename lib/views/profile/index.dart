@@ -526,13 +526,18 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      height: 50,
-                      width: 50,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                        child: Image.asset('assets/images/userImage.png'),
-                      ),
+                    InkWell(
+                      onTap: () {
+                        
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                          child: Image.asset('assets/images/userImage.png'),
+                        ),
+                      )
                     ),
                     Container(width: 15.0),
                     Expanded(

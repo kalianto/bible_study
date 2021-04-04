@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
+import '../../app_config.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -120,8 +121,9 @@ class _RegisterState extends State<RegisterPage> {
                         //   // TODO: alertdialog with error
                         // }
                         final prefs = await SharedPreferences.getInstance();
-                        final key = '_profile';
+                        final key = AppConfig.profile;
                         prefs.setString(key, jsonEncode({'email': _usernameController.text}));
+                        prefs.setBool(AppConfig.isLoggedIn, true);
                         Navigator.popAndPushNamed(context, '/home');
                       },
                     ),
