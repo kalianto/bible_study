@@ -4,8 +4,10 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share/share.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
+import '../../app_config.dart';
 import '../../models/bible_view.dart';
 import '../../models/bible_version.dart';
 import '../../models/daily_reading.dart';
@@ -30,7 +32,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
   double topBarOpacity = 1.0;
 
   List<BibleVersion> bibleVersionList = List();
-  int selectedBibleVersionIndex = 8;
+  int selectedBibleVersionIndex; // = 8;
 
   List<BibleView> selectedList = List();
 
@@ -40,8 +42,15 @@ class _BibleViewPageState extends State<BibleViewPage> {
     scrollController = AutoScrollController(
         viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.vertical);
-    // bibleVersionList =
+    _loadBibleVersion();
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(context));
+  }
+
+  void _loadBibleVersion() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = AppConfig.bibleVersion;
+    int version = prefs.getInt(key) ?? 1;
+    setSelectedIndex(version);
   }
 
   @override

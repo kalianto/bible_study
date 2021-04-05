@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
+import '../../app_config.dart';
 import '../../models/bible_version.dart';
 import '../../providers/bible_version.dart';
 import '../../models/daily_reading.dart';
@@ -24,6 +26,12 @@ class _BibleAppBarState extends State<BibleAppBar> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void saveBibleVersion(int bibleVersionId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = AppConfig.bibleVersion;
+    prefs.setInt(key, bibleVersionId);
   }
 
   Widget buildBibleVersion(BuildContext context) {
@@ -89,6 +97,9 @@ class _BibleAppBarState extends State<BibleAppBar> {
 
     futureValue.then((bibleVersion) {
       if (bibleVersion != null) {
+        /// TODO: Should we do it here???
+        /// Reason we do it here because the interface to update it is here
+        saveBibleVersion(bibleVersion);
         widget.setSelectedIndex(bibleVersion);
       }
     });
