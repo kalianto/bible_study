@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:bible_study/app_config.dart';
-import 'package:bible_study/common/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app_config.dart';
 import '../../app_theme.dart';
 import '../../common/child_page_appbar.dart';
 import '../../models/profile.dart';

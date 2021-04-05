@@ -30,7 +30,7 @@ class HomeDrawer extends StatelessWidget {
     DrawerList(Icon(FontAwesomeIcons.envelope, color: AppTheme.yellowText), 'Messages',
         'Messages from other users', '/login'),
     DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL',
-        'COOL group details', '/register'),
+        'COOL group details', '/cool-group'),
     DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.deactivatedText), 'Settings',
         'Personal settings, App settings', '/settings'),
     DrawerList(Icon(FontAwesomeIcons.fileAlt, color: AppTheme.blueText), 'Sample Pages',

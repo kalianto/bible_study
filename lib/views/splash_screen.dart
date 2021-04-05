@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:bible_study/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../app_theme.dart';
 import '../models/profile.dart';
 import '../app_config.dart';
 
@@ -86,8 +86,8 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             SizedBox(height: 50),
             FloatingActionButton.extended(
-              onPressed: () async {
-                await _loadProfile();
+              onPressed: () {
+                _loadProfile();
                 if (!isLoggedIn) {
                   Navigator.pushNamed(context, '/login');
                 } else if (profile.email == null) {

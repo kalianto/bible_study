@@ -13,6 +13,8 @@ class DailyReading {
   final int eVerse;
   final int groupId;
   final int orderBy;
+  final String bibleVersion;
+  final String bibleCode;
 
   DailyReading({this.dateId,
     this.sId,
@@ -27,7 +29,10 @@ class DailyReading {
     this.eChapter,
     this.eVerse,
     this.groupId,
-    this.orderBy});
+    this.orderBy,
+    this.bibleVersion,
+    this.bibleCode,
+  });
 
   String shortSummary() {
     String startTitle = this.sBookName + ' ' + this.sChapter.toString() + ':' +

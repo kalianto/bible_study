@@ -12,7 +12,7 @@ class BibleViewProvider {
   Future<List<BibleView>> getBibleView(DailyReading item, int bibleVersionId) async {
     var dbClient = await dbProvider.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
-    List<BibleView> bibleViewList = new List();
+    List<BibleView> bibleViewList = [];
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
         'SELECT a.id, a.b as bookNum, a.c as bookChapter, a.v as bookVerse, ' +
             'a.t as bookText, b.n as bookName ' +
@@ -33,11 +33,14 @@ class BibleViewProvider {
                 bookVerse: res[k]["bookVerse"],
                 bibleVersion: bibleVersion.table,
                 bibleCode: bibleVersion.abbreviation,
-                bookText: res[k]["bookText"],
+                bookText: parseText(res[k]["bookText"]),
               ));
-
     }
 
     return bibleViewList;
+  }
+  
+  String parseText(String text) {
+    return text.replaceAll(new RegExp(r"\\"), "");
   }
 }

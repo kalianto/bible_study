@@ -40,7 +40,7 @@ class Profile {
       suburb: json['suburb'] as String,
       state: json['state'] as String,
       postcode: json['postcode'] as String,
-      profileIcon: json['profileIcon'] as String,
+      profileIcon: json['profileIcon'] ?? 'userImage.png',
     );
   }
 
