@@ -152,16 +152,16 @@ class _BibleViewPageState extends State<BibleViewPage> {
       String message =
           selectedList[0].bookName + ' ' + selectedList[0].bookChapter.toString() + ':';
       // chapter list for checking
-      List<int> chapterList = new List();
+      List<int> chapterList = [];
       chapterList.add(selectedList[0].bookChapter);
 
       // verse list for messge concatenation
-      List<dynamic> verseList = new List();
+      List<dynamic> verseList = [];
       verseList.add(selectedList[0].bookVerse);
       verseList.add('-');
 
       // text list for bible content
-      List<String> textList = new List();
+      List<String> textList = [];
       textList.add(selectedList[0].bookText);
 
       for (var i = 1; i < selectedList.length; i++) {
@@ -216,7 +216,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
 
     List<int> uniqueBooks = selectedList.map((item) => item.bookNum).toSet().toList();
 
-    List<dynamic> message = new List();
+    List<dynamic> message = [];
     uniqueBooks.forEach((element) {
       List<BibleView> bookItems = selectedList.where((item) => item.bookNum == element).toList();
       message.add(buildMessage(bookItems));
@@ -256,6 +256,73 @@ class _BibleViewPageState extends State<BibleViewPage> {
         highlightColor: AppTheme.darkGrey.withOpacity(0.5),
       );
 
+  Widget _getBibleText(BibleView data) {
+    if (data.bibleCode.toLowerCase() == 'web') {
+      List<String> matchedText = [];
+      String text = data.bookText.replaceAllMapped(new RegExp(r'({.*?})'), (match) {
+        matchedText.add(match.group(0));
+        return '*';
+      });
+      if (matchedText.length > 0) {
+        List<String> splitText = text.split('*');
+
+        if ((splitText.length - 1) == matchedText.length) {
+          List<Widget> textSpan = [];
+          for (var i = 0; i < splitText.length; i++) {
+            textSpan.add(Text(splitText[i], style: AppTheme.body1));
+            if (i < matchedText.length) {
+              textSpan.add(InkWell(
+                  onTap: () {
+                    _showBibleTextDialog(matchedText[i]);
+                  },
+                  child: Text('*',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1,
+                      ))));
+            }
+          }
+          return Wrap(direction: Axis.horizontal, children: textSpan);
+          // return Text(data.bookText, style: AppTheme.body1);
+        } else {
+          return Text(data.bookText, style: AppTheme.body1);
+        }
+      } else {
+        return Text(data.bookText, style: AppTheme.body1);
+      }
+    } else {
+      return Text(data.bookText, style: AppTheme.body1);
+    }
+  }
+
+  Future<void> _showBibleTextDialog(String refText) async {
+    String text = refText.replaceAll(new RegExp(r'{|}'), '');
+    AlertDialog dialog = AlertDialog(
+      title: Text('Reference'),
+      content: SingleChildScrollView(
+          child: ListBody(
+        children: <Widget>[Text(text, style: AppTheme.body1)],
+      )),
+      actions: <Widget>[
+        TextButton(
+            child: Text('Close'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+      ],
+    );
+
+    Future futureValue = showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return dialog;
+      }
+    );
+
+    return futureValue;
+  }
+
   Widget _getRowOnly(int index, BibleView data) => InkWell(
         onTap: () {
           setState(() {
@@ -283,7 +350,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
                     data.bookVerse.toString(),
                     style: AppTheme.body2,
                   )),
-              Expanded(child: Text(data.bookText, style: AppTheme.body1)),
+              Expanded(child: _getBibleText(data)),
             ],
           ),
         ),
@@ -303,12 +370,14 @@ class _BibleViewPageState extends State<BibleViewPage> {
       builder: (context, snapshot) {
         if (ConnectionState.active != null && !snapshot.hasData) {
           return Center(
-              child: Column(children: <Widget>[
-            SizedBox(height: 20),
-            CircularProgressIndicator(),
-            SizedBox(height: 40),
-            Text('Loading Daily Reading ...'),
-          ]));
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                CircularProgressIndicator(),
+                SizedBox(height: 30),
+                Text('Loading Daily Reading'),
+              ]));
         }
 
         if (ConnectionState.done != null && snapshot.hasError) {

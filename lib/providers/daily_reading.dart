@@ -14,7 +14,7 @@ class DailyReadingProvider {
     var dateId = DateFormat('dMM').format(date);
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
 
-    List<DailyReading> dailyReadingList = new List();
+    List<DailyReading> dailyReadingList = [];
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
         'select a.start as sId, a.end as eId, ' +
             'd.n as sBookName, b.b as sBookNum, b.c as sChapter , b.v as sVerse, ' +

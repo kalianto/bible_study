@@ -36,7 +36,7 @@ class BibleVersionProvider {
 
   Future<List<BibleVersion>> getAllBibleVersion() async {
     var dbClient = await dbProvider.db;
-    List<BibleVersion> bibleVersionList = new List();
+    List<BibleVersion> bibleVersionList = [];
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
         'SELECT a.id, a."table", a.abbreviation, a.language, a.version, a.info_text, ' +
             'a.info_url, a.publisher, a.copyright, a.copyright_info ' +
