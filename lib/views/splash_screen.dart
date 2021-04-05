@@ -86,8 +86,8 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             SizedBox(height: 50),
             FloatingActionButton.extended(
-              onPressed: () async {
-                await _loadProfile();
+              onPressed: () {
+                _loadProfile();
                 if (!isLoggedIn) {
                   Navigator.pushNamed(context, '/login');
                 } else if (profile.email == null) {

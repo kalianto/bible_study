@@ -2,7 +2,6 @@ import 'package:bible_study/common/child_page_appbar.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/child_page_appbar.dart';
-import '../../app_theme.dart';
 
 class SettingsPage extends StatefulWidget {
   @override

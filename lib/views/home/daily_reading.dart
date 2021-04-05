@@ -1,244 +1,214 @@
-// import 'dart:ui';
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
+import '../../models/daily_reading.dart';
+import '../../providers/daily_reading.dart';
 
-class DailyReading extends StatefulWidget {
-  DailyReading({Key key, this.scrollController, this.animationController}) : super(key: key);
-
-  final ScrollController scrollController;
-  final AnimationController animationController;
-
+class DailyReadingPage extends StatefulWidget {
   @override
-  _DailyReadingState createState() => _DailyReadingState();
+  _DailyReadingPageState createState() => _DailyReadingPageState();
 }
 
-class _DailyReadingState extends State<DailyReading> {
-  List<Widget> listViews = <Widget>[];
+class _DailyReadingPageState extends State<DailyReadingPage> {
+  DateTime today;
 
   @override
   void initState() {
-    for (var i = 1; i < 5; i++) {
-      listViews.add(readingItem(i));
-      listViews.add(SizedBox(height: 10));
-    }
     super.initState();
+    today = new DateTime.now();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  String _formatDate(DateTime date) {
+    return DateFormat('dd MMM yyyy').format(date);
   }
 
-  Future<bool> getData() async {
-    /// get today reading material
+  Widget _buildItem(BuildContext context, AppColorTheme colorTheme, DailyReading item) {
+    return Container(
+        padding: const EdgeInsets.only(bottom: 12.0),
+        child: ClipPath(
+            clipper: ShapeBorderClipper(
+                shape: RoundedRectangleBorder(
+              borderRadius: AppTheme.borderRadius2,
+            )),
+            child: InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/bible-view', arguments: item);
+                },
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    // height: 150,
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: colorTheme.lightColor.withOpacity(0.8),
+                        border: Border(
+                          left: BorderSide(
+                              width: 10.0, color: colorTheme.darkColor, style: BorderStyle.solid),
+                        )),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 4),
+                                Text(item.shortSummary(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: colorTheme.darkColor,
+                                        fontSize: 18)),
+                                SizedBox(height: 8),
+                                Text(
+                                  item.firstVerse(),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: AppTheme.deactivatedText,
+                                      fontSize: 12),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(0),
+                            child: IconButton(
+                              padding: const EdgeInsets.all(0),
+                              icon: FaIcon(
+                                // FontAwesomeIcons.solidCheckCircle,
+                                FontAwesomeIcons.arrowCircleRight,
+                                color: colorTheme.darkColor,
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/bible-view', arguments: item);
+                              },
+                              splashColor: colorTheme.darkColor,
+                            ),
+                          ),
+                        ])))));
+  }
 
-    await Future<dynamic>.delayed(const Duration(milliseconds: 50));
-    return true;
+  void previousDay() {
+    setState(() {
+      today = today.subtract(const Duration(days: 1));
+    });
+  }
+
+  void nextDay() {
+    setState(() {
+      today = today.add(const Duration(days: 1));
+    });
+  }
+
+  void pickDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: today,
+      firstDate: today.subtract(const Duration(days: 365)),
+      lastDate: today.add(const Duration(days: 365)),
+    );
+    if (picked != null && picked != today) {
+      setState(() {
+        today = picked;
+      });
+    }
+  }
+
+  Future<List<DailyReading>> getDailyReadingSummary(DateTime date) async {
+    var dbClient = DailyReadingProvider();
+    List<DailyReading> dailyReadingList = await dbClient.getDailyReading(date);
+    return dailyReadingList;
   }
 
   @override
   Widget build(BuildContext context) {
-    return buildReadingItem();
-  }
-
-  Widget buildReadingItem() {
-    return FutureBuilder<bool>(
-        future: getData(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if (!snapshot.hasData) {
-            return const SizedBox();
-          } else {
-            return Container(
-              padding: const EdgeInsets.only(left: 14, right: 14),
-              child: ListView.builder(
-                controller: widget.scrollController,
-                scrollDirection: Axis.vertical,
-                itemCount: listViews.length,
-                itemBuilder: (BuildContext context, int index) {
-                  // widget.animationController.forward();
-                  return listViews[index];
-                },
-                padding: const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 20),
-              ),
-            );
-          }
-        });
-  }
-
-  Widget readingItem(int index) {
     return Container(
-      decoration: AppTheme.boxDecoration,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-                child: Padding(
-              // padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                children: <Widget>[
-                  // boxRowContainer(),
-                  boxRowContainer(),
-                  // Divider(),
-                  boxRow(index),
-                  // boxRow(index),
-                  // SizedBox(height: 8),
-                  // boxRowContainer(),
-                ],
-              ),
-            )),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget boxRowContainer() {
-    return Container(
-      color: AppTheme.grey.withOpacity(0.1),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 4, bottom: 2),
-                  child: Text(
-                    'Mazmur 91',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: AppTheme.fontName,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      letterSpacing: 1.0,
-                      color: AppTheme.purple,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    SizedBox(width: 28, height: 28, child: FaIcon(FontAwesomeIcons.bible)),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4, bottom: 3),
-                      child: Text(
-                        'Another Text',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: AppTheme.fontName,
-                          // fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          color: AppTheme.grey,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4, bottom: 3),
-                      child: Text(
-                        'Kcal',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: AppTheme.fontName,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          letterSpacing: -0.2,
-                          color: AppTheme.grey.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
+        padding: const EdgeInsets.only(left: 24, right: 24),
+        // color: AppTheme.lightGrey,
+        // height: 360,
+        child: Column(children: <Widget>[
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+            IconButton(
+              icon: FaIcon(FontAwesomeIcons.angleLeft),
+              onPressed: previousDay,
             ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget boxRow(int index) {
-    return Row(
-      children: <Widget>[
-        /// Left border orange color
-        Container(
-          height: 48,
-          width: 2,
-          decoration: BoxDecoration(
-            color: AppTheme.green,
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 0, bottom: 2),
-                child: Text(
-                  'Amsal 31',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontFamily: AppTheme.fontName,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    // letterSpacing: 1.0,
-                    color: AppTheme.darkGreen,
-                  ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TextButton(
+                child: Text(_formatDate(today),
+                    style: TextStyle(
+                        color: AppTheme.darkGrey, fontSize: 20, fontWeight: FontWeight.w600)),
+                onPressed: () => pickDate(context),
+                style: TextButton.styleFrom(
+                  enableFeedback: true,
+                  primary: AppTheme.lightGreen,
+                  shadowColor: AppTheme.lightGreen,
+                  onSurface: AppTheme.lightGreen,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: FaIcon(
-                      FontAwesomeIcons.bible,
-                      size: 18,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4, bottom: 3),
-                    child: Text(
-                      'Just A Text $index',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: AppTheme.fontName,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: AppTheme.darkerText,
+            ),
+            IconButton(
+              icon: FaIcon(FontAwesomeIcons.angleRight),
+              onPressed: nextDay,
+            ),
+          ]),
+          SizedBox(height: 10),
+          Column(children: <Widget>[_buildReadingItemSummary(context, today)]),
+        ]));
+  }
+
+  Widget _buildReadingItemSummary(BuildContext context, DateTime date) {
+    return FutureBuilder(
+        future: getDailyReadingSummary(date),
+        builder: (context, snapshot) {
+          if (ConnectionState.active != null && !snapshot.hasData) {
+            return Center(
+                child: Column(children: <Widget>[
+              SizedBox(height: 20),
+              CircularProgressIndicator(),
+              SizedBox(height: 40),
+              Text('Loading Daily Reading ...'),
+            ]));
+          }
+
+          if (ConnectionState.done != null && snapshot.hasError) {
+            return Center(child: Text(snapshot.error));
+          }
+
+          if (ConnectionState.done != null && snapshot.data.length == 0) {
+            return Row(children: <Widget>[
+              Expanded(
+                  child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: AppTheme.redText.withOpacity(0.2),
+                        borderRadius: AppTheme.borderRadius,
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, bottom: 3),
-                    child: Text(
-                      'Kcal',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: AppTheme.fontName,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                        letterSpacing: -0.2,
-                        color: AppTheme.grey.withOpacity(0.5),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        )
-      ],
-    );
+                      child: Column(children: <Widget>[
+                        Text('Unable to load item for',
+                            textAlign: TextAlign.center, style: AppTheme.subtitle1),
+                        SizedBox(height: 10),
+                        Text(_formatDate(today), style: AppTheme.headline6),
+                      ])))
+            ]);
+          }
+
+          return ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return _buildItem(
+                  context,
+                  new AppColorTheme(
+                      darkColor: AppTheme.colorSet2[index]['darkColor'],
+                      lightColor: AppTheme.colorSet2[index]['lightColor']),
+                  snapshot.data[index]);
+            },
+          );
+        });
   }
 }
