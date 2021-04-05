@@ -7,6 +7,9 @@ import '../../models/daily_reading.dart';
 import '../../providers/daily_reading.dart';
 
 class DailyReadingPage extends StatefulWidget {
+  DailyReadingPage({Key key, this.bibleVersionIndex}) : super(key: key);
+
+  final int bibleVersionIndex;
   @override
   _DailyReadingPageState createState() => _DailyReadingPageState();
 }
@@ -117,9 +120,9 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
     }
   }
 
-  Future<List<DailyReading>> getDailyReadingSummary(DateTime date) async {
+  Future<List<DailyReading>> getDailyReadingSummary(DateTime date, int bibleVersionId) async {
     var dbClient = DailyReadingProvider();
-    List<DailyReading> dailyReadingList = await dbClient.getDailyReading(date);
+    List<DailyReading> dailyReadingList = await dbClient.getDailyReading(date, bibleVersionId: bibleVersionId);
     return dailyReadingList;
   }
 
@@ -162,7 +165,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
 
   Widget _buildReadingItemSummary(BuildContext context, DateTime date) {
     return FutureBuilder(
-        future: getDailyReadingSummary(date),
+        future: getDailyReadingSummary(date, widget.bibleVersionIndex),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(

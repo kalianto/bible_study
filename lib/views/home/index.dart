@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
+import '../../app_config.dart';
 import 'drawer.dart';
 import 'daily_reading.dart';
 
@@ -20,6 +22,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Animation<double> topBarAnimation;
   double topBarOpacity = 1.0;
   final ScrollController scrollController = ScrollController();
+
+  int selectedBibleVersionIndex;
 
   @override
   void initState() {
@@ -49,8 +53,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         }
       }
     });
-
+    _loadBibleVersion();
     super.initState();
+  }
+
+  void _loadBibleVersion() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = AppConfig.bibleVersion;
+    int version = prefs.getInt(key) ?? 1;
+    setSelectedIndex(version);
+  }
+
+  void setSelectedIndex(int index) {
+    setState(() {
+      selectedBibleVersionIndex = index;
+    });
   }
 
   // opening the home drawer
@@ -71,36 +88,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         key: _scaffoldKey,
         body: Stack(
           children: <Widget>[
-            // Container(
-            //   height: 105,
-            //   width: MediaQuery.of(context).size.width,
-            //   // color: AppTheme.purple,
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.only(
-            //         topLeft: Radius.zero,
-            //         topRight: Radius.zero,
-            //         bottomLeft: Radius.circular(90),
-            //         bottomRight: Radius.circular(90)),
-            //     color: AppTheme.purple,
-            //   ),
-            // ),
             homeAppBar(),
             buildHomeContent(context),
-            // TodayReading(),
-            // DailyReading(
-            //     scrollController: scrollController, animationController: animationController),
-            // SizedBox(
-            //   height: MediaQuery.of(context).padding.bottom,
-            // )
           ],
         ),
         drawer: HomeDrawer(),
-        // bottomNavigationBar: BottomGNavBar(),
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.add),
-        // ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // backgroundColor: Colors.black,
       ),
     );
   }
@@ -110,23 +102,17 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         padding: const EdgeInsets.only(top: 80, bottom: 0),
         child: SingleChildScrollView(
           child: Column(children: <Widget>[
-            // Container(child: TodayReading()),
-            Container(child: DailyReadingPage()),
+            Container(child: DailyReadingPage(bibleVersionIndex: selectedBibleVersionIndex)),
             SizedBox(height: 20),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-              Text('Rhema',
-                  style: TextStyle(
-                      color: AppTheme.darkGrey, fontSize: 18, fontWeight: FontWeight.w600)),
-            ])),
-            // Container(child: ReadingItem()),
-            // SizedBox(height: 20),
+                  Text('Rhema',
+                      style: TextStyle(
+                          color: AppTheme.darkGrey, fontSize: 18, fontWeight: FontWeight.w600)),
+                ])),
           ]),
         ));
-    // child: Container(
-    //   child: DailyReading(
-    //     scrollController: scrollController, animationController: animationController)));
   }
 
   Widget homeAppBar() {
@@ -157,10 +143,10 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(
                       'Daily Reading',
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.left,
                       style: TextStyle(
                         fontFamily: AppTheme.fontName,
                         fontWeight: FontWeight.w600,
@@ -171,6 +157,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
+                Container(
+                    padding: const EdgeInsets.all(0),
+                    child: IconButton(
+                      icon: FaIcon(FontAwesomeIcons.cog, color: AppTheme.purple),
+                      onPressed: () {
+                        print('Daily Reading Settings');
+                      },
+                    ))
               ],
             ),
           )
