@@ -7,7 +7,8 @@ import '../../providers/bible_version.dart';
 import '../../models/daily_reading.dart';
 
 class BibleAppBar extends StatefulWidget {
-  BibleAppBar({Key key, this.dailyReadingItem, this.selectedIndex, this.setSelectedIndex}) : super(key: key);
+  BibleAppBar({Key key, this.dailyReadingItem, this.selectedIndex, this.setSelectedIndex})
+      : super(key: key);
 
   final DailyReading dailyReadingItem;
   final int selectedIndex;
@@ -23,7 +24,6 @@ class _BibleAppBarState extends State<BibleAppBar> {
   @override
   void initState() {
     super.initState();
-
   }
 
   Widget buildBibleVersion(BuildContext context) {
@@ -36,17 +36,16 @@ class _BibleAppBarState extends State<BibleAppBar> {
             );
           }
 
-          return Container(
-              child: InkWell(
-                  onTap: () {
-                    _showBibleVersionDialog(context, snapshot.data);
-                  },
-                  child: Chip(
-                      backgroundColor: AppTheme.blueText.withOpacity(0.8),
-                      label: Text(
-                        snapshot.data[widget.selectedIndex - 1].abbreviation,
-                        style: TextStyle(color: AppTheme.nearlyWhite, fontWeight: FontWeight.w600),
-                      ))));
+          return InkWell(
+              onTap: () {
+                _showBibleVersionDialog(context, snapshot.data);
+              },
+              child: Chip(
+                  backgroundColor: AppTheme.blueText.withOpacity(0.8),
+                  label: Text(
+                    snapshot.data[widget.selectedIndex - 1].abbreviation,
+                    style: TextStyle(color: AppTheme.nearlyWhite, fontWeight: FontWeight.w600),
+                  )));
         });
   }
 
@@ -56,21 +55,24 @@ class _BibleAppBarState extends State<BibleAppBar> {
     return bibleVersionList;
   }
 
-  List<SimpleDialogOption> _generateBibleVersionDialogItem(BuildContext context, List<BibleVersion> data) {
-    return List.generate(data.length, (i) => SimpleDialogOption(
-      onPressed: () {
-        Navigator.pop(context, data[i].id);
-      },
-      child: Row(
-        children: <Widget>[
-          Container(
-            width: 50,
-            child: Text(data[i].abbreviation),
-          ),
-          Padding(padding: const EdgeInsets.all(10), child: Text(data[i].version)),
-        ],
-      ),
-    ));
+  List<SimpleDialogOption> _generateBibleVersionDialogItem(
+      BuildContext context, List<BibleVersion> data) {
+    return List.generate(
+        data.length,
+        (i) => SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, data[i].id);
+              },
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: 50,
+                    child: Text(data[i].abbreviation),
+                  ),
+                  Padding(padding: const EdgeInsets.all(10), child: Text(data[i].version)),
+                ],
+              ),
+            ));
   }
 
   _showBibleVersionDialog(BuildContext context, List<BibleVersion> data) {
@@ -80,17 +82,17 @@ class _BibleAppBarState extends State<BibleAppBar> {
     );
 
     Future futureValue = showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return dialog;
-      });
+        context: context,
+        builder: (BuildContext context) {
+          return dialog;
+        });
 
     futureValue.then((bibleVersion) {
-      widget.setSelectedIndex(bibleVersion);
+      if (bibleVersion != null) {
+        widget.setSelectedIndex(bibleVersion);
+      }
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
