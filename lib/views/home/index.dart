@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+import 'package:share/share.dart';
 
 import '../../app_theme.dart';
 import '../../app_config.dart';
 import 'drawer.dart';
 import 'daily_reading.dart';
+import '../../models/daily_reading.dart';
+import '../../providers/daily_reading.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -187,15 +189,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           child: Text('Share Summary'),
                         ),
                       ],
-                      onSelected: (value) {
+                      onSelected: (value) async {
+                        List<DailyReading> listItems = await getDailyReadingSummary(date, selectedBibleVersionIndex);
+                        String readingSummary = List.generate(listItems.length, (i) => listItems[i].shortSummary()).join('\n');
                         if (value == 'copy') {
-                          Clipboard.setData(new ClipboardData(text: 'Message'));
+                          Clipboard.setData(new ClipboardData(text: readingSummary));
                           ScaffoldMessenger.of(context)
                             ..removeCurrentSnackBar()
                             ..showSnackBar(SnackBar(
                               content: const Text('Copied to clipboard'),
                               duration: const Duration(seconds: 2),
                             ));
+                        }
+                        if (value == 'share') {
+                          Share.share(readingSummary);
                         }
                       },
                     ))
@@ -205,5 +212,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  Future<List<DailyReading>> getDailyReadingSummary(DateTime date, int bibleVersionId) async {
+    var dbClient = DailyReadingProvider();
+    List<DailyReading> dailyReadingList =
+    await dbClient.getDailyReading(date, bibleVersionId: bibleVersionId);
+    return dailyReadingList;
   }
 }
