@@ -8,7 +8,8 @@ import '../../providers/daily_reading.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 
 class DailyReadingPage extends StatefulWidget {
-  DailyReadingPage({Key key, this.bibleVersionIndex, this.date, this.setBibleVersion}) : super(key: key);
+  DailyReadingPage({Key key, this.bibleVersionIndex, this.date, this.setBibleVersion})
+      : super(key: key);
 
   final int bibleVersionIndex;
   final DateTime date;
@@ -19,7 +20,6 @@ class DailyReadingPage extends StatefulWidget {
 }
 
 class _DailyReadingPageState extends State<DailyReadingPage> {
-
   @override
   void initState() {
     super.initState();
@@ -29,7 +29,9 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 10),
-      child: Column(children: <Widget>[_buildReadingItemSummary(context, widget.date)]),
+      child: Column(children: <Widget>[
+        _buildReadingItemSummary(context, widget.date, widget.bibleVersionIndex)
+      ]),
     );
   }
 
@@ -110,9 +112,9 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
     return dailyReadingList;
   }
 
-  Widget _buildReadingItemSummary(BuildContext context, DateTime date) {
+  Widget _buildReadingItemSummary(BuildContext context, DateTime date, int bibleVersionIndex) {
     return FutureBuilder(
-        future: getDailyReadingSummary(date, widget.bibleVersionIndex),
+        future: getDailyReadingSummary(date, bibleVersionIndex),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
