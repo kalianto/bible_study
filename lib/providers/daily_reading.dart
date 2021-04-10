@@ -38,7 +38,7 @@ class DailyReadingProvider {
                   sBookNum: res[i]["sBookNum"],
                   sChapter: res[i]["sChapter"],
                   sVerse: res[i]["sVerse"],
-                  sVerseSummary: res[i]["sVerseSummary"],
+                  sVerseSummary: res[i]["sVerseSummary"].replaceAll(new RegExp(r'\\'), ''),
                   eId: res[i]["eId"],
                   eBookName: res[i]["eBookName"],
                   eBookNum: res[i]["eBookNum"],

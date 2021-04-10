@@ -23,9 +23,11 @@ class BibleAppBar extends StatefulWidget {
 class _BibleAppBarState extends State<BibleAppBar> {
   double topBarOpacity = 1.0;
 
+  int selectedBibleIndex;
   @override
   void initState() {
     super.initState();
+    selectedBibleIndex = widget.selectedIndex;
   }
 
   void saveBibleVersion(int bibleVersionId) async {
@@ -100,6 +102,9 @@ class _BibleAppBarState extends State<BibleAppBar> {
         /// TODO: Should we do it here???
         /// Reason we do it here because the interface to update it is here
         saveBibleVersion(bibleVersion);
+        setState(() {
+          selectedBibleIndex = bibleVersion;
+        });
         widget.setSelectedIndex(bibleVersion);
       }
     });
@@ -126,7 +131,7 @@ class _BibleAppBarState extends State<BibleAppBar> {
                 IconButton(
                   icon: const Icon(FontAwesomeIcons.arrowLeft),
                   iconSize: 22,
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => Navigator.pop(context, widget.selectedIndex),
                   tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                   color: AppTheme.darkGrey,
                 ),
