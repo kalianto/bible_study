@@ -1,30 +1,36 @@
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../app_theme.dart';
 import '../../models/daily_reading.dart';
 import '../../providers/daily_reading.dart';
+import '../../helpers/date_helper.dart' as DateHelper;
 
 class DailyReadingPage extends StatefulWidget {
-  DailyReadingPage({Key key, this.bibleVersionIndex}) : super(key: key);
+  DailyReadingPage({Key key, this.bibleVersionIndex, this.date, this.setBibleVersion}) : super(key: key);
 
   final int bibleVersionIndex;
+  final DateTime date;
+  final setBibleVersion;
+
   @override
   _DailyReadingPageState createState() => _DailyReadingPageState();
 }
 
 class _DailyReadingPageState extends State<DailyReadingPage> {
-  DateTime today;
 
   @override
   void initState() {
     super.initState();
-    today = new DateTime.now();
   }
 
-  String _formatDate(DateTime date) {
-    return DateFormat('dd MMM yyyy').format(date);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 10),
+      child: Column(children: <Widget>[_buildReadingItemSummary(context, widget.date)]),
+    );
   }
 
   Widget _buildItem(BuildContext context, AppColorTheme colorTheme, DailyReading item) {
@@ -36,8 +42,11 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
               borderRadius: AppTheme.borderRadius2,
             )),
             child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/bible-view', arguments: item);
+                onTap: () async {
+                  final result = await Navigator.pushNamed(context, '/bible-view', arguments: item);
+                  if (result != null) {
+                    widget.setBibleVersion(result);
+                  }
                 },
                 child: Container(
                     width: MediaQuery.of(context).size.width,
@@ -94,73 +103,11 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
                         ])))));
   }
 
-  void previousDay() {
-    setState(() {
-      today = today.subtract(const Duration(days: 1));
-    });
-  }
-
-  void nextDay() {
-    setState(() {
-      today = today.add(const Duration(days: 1));
-    });
-  }
-
-  void pickDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: today,
-      firstDate: today.subtract(const Duration(days: 365)),
-      lastDate: today.add(const Duration(days: 365)),
-    );
-    if (picked != null && picked != today) {
-      setState(() {
-        today = picked;
-      });
-    }
-  }
-
   Future<List<DailyReading>> getDailyReadingSummary(DateTime date, int bibleVersionId) async {
     var dbClient = DailyReadingProvider();
-    List<DailyReading> dailyReadingList = await dbClient.getDailyReading(date, bibleVersionId: bibleVersionId);
+    List<DailyReading> dailyReadingList =
+        await dbClient.getDailyReading(date, bibleVersionId: bibleVersionId);
     return dailyReadingList;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.only(left: 24, right: 24),
-        // color: AppTheme.lightGrey,
-        // height: 360,
-        child: Column(children: <Widget>[
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-            IconButton(
-              icon: FaIcon(FontAwesomeIcons.angleLeft),
-              onPressed: previousDay,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextButton(
-                child: Text(_formatDate(today),
-                    style: TextStyle(
-                        color: AppTheme.darkGrey, fontSize: 20, fontWeight: FontWeight.w600)),
-                onPressed: () => pickDate(context),
-                style: TextButton.styleFrom(
-                  enableFeedback: true,
-                  primary: AppTheme.lightGreen,
-                  shadowColor: AppTheme.lightGreen,
-                  onSurface: AppTheme.lightGreen,
-                ),
-              ),
-            ),
-            IconButton(
-              icon: FaIcon(FontAwesomeIcons.angleRight),
-              onPressed: nextDay,
-            ),
-          ]),
-          SizedBox(height: 10),
-          Column(children: <Widget>[_buildReadingItemSummary(context, today)]),
-        ]));
   }
 
   Widget _buildReadingItemSummary(BuildContext context, DateTime date) {
@@ -194,7 +141,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
                         Text('Unable to load item for',
                             textAlign: TextAlign.center, style: AppTheme.subtitle1),
                         SizedBox(height: 10),
-                        Text(_formatDate(today), style: AppTheme.headline6),
+                        Text(DateHelper.formatDate(date), style: AppTheme.headline6),
                       ])))
             ]);
           }

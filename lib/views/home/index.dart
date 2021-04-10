@@ -1,6 +1,9 @@
+import 'package:bible_study/views/home/date_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../../app_theme.dart';
 import '../../app_config.dart';
@@ -24,9 +27,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   final ScrollController scrollController = ScrollController();
 
   int selectedBibleVersionIndex;
+  DateTime date;
 
   @override
   void initState() {
+    super.initState();
     animationController =
         AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
@@ -53,11 +58,18 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         }
       }
     });
-    _loadBibleVersion();
-    super.initState();
+
+    _getBibleVersion();
+    date = new DateTime.now();
   }
 
-  void _loadBibleVersion() async {
+  void setDate(DateTime newDate) {
+    setState(() {
+      date = newDate;
+    });
+  }
+
+  void _getBibleVersion() async {
     final prefs = await SharedPreferences.getInstance();
     final key = AppConfig.bibleVersion;
     int version = prefs.getInt(key) ?? 1;
@@ -97,12 +109,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
+  /// Get Today Reading Item
+
   Widget buildHomeContent(BuildContext context) {
     return Container(
         padding: const EdgeInsets.only(top: 80, bottom: 0),
         child: SingleChildScrollView(
           child: Column(children: <Widget>[
-            Container(child: DailyReadingPage(bibleVersionIndex: selectedBibleVersionIndex)),
+            DateSelector(date: date, setDate: setDate),
+            Container(
+                child: new DailyReadingPage(bibleVersionIndex: selectedBibleVersionIndex, date: date, setBibleVersion: setSelectedIndex)),
             SizedBox(height: 20),
             Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -159,10 +175,28 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 ),
                 Container(
                     padding: const EdgeInsets.all(0),
-                    child: IconButton(
-                      icon: FaIcon(FontAwesomeIcons.cog, color: AppTheme.purple),
-                      onPressed: () {
-                        print('Daily Reading Settings');
+                    child: PopupMenuButton(
+                      icon: FaIcon(FontAwesomeIcons.cog, size: 22, color: AppTheme.purple),
+                      itemBuilder: (BuildContext contex) => <PopupMenuEntry<String>>[
+                        const PopupMenuItem<String>(
+                          value: 'copy',
+                          child: Text('Copy Summary'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'share',
+                          child: Text('Share Summary'),
+                        ),
+                      ],
+                      onSelected: (value) {
+                        if (value == 'copy') {
+                          Clipboard.setData(new ClipboardData(text: 'Message'));
+                          ScaffoldMessenger.of(context)
+                            ..removeCurrentSnackBar()
+                            ..showSnackBar(SnackBar(
+                              content: const Text('Copied to clipboard'),
+                              duration: const Duration(seconds: 2),
+                            ));
+                        }
                       },
                     ))
               ],
