@@ -53,25 +53,33 @@ class _BibleViewPageState extends State<BibleViewPage> {
     setSelectedIndex(version);
   }
 
+  Future<bool> _onBackButtonPressed() {
+    print('Selected index $selectedBibleVersionIndex');
+    Navigator.pop(context, selectedBibleVersionIndex);
+    return Future.value(true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      key: _scaffoldKey,
-      body: Stack(children: <Widget>[
-        //bibleViewAppBar(),
-        new BibleAppBar(
-          dailyReadingItem: widget.readingItem,
-          selectedIndex: selectedBibleVersionIndex,
-          setSelectedIndex: setSelectedIndex,
-        ),
-        Container(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
-          child: _buildReadingView(context),
-        ),
-      ]),
-      bottomNavigationBar: _buildBottomNavigationBar(context),
-    ));
+    return new WillPopScope(
+        onWillPop: _onBackButtonPressed,
+        child: SafeArea(
+            child: Scaffold(
+          key: _scaffoldKey,
+          body: Stack(children: <Widget>[
+            //bibleViewAppBar(),
+            new BibleAppBar(
+              dailyReadingItem: widget.readingItem,
+              selectedIndex: selectedBibleVersionIndex,
+              setSelectedIndex: setSelectedIndex,
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
+              child: _buildReadingView(context),
+            ),
+          ]),
+          bottomNavigationBar: _buildBottomNavigationBar(context),
+        )));
   }
 
   Widget _buildBottomNavigationBar(BuildContext context) {
@@ -314,11 +322,10 @@ class _BibleViewPageState extends State<BibleViewPage> {
     );
 
     Future futureValue = showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return dialog;
-      }
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return dialog;
+        });
 
     return futureValue;
   }

@@ -101,11 +101,11 @@ class _BibleAppBarState extends State<BibleAppBar> {
       if (bibleVersion != null) {
         /// TODO: Should we do it here???
         /// Reason we do it here because the interface to update it is here
-        saveBibleVersion(bibleVersion);
         setState(() {
+          saveBibleVersion(bibleVersion);
+          widget.setSelectedIndex(bibleVersion);
           selectedBibleIndex = bibleVersion;
         });
-        widget.setSelectedIndex(bibleVersion);
       }
     });
   }
