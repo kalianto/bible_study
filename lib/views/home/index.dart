@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:share/share.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
 import '../../app_config.dart';
@@ -61,7 +62,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       }
     });
 
-    _getBibleVersion();
+    // _getBibleVersion();
     date = new DateTime.now();
   }
 
@@ -71,12 +72,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
-  void _getBibleVersion() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = AppConfig.bibleVersion;
-    int version = prefs.getInt(key) ?? 1;
-    setSelectedIndex(version);
-  }
+  // void _getBibleVersion() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final key = AppConfig.bibleVersion;
+  //   int version = prefs.getInt(key) ?? 1;
+  //   setSelectedIndex(version);
+  // }
 
   void setSelectedIndex(int index) {
     setState(() {
@@ -97,30 +98,44 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        key: _scaffoldKey,
-        body: Stack(
-          children: <Widget>[
-            homeAppBar(),
-            buildHomeContent(context),
-          ],
-        ),
-        drawer: HomeDrawer(),
-      ),
-    );
+    return FutureProvider<MyBibleVersion>(
+      initialData: MyBibleVersion(),
+        create: (context) => loadMyBibleVersion(),
+        child: SafeArea(
+          child: Scaffold(
+            key: _scaffoldKey,
+            body: Stack(
+              children: <Widget>[
+                Consumer<MyBibleVersion>(
+                  builder: (context, myBibleVersion, child) {
+                    return homeAppBar(myBibleVersion.version);
+                  },
+                ),
+                Consumer<MyBibleVersion>(
+                  builder: (context, myBibleVersion, child) {
+                    return buildHomeContent(context, myBibleVersion);
+                  },
+                ),
+              ],
+            ),
+            drawer: HomeDrawer(),
+          ),
+        ));
   }
 
   /// Get Today Reading Item
 
-  Widget buildHomeContent(BuildContext context) {
+  Widget buildHomeContent(BuildContext context, MyBibleVersion myBibleVersion) {
     return Container(
         padding: const EdgeInsets.only(top: 80, bottom: 0),
         child: SingleChildScrollView(
           child: Column(children: <Widget>[
             DateSelector(date: date, setDate: setDate),
             Container(
-                child: new DailyReadingPage(bibleVersionIndex: selectedBibleVersionIndex, date: date, setBibleVersion: setSelectedIndex)),
+                child: new DailyReadingPage(
+                    bibleVersionIndex: myBibleVersion.version,
+                    date: date,
+                    setBibleVersion: myBibleVersion.saveMyBibleVersion)),
             SizedBox(height: 20),
             Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -133,7 +148,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         ));
   }
 
-  Widget homeAppBar() {
+  Widget homeAppBar(int bibleVersion) {
     return Container(
       child: Column(
         children: <Widget>[
@@ -179,7 +194,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     padding: const EdgeInsets.all(0),
                     child: PopupMenuButton(
                       icon: FaIcon(FontAwesomeIcons.cog, size: 22, color: AppTheme.purple),
-                      itemBuilder: (BuildContext contex) => <PopupMenuEntry<String>>[
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                         const PopupMenuItem<String>(
                           value: 'copy',
                           child: Text('Copy Summary'),
@@ -190,8 +205,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         ),
                       ],
                       onSelected: (value) async {
-                        List<DailyReading> listItems = await getDailyReadingSummary(date, selectedBibleVersionIndex);
-                        String readingSummary = List.generate(listItems.length, (i) => listItems[i].shortSummary()).join('\n');
+                        List<DailyReading> listItems =
+                            await getDailyReadingSummary(date, bibleVersion);
+                        String readingSummary =
+                            List.generate(listItems.length, (i) => listItems[i].shortSummary())
+                                .join('\n');
                         if (value == 'copy') {
                           Clipboard.setData(new ClipboardData(text: readingSummary));
                           ScaffoldMessenger.of(context)
@@ -217,7 +235,34 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Future<List<DailyReading>> getDailyReadingSummary(DateTime date, int bibleVersionId) async {
     var dbClient = DailyReadingProvider();
     List<DailyReading> dailyReadingList =
-    await dbClient.getDailyReading(date, bibleVersionId: bibleVersionId);
+        await dbClient.getDailyReading(date, bibleVersionId: bibleVersionId);
     return dailyReadingList;
   }
+}
+
+class MyBibleVersion with ChangeNotifier {
+  MyBibleVersion({this.version});
+
+  int version;
+
+  Future<void> getMyBibleVersion() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = AppConfig.bibleVersion;
+    version = prefs.getInt(key) ?? 1;
+    notifyListeners();
+  }
+
+  Future<void> saveMyBibleVersion(int bibleVersion) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = AppConfig.bibleVersion;
+    prefs.setInt(key, bibleVersion);
+    version = bibleVersion;
+    notifyListeners();
+  }
+}
+
+Future<MyBibleVersion> loadMyBibleVersion() async {
+  MyBibleVersion bibleVersion = new MyBibleVersion();
+  await bibleVersion.getMyBibleVersion();
+  return bibleVersion;
 }

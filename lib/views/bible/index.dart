@@ -19,8 +19,6 @@ class BibleViewPage extends StatefulWidget {
 
   final DailyReading readingItem;
 
-  // final BibleView item;
-
   @override
   _BibleViewPageState createState() => _BibleViewPageState();
 }
@@ -31,10 +29,10 @@ class _BibleViewPageState extends State<BibleViewPage> {
   AutoScrollController scrollController;
   double topBarOpacity = 1.0;
 
-  List<BibleVersion> bibleVersionList = List();
+  List<BibleVersion> bibleVersionList = [];
   int selectedBibleVersionIndex; // = 8;
 
-  List<BibleView> selectedList = List();
+  List<BibleView> selectedList = [];
 
   @override
   void initState() {
@@ -54,7 +52,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
   }
 
   Future<bool> _onBackButtonPressed() {
-    print('Selected index $selectedBibleVersionIndex');
     Navigator.pop(context, selectedBibleVersionIndex);
     return Future.value(true);
   }
@@ -67,7 +64,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
             child: Scaffold(
           key: _scaffoldKey,
           body: Stack(children: <Widget>[
-            //bibleViewAppBar(),
             new BibleAppBar(
               dailyReadingItem: widget.readingItem,
               selectedIndex: selectedBibleVersionIndex,

@@ -27,8 +27,8 @@ class HomeDrawer extends StatelessWidget {
   final List<DrawerList> drawerList = <DrawerList>[
     DrawerList(Icon(FontAwesomeIcons.userCircle, color: AppTheme.redText), 'Profile',
         'Edit personal details', '/profile'),
-    DrawerList(Icon(FontAwesomeIcons.envelope, color: AppTheme.yellowText), 'Messages',
-        'Messages from other users', '/login'),
+    DrawerList(Icon(FontAwesomeIcons.bible, color: AppTheme.yellowText), 'Bible',
+        'Bible in different languages', '/bible'),
     DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL',
         'COOL group details', '/cool-group'),
     DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.deactivatedText), 'Settings',
