@@ -1,4 +1,4 @@
-package com.example.bible_study
+package com.example.cool
 
 import io.flutter.embedding.android.FlutterActivity
 
