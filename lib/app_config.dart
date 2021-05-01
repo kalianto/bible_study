@@ -7,4 +7,5 @@ class AppConfig {
   static const String profile = '_profile';
   static const String dbFile = 'bible_study.db';
   static const String bibleVersion = 'bible_version';
+  static const String lastBibleVerse = 'lastBibleVerse';
 }
