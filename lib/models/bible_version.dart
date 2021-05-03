@@ -10,6 +10,7 @@ class BibleVersion {
   final String copyright;
   final String copyrightInfo;
   final String keyTable;
+  final int enabled;
 
   BibleVersion({
     this.id,
@@ -23,5 +24,23 @@ class BibleVersion {
     this.copyright,
     this.copyrightInfo,
     this.keyTable,
+    this.enabled,
   });
+
+  factory BibleVersion.fromMapEntry(Map item) {
+    return BibleVersion(
+      id: item["id"],
+      table: item["table"],
+      abbreviation: item["abbreviation"],
+      language: item["language"],
+      version: item["version"],
+      infoText: item["info_text"],
+      infoUrl: item["info_url"],
+      publisher: item["publisher"],
+      copyright: item["copyright"],
+      copyrightInfo: item["copyright_info"],
+      keyTable: 'key_' + item["language"],
+      enabled: item["enabled"],
+    );
+  }
 }

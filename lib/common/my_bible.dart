@@ -27,7 +27,7 @@ class MyBible with ChangeNotifier {
   Future<void> getMyBibleLastVerse() async {
     final prefs = await SharedPreferences.getInstance();
     final lastBibleVerseKey = AppConfig.lastBibleVerse;
-    lastBibleVerse = prefs.getInt(lastBibleVerseKey) ?? 1;
+    lastBibleVerse = prefs.getInt(lastBibleVerseKey) ?? 1001001;
     notifyListeners();
   }
 

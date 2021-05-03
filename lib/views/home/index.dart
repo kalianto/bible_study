@@ -9,7 +9,7 @@ import 'date_selector.dart';
 import 'drawer.dart';
 import 'daily_reading_item.dart';
 import '../../models/daily_reading.dart';
-import '../../common/my_bible_version.dart';
+import '../../common/my_bible.dart';
 import '../../providers/daily_reading.dart';
 
 class Home extends StatefulWidget {
@@ -52,7 +52,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           title: Text('Daily Reading'),
           backgroundColor: AppTheme.darkGreen,
           actions: <Widget>[
-            Consumer<MyBibleVersion>(builder: (context, myBibleVersion, child) {
+            Consumer<MyBible>(builder: (context, myBible, child) {
               return Container(
                   padding: const EdgeInsets.all(0),
                   child: PopupMenuButton(
@@ -69,7 +69,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     ],
                     onSelected: (value) async {
                       List<DailyReading> listItems =
-                          await getDailyReadingSummary(date, myBibleVersion.version);
+                          await getDailyReadingSummary(date, myBible.version);
                       String readingSummary =
                           List.generate(listItems.length, (i) => listItems[i].shortSummary())
                               .join('\n');
@@ -91,9 +91,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           ],
         ),
         key: _scaffoldKey,
-        body: Consumer<MyBibleVersion>(
-          builder: (context, myBibleVersion, child) {
-            return buildHomeContent(context, myBibleVersion);
+        body: Consumer<MyBible>(
+          builder: (context, myBible, child) {
+            return buildHomeContent(context, myBible);
           },
         ),
         drawer: HomeDrawer(),
@@ -101,7 +101,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  Widget buildHomeContent(BuildContext context, MyBibleVersion myBibleVersion) {
+  Widget buildHomeContent(BuildContext context, MyBible myBible) {
     return Container(
         padding: const EdgeInsets.only(top: 16, bottom: 0),
         //child: SingleChildScrollView(
@@ -109,9 +109,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           DateSelector(date: date, setDate: setDate),
           Container(
               child: new DailyReadingItem(
-                  bibleVersionIndex: myBibleVersion.version,
+                  bibleVersionIndex: myBible.version,
                   date: date,
-                  setBibleVersion: myBibleVersion.saveMyBibleVersion)),
+                  setBibleVersion: myBible.saveMyBibleVersion)),
           SizedBox(height: 20),
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 24),

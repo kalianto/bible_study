@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'app_theme.dart';
 import 'router.dart';
-import 'common/my_bible_version.dart';
+import 'common/my_bible.dart';
 
 class BibleStudy extends StatelessWidget {
   /// root of BibleStudy application
@@ -20,9 +20,9 @@ class BibleStudy extends StatelessWidget {
       systemNavigationBarDividerColor: Colors.grey,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
-    return FutureProvider<MyBibleVersion>(
-        initialData: MyBibleVersion(),
-        create: (context) => loadMyBibleVersion(),
+    return FutureProvider<MyBible>(
+        initialData: MyBible(),
+        create: (context) => loadMyBible(),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: GlobalConfiguration().getValue('appName'),
