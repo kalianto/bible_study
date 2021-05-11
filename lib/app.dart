@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'app_theme.dart';
 import 'router.dart';
-import 'common/my_bible.dart';
+import 'providers/my_bible.dart';
 
 class BibleStudy extends StatelessWidget {
   /// root of BibleStudy application
@@ -21,20 +21,21 @@ class BibleStudy extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
     return FutureProvider<MyBible>(
-        initialData: MyBible(),
-        create: (context) => loadMyBible(),
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: GlobalConfiguration().getValue('appName'),
-          theme: ThemeData(
-            primarySwatch: AppTheme.primarySwatch,
-            primaryColor: AppTheme.primaryColor,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            fontFamily: AppTheme.fontName,
-            textTheme: AppTheme.textTheme,
-          ),
-          initialRoute: '/',
-          onGenerateRoute: BaseRouter.route,
-        ));
+      initialData: MyBible(),
+      create: (context) => loadMyBible(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: GlobalConfiguration().getValue('appName'),
+        theme: ThemeData(
+          primarySwatch: AppTheme.primarySwatch,
+          primaryColor: AppTheme.primaryColor,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          fontFamily: AppTheme.fontName,
+          textTheme: AppTheme.textTheme,
+        ),
+        initialRoute: '/',
+        onGenerateRoute: BaseRouter.route,
+      )
+    );
   }
 }

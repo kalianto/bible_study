@@ -3,7 +3,7 @@ import '../database.dart';
 import '../models/bible_version.dart';
 
 class BibleVersionProvider {
-  final dbProvider = DatabaseProvider();
+  final dbProvider = DatabaseService();
 
   Future<BibleVersion> getBibleVersion(int bibleVersionId) async {
     var dbClient = await dbProvider.db;

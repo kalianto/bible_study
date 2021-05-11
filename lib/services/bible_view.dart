@@ -2,11 +2,11 @@ import 'dart:async';
 import '../database.dart';
 import '../models/daily_reading.dart';
 import '../models/bible_view.dart';
-import '../providers/bible_version.dart';
+import '../services/bible_version.dart';
 import '../models/bible_version.dart';
 
 class BibleViewProvider {
-  final dbProvider = DatabaseProvider();
+  final dbProvider = DatabaseService();
   final bibleVersionProvider = BibleVersionProvider();
 
   Future<List<BibleView>> getBibleView(DailyReading item, int bibleVersionId) async {

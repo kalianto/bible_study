@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../app_theme.dart';
 import '../../models/daily_reading.dart';
-import '../../providers/daily_reading.dart';
+import '../../services/daily_reading.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 
 class DailyReadingPage extends StatefulWidget {

@@ -7,6 +7,7 @@ import 'views/error_loading.dart';
 import 'views/home/index.dart';
 import 'views/settings/index.dart';
 import 'views/profile/index.dart';
+import 'views/bible/page.dart';
 import 'views/bible/index.dart';
 import 'views/cool_group/index.dart';
 import 'views/samples/index.dart';
@@ -39,6 +40,9 @@ class BaseRouter {
         break;
       case '/bible-view':
         return SlideFromRoute(widget: BibleViewPage(readingItem: settings.arguments), direction: 'right');
+        break;
+      case '/bible':
+        return SlideFromRoute(widget: BiblePage(), direction: 'right');
         break;
       case '/home':
         return ScaleRoute(page: Home(title: 'Home'));

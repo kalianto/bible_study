@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_theme.dart';
 import '../../app_config.dart';
 import '../../models/bible_version.dart';
-import '../../providers/bible_version.dart';
+import '../../services/bible_version.dart';
 import '../../models/daily_reading.dart';
 
 class BibleAppBar extends StatefulWidget {
@@ -53,7 +53,7 @@ class _BibleAppBarState extends State<BibleAppBar> {
               child: Chip(
                   backgroundColor: AppTheme.blueText.withOpacity(0.8),
                   label: Text(
-                    snapshot.data[widget.selectedIndex - 1].abbreviation,
+                    snapshot.data.firstWhere((item) => item.id == widget.selectedIndex)?.abbreviation,
                     style: TextStyle(color: AppTheme.nearlyWhite, fontWeight: FontWeight.w600),
                   )));
         });

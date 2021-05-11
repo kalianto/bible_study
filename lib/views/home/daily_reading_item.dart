@@ -3,33 +3,26 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../app_theme.dart';
 import '../../models/daily_reading.dart';
-import '../../providers/daily_reading.dart';
+import '../../services/daily_reading.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
+import '../../providers/my_bible.dart';
 
-class DailyReadingItem extends StatefulWidget {
-  DailyReadingItem({Key key, this.bibleVersionIndex, this.date, this.setBibleVersion})
-      : super(key: key);
+class DailyReadingItem extends StatelessWidget {
+  DailyReadingItem({
+    Key key,
+    this.date,
+    this.myBible,
+  }) : super(key: key);
 
-  final int bibleVersionIndex;
   final DateTime date;
-  final setBibleVersion;
-
-  @override
-  _DailyReadingItemState createState() => _DailyReadingItemState();
-}
-
-class _DailyReadingItemState extends State<DailyReadingItem> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  final MyBible myBible;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 10),
       child: Column(children: <Widget>[
-        _buildReadingItemSummary(context, widget.date, widget.bibleVersionIndex),
+        _buildReadingItemSummary(context, date, myBible.version),
         SizedBox(height: 20),
       ]),
     );
@@ -48,12 +41,14 @@ class _DailyReadingItemState extends State<DailyReadingItem> {
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
-                child: Column(children: <Widget>[
-              SizedBox(height: 20),
-              CircularProgressIndicator(),
-              SizedBox(height: 40),
-              Text('Loading Daily Reading ...'),
-            ]));
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 40),
+                  Text('Loading Daily Reading ...'),
+                ],
+              ));
           }
 
           if (ConnectionState.done != null && snapshot.hasError) {
@@ -63,18 +58,18 @@ class _DailyReadingItemState extends State<DailyReadingItem> {
           if (ConnectionState.done != null && snapshot.data.length == 0) {
             return Row(children: <Widget>[
               Expanded(
-                  child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: AppTheme.redText.withOpacity(0.2),
-                        borderRadius: AppTheme.borderRadius,
-                      ),
-                      child: Column(children: <Widget>[
-                        Text('Unable to load item for',
-                            textAlign: TextAlign.center, style: AppTheme.subtitle1),
-                        SizedBox(height: 10),
-                        Text(DateHelper.formatDate(date), style: AppTheme.headline6),
-                      ])))
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppTheme.redText.withOpacity(0.2),
+                    borderRadius: AppTheme.borderRadius,
+                  ),
+                  child: Column(children: <Widget>[
+                    Text('Unable to load item for',
+                        textAlign: TextAlign.center, style: AppTheme.subtitle1),
+                    SizedBox(height: 10),
+                    Text(DateHelper.formatDate(date), style: AppTheme.headline6),
+                  ])))
             ]);
           }
 
@@ -101,7 +96,7 @@ class _DailyReadingItemState extends State<DailyReadingItem> {
             onTap: () async {
               final result = await Navigator.pushNamed(context, '/bible-view', arguments: item);
               if (result != null) {
-                widget.setBibleVersion(result);
+                myBible.saveMyBibleVersion(result);
               }
             },
             child: Container(
