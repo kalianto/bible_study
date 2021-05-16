@@ -1,3 +1,4 @@
+import 'package:cool/providers/my_bible.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +11,6 @@ import '../../models/bible_version.dart';
 import '../../models/daily_reading.dart';
 import '../../services/bible_view.dart';
 import '../../providers/bible_verse_list.dart';
-// import '../../providers/my_bible.dart';
 import 'bible_bottom_bar.dart';
 
 import 'bible_app_bar.dart';
@@ -41,24 +41,14 @@ class _BibleViewPageState extends State<BibleViewPage> {
     scrollController = AutoScrollController(
         viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.vertical);
-    _loadBibleVersion();
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(context));
-  }
-
-  void _loadBibleVersion() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = AppConfig.bibleVersion;
-    int version = prefs.getInt(key) ?? 1;
-    setSelectedIndex(version);
   }
 
   @override
   Widget build(BuildContext context) {
-    /// TODO: Implement MultiProviders here
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<BibleVerseList>(create: (context) => BibleVerseList()),
-
       ],
       child: SafeArea(
         child: Scaffold(
@@ -83,12 +73,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
         )
       ),
     );
-  }
-
-  void setSelectedIndex(int index) {
-    setState(() {
-      selectedBibleVersionIndex = index;
-    });
   }
 
   Future _scrollToIndex(context) async {
@@ -227,8 +211,9 @@ class _BibleViewPageState extends State<BibleViewPage> {
       ]);
 
   Widget _buildReadingView(BuildContext context, BibleVerseList bibleVerseList) {
+    MyBible myBible = Provider.of<MyBible>(context);
     return FutureBuilder(
-      future: getBookContent(selectedBibleVersionIndex),
+      future: getBookContent(myBible.version),
       builder: (context, snapshot) {
         if (ConnectionState.active != null && !snapshot.hasData) {
           return Center(
