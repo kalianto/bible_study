@@ -1,62 +1,34 @@
+// import 'package:cool/providers/bible_verse_list.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
-import '../../app_config.dart';
+
+// import '../../app_config.dart';
 import '../../models/bible_version.dart';
 import '../../services/bible_version.dart';
 import '../../models/daily_reading.dart';
+import '../../providers/my_bible.dart';
 
-class BibleAppBar extends StatefulWidget {
-  BibleAppBar({Key key, this.dailyReadingItem, this.selectedIndex, this.setSelectedIndex})
-      : super(key: key);
+class BibleAppBar extends StatelessWidget {
+  BibleAppBar({Key key, this.dailyReadingItem}) : super(key: key);
 
   final DailyReading dailyReadingItem;
-  final int selectedIndex;
-  final setSelectedIndex;
 
-  @override
-  _BibleAppBarState createState() => _BibleAppBarState();
-}
-
-class _BibleAppBarState extends State<BibleAppBar> {
-  double topBarOpacity = 1.0;
-
-  int selectedBibleIndex;
-  @override
-  void initState() {
-    super.initState();
-    selectedBibleIndex = widget.selectedIndex;
-  }
-
-  void saveBibleVersion(int bibleVersionId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = AppConfig.bibleVersion;
-    prefs.setInt(key, bibleVersionId);
-  }
-
-  Widget buildBibleVersion(BuildContext context) {
-    return FutureBuilder(
-        future: getBibleVersion(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (ConnectionState.active != null && !snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return InkWell(
-              onTap: () {
-                _showBibleVersionDialog(context, snapshot.data);
-              },
-              child: Chip(
-                  backgroundColor: AppTheme.blueText.withOpacity(0.8),
-                  label: Text(
-                    snapshot.data.firstWhere((item) => item.id == widget.selectedIndex)?.abbreviation,
-                    style: TextStyle(color: AppTheme.nearlyWhite, fontWeight: FontWeight.w600),
-                  )));
-        });
+  Widget buildBibleVersion(BuildContext context, data, myBible) {
+    return InkWell(
+        onTap: () {
+          _showBibleVersionDialog(context, data, myBible);
+        },
+        child: Chip(
+            backgroundColor: AppTheme.blueText.withOpacity(0.8),
+            label: Text(
+              data.firstWhere((item) => item.id == myBible.version)?.abbreviation,
+              style: TextStyle(color: AppTheme.nearlyWhite, fontWeight: FontWeight.w600),
+            )));
   }
 
   Future<List<BibleVersion>> getBibleVersion() async {
@@ -85,7 +57,7 @@ class _BibleAppBarState extends State<BibleAppBar> {
             ));
   }
 
-  _showBibleVersionDialog(BuildContext context, List<BibleVersion> data) {
+  _showBibleVersionDialog(BuildContext context, List<BibleVersion> data, MyBible myBible) {
     SimpleDialog dialog = SimpleDialog(
       title: const Text('Select Bible Version'),
       children: _generateBibleVersionDialogItem(context, data),
@@ -97,69 +69,76 @@ class _BibleAppBarState extends State<BibleAppBar> {
           return dialog;
         });
 
-    futureValue.then((bibleVersion) {
+    futureValue.then((bibleVersion) async {
       if (bibleVersion != null) {
-        /// TODO: Should we do it here???
-        /// Reason we do it here because the interface to update it is here
-        setState(() {
-          saveBibleVersion(bibleVersion);
-          widget.setSelectedIndex(bibleVersion);
-          selectedBibleIndex = bibleVersion;
-        });
+        await myBible.saveMyBibleVersion(bibleVersion);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.darkGrey.withOpacity(0.4),
-      ),
-      height: 60,
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 16 - 8.0 * topBarOpacity,
-                bottom: 12 - 8.0 * topBarOpacity),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+    MyBible myBible = Provider.of<MyBible>(context);
+    return FutureBuilder(
+        future: getBibleVersion(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (ConnectionState.active != null && !snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return Container(
+            decoration: BoxDecoration(
+              color: AppTheme.darkGrey.withOpacity(0.4),
+            ),
+            height: 60,
+            child: Column(
               children: <Widget>[
-                IconButton(
-                  icon: const Icon(FontAwesomeIcons.arrowLeft),
-                  iconSize: 22,
-                  onPressed: () => Navigator.pop(context, widget.selectedIndex),
-                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                  color: AppTheme.darkGrey,
-                ),
-                Expanded(
-                    child:
-                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-                  Flexible(
-                    // padding: const EdgeInsets.all(8.0),
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(widget.dailyReadingItem.shortSummary(),
-                          //textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontFamily: AppTheme.fontName,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            letterSpacing: 1.2,
-                            color: AppTheme.darkGrey,
-                          )),
-                    ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                    top: 6,
+                    bottom: 6,
                   ),
-                  buildBibleVersion(context),
-                ])),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(FontAwesomeIcons.arrowLeft),
+                        iconSize: 22,
+                        onPressed: () => Navigator.pop(context, myBible.version),
+                        tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                        color: AppTheme.darkGrey,
+                      ),
+                      Expanded(
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                            Flexible(
+                              // padding: const EdgeInsets.all(8.0),
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Text(dailyReadingItem.shortSummary(),
+                                    //textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                      fontFamily: AppTheme.fontName,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                      letterSpacing: 1.2,
+                                      color: AppTheme.darkGrey,
+                                    )),
+                              ),
+                            ),
+                            buildBibleVersion(context, snapshot.data, myBible),
+                          ])),
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
-      ),
-    );
+          );
+        });
   }
 }

@@ -20,22 +20,48 @@ class BibleStudy extends StatelessWidget {
       systemNavigationBarDividerColor: Colors.grey,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
-    return FutureProvider<MyBible>(
-      initialData: MyBible(),
-      create: (context) => loadMyBible(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: GlobalConfiguration().getValue('appName'),
-        theme: ThemeData(
-          primarySwatch: AppTheme.primarySwatch,
-          primaryColor: AppTheme.primaryColor,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          fontFamily: AppTheme.fontName,
-          textTheme: AppTheme.textTheme,
-        ),
-        initialRoute: '/',
-        onGenerateRoute: BaseRouter.route,
-      )
+    // return FutureProvider<MyBible>(
+    //   initialData: MyBible(),
+    //   create: (context) => loadMyBible(),
+    //   child: MaterialApp(
+    //     debugShowCheckedModeBanner: false,
+    //     title: GlobalConfiguration().getValue('appName'),
+    //     theme: ThemeData(
+    //       primarySwatch: AppTheme.primarySwatch,
+    //       primaryColor: AppTheme.primaryColor,
+    //       visualDensity: VisualDensity.adaptivePlatformDensity,
+    //       fontFamily: AppTheme.fontName,
+    //       textTheme: AppTheme.textTheme,
+    //     ),
+    //     initialRoute: '/',
+    //     onGenerateRoute: BaseRouter.route,
+    //   )
+    // );
+    return FutureBuilder(
+      future: loadMyBible(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (ConnectionState.active != null && !snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return ChangeNotifierProvider<MyBible>.value(
+            value: snapshot.data,
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: GlobalConfiguration().getValue('appName'),
+              theme: ThemeData(
+                primarySwatch: AppTheme.primarySwatch,
+                primaryColor: AppTheme.primaryColor,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+                fontFamily: AppTheme.fontName,
+                textTheme: AppTheme.textTheme,
+              ),
+              initialRoute: '/',
+              onGenerateRoute: BaseRouter.route,
+            ));
+      },
     );
   }
 }

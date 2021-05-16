@@ -1,9 +1,5 @@
-import 'package:cool/views/bible/bible_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:share/share.dart';
-// import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +10,8 @@ import '../../models/bible_version.dart';
 import '../../models/daily_reading.dart';
 import '../../services/bible_view.dart';
 import '../../providers/bible_verse_list.dart';
+// import '../../providers/my_bible.dart';
+import 'bible_bottom_bar.dart';
 
 import 'bible_app_bar.dart';
 
@@ -67,11 +65,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
           key: _scaffoldKey,
           body: Stack(
             children: <Widget>[
-              /// Bible App Bar
-              new BibleAppBar(
+              BibleAppBar(
                 dailyReadingItem: widget.readingItem,
-                selectedIndex: selectedBibleVersionIndex,
-                setSelectedIndex: setSelectedIndex,
               ),
               /// Bible Content
               Container(
@@ -222,7 +217,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
         ),
       );
 
-  Widget _getRowWithHeading(int index, BibleView data, BibleVerseList bibleVerseList) => Column(children: <Widget>[
+  Widget _getRowWithHeading(int index, BibleView data, BibleVerseList bibleVerseList) =>
+      Column(children: <Widget>[
         Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child:
