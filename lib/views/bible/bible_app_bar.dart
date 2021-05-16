@@ -78,7 +78,6 @@ class BibleAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MyBible myBible = Provider.of<MyBible>(context);
     return FutureBuilder(
         future: getBibleVersion(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -105,13 +104,15 @@ class BibleAppBar extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      IconButton(
-                        icon: const Icon(FontAwesomeIcons.arrowLeft),
-                        iconSize: 22,
-                        onPressed: () => Navigator.pop(context, myBible.version),
-                        tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                        color: AppTheme.darkGrey,
-                      ),
+                      Consumer<MyBible>(builder: (context, myBible, child) {
+                        return IconButton(
+                          icon: const Icon(FontAwesomeIcons.arrowLeft),
+                          iconSize: 22,
+                          onPressed: () => Navigator.pop(context, myBible.version),
+                          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                          color: AppTheme.darkGrey,
+                        );
+                      }),
                       Expanded(
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,7 +132,9 @@ class BibleAppBar extends StatelessWidget {
                                     )),
                               ),
                             ),
-                            buildBibleVersion(context, snapshot.data, myBible),
+                            Consumer<MyBible>(builder: (context, myBible, child) {
+                              return buildBibleVersion(context, snapshot.data, myBible);
+                            }),
                           ])),
                     ],
                   ),

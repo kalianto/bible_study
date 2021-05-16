@@ -1,11 +1,9 @@
 import 'package:cool/providers/my_bible.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
-import '../../app_config.dart';
 import '../../models/bible_view.dart';
 import '../../models/bible_version.dart';
 import '../../models/daily_reading.dart';
@@ -29,11 +27,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
 
   AutoScrollController scrollController;
   double topBarOpacity = 1.0;
-
-  List<BibleVersion> bibleVersionList = [];
-  int selectedBibleVersionIndex; // = 8;
-
-  List<BibleView> selectedList = [];
 
   @override
   void initState() {
@@ -85,11 +78,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
     var dbClient = BibleViewProvider();
     List<BibleView> bibleViewList = await dbClient.getBibleView(widget.readingItem, bibleVersion);
     return bibleViewList;
-  }
-
-  bool isSelected(int id) {
-    if (selectedList.isEmpty) return false;
-    return selectedList.where((item) => item.id == id).length == 1;
   }
 
   Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
@@ -169,12 +157,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
   Widget _getRowOnly(int index, BibleView data, BibleVerseList bibleVerseList) => InkWell(
         onTap: () {
           setState(() {
-            /// TODO: Call BibleVerseList.addItems(data)
-            // if (isSelected(data.id)) {
-            //   selectedList.removeWhere((item) => item.id == data.id);
-            // } else {
-            //   selectedList.add(data);
-            // }
             bibleVerseList.addRemoveItem(data);
           });
         },
@@ -223,7 +205,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
                   children: <Widget>[
                 CircularProgressIndicator(),
                 SizedBox(height: 30),
-                Text('Loading Daily Reading'),
+                Text('Loading Content'),
               ]));
         }
 
@@ -231,8 +213,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
           return Center(child: Text(snapshot.error));
         }
 
-        /// TODO: show Book Name: Chapter
-        /// TODO: show multiple chapter??
         return ListView.builder(
             padding: const EdgeInsets.only(top: 10, bottom: 10),
             scrollDirection: Axis.vertical,
