@@ -14,9 +14,9 @@ import '../../models/daily_reading.dart';
 import '../../providers/my_bible.dart';
 
 class BibleAppBar extends StatelessWidget {
-  BibleAppBar({Key key, this.dailyReadingItem}) : super(key: key);
+  BibleAppBar({Key key, this.title}) : super(key: key);
 
-  final DailyReading dailyReadingItem;
+  final String title;
 
   Widget buildBibleVersion(BuildContext context, data, myBible) {
     return InkWell(
@@ -121,7 +121,7 @@ class BibleAppBar extends StatelessWidget {
                               // padding: const EdgeInsets.all(8.0),
                               child: FittedBox(
                                 fit: BoxFit.fitWidth,
-                                child: Text(dailyReadingItem.shortSummary(),
+                                child: Text(title,
                                     //textAlign: TextAlign.right,
                                     style: TextStyle(
                                       fontFamily: AppTheme.fontName,

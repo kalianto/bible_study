@@ -1,14 +1,19 @@
-import 'file:///C:/Kal/dev/flutter/bible_study/lib/providers/my_bible.dart';
 import 'package:cool/views/bible/bible_app_bar.dart';
 import 'package:flutter/material.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
-// import '../../app_theme.dart';
-// import '../../app_config.dart';
-// import 'bible_content.dart';
+import '../../models/daily_reading.dart';
+import '../../services/bible_view.dart';
+import '../../models/bible_view.dart';
+import '../../providers/bible_verse_list.dart';
+import '../../providers/my_bible.dart';
+import 'bible_bottom_bar.dart';
+import 'bible_app_bar.dart';
+import 'bible_content.dart';
 
 class BiblePage extends StatefulWidget {
+  BiblePage({Key key}) : super(key: key);
+
   @override
   _BiblePageState createState() => _BiblePageState();
 }
@@ -16,30 +21,40 @@ class BiblePage extends StatefulWidget {
 class _BiblePageState extends State<BiblePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  DailyReading readingItem;
+  List<BibleView> bibleContent = [];
+
   void initState() {
     super.initState();
+    _loadBibleContent();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<BibleVerseList>(create: (context) => BibleVerseList()),
+      ],
+      child: SafeArea(
+          child: Scaffold(
         key: _scaffoldKey,
-        body: Consumer<MyBible>(builder: (context, myBible, child) {
-          return Expanded(
-            child: Column(
-              children: <Widget>[
-                new BibleAppBar(
-
-                ),
-                // new BibleContent(
-                //
-                // ),
-              ]
-            )
-          );
-        }),// BibleContent(),
-      )
+        body: Stack(
+          children: <Widget>[
+            BibleAppBar(title: 'Genesis 1'),
+            BibleContent(),
+          ],
+        ),
+        bottomNavigationBar: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+          return new BibleBottomBar(bibleVerseList: bibleVerseList);
+        }),
+      )),
     );
+  }
+
+  Future<void> _loadBibleContent() async {
+    MyBible myBible = Provider.of<MyBible>(context, listen: false);
+    var dbClient = BibleViewProvider();
+    bibleContent = await dbClient.getBibleContent(
+        bibleVersionId: myBible.version, verseStart: myBible.lastBibleVerse);
   }
 }

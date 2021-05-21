@@ -5,12 +5,11 @@ import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
 import '../../models/bible_view.dart';
-import '../../models/bible_version.dart';
+// import '../../models/bible_version.dart';
 import '../../models/daily_reading.dart';
 import '../../services/bible_view.dart';
 import '../../providers/bible_verse_list.dart';
 import 'bible_bottom_bar.dart';
-
 import 'bible_app_bar.dart';
 
 class BibleViewPage extends StatefulWidget {
@@ -49,7 +48,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
           body: Stack(
             children: <Widget>[
               BibleAppBar(
-                dailyReadingItem: widget.readingItem,
+                title: widget.readingItem.shortSummary(),
               ),
               /// Bible Content
               Container(
@@ -156,9 +155,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
 
   Widget _getRowOnly(int index, BibleView data, BibleVerseList bibleVerseList) => InkWell(
         onTap: () {
-          setState(() {
-            bibleVerseList.addRemoveItem(data);
-          });
+          bibleVerseList.addRemoveItem(data);
         },
         child: Container(
           padding: const EdgeInsets.all(8),
@@ -193,47 +190,49 @@ class _BibleViewPageState extends State<BibleViewPage> {
       ]);
 
   Widget _buildReadingView(BuildContext context, BibleVerseList bibleVerseList) {
-    MyBible myBible = Provider.of<MyBible>(context);
-    return FutureBuilder(
-      future: getBookContent(myBible.version),
-      builder: (context, snapshot) {
-        if (ConnectionState.active != null && !snapshot.hasData) {
-          return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                CircularProgressIndicator(),
-                SizedBox(height: 30),
-                Text('Loading Content'),
-              ]));
-        }
+    return Consumer<MyBible>(builder: (context, myBible, child) {
+      return FutureBuilder(
+        future: getBookContent(myBible.version),
+        builder: (context, snapshot) {
+          if (ConnectionState.active != null && !snapshot.hasData) {
+            return Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(),
+                      SizedBox(height: 30),
+                      Text('Loading Content'),
+                    ]));
+          }
 
-        if (ConnectionState.done != null && snapshot.hasError) {
-          return Center(child: Text(snapshot.error));
-        }
+          if (ConnectionState.done != null && snapshot.hasError) {
+            return Center(child: Text(snapshot.error));
+          }
 
-        return ListView.builder(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            scrollDirection: Axis.vertical,
-            controller: scrollController,
-            shrinkWrap: true,
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              if (snapshot.data[index].bookVerse == 1) {
+          return ListView.builder(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              scrollDirection: Axis.vertical,
+              controller: scrollController,
+              shrinkWrap: true,
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                if (snapshot.data[index].bookVerse == 1) {
+                  return _wrapScrollTag(
+                    index: index,
+                    child: _getRowWithHeading(index, snapshot.data[index], bibleVerseList),
+                  );
+                }
+
                 return _wrapScrollTag(
                   index: index,
-                  child: _getRowWithHeading(index, snapshot.data[index], bibleVerseList),
+                  child: _getRowOnly(index, snapshot.data[index], bibleVerseList),
                 );
-              }
+                // return _getRow(index, snapshot.data);
+              });
+        },
+      );
+    });
 
-              return _wrapScrollTag(
-                index: index,
-                child: _getRowOnly(index, snapshot.data[index], bibleVerseList),
-              );
-              // return _getRow(index, snapshot.data);
-            });
-      },
-    );
   }
 }

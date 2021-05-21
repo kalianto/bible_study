@@ -30,24 +30,23 @@ class DailyReadingProvider {
     if (res.length > 0) {
       dailyReadingList = List.generate(
           res.length,
-              (i) =>
-              DailyReading(
-                  dateId: res[i]["dateId"],
-                  sId: res[i]["sId"],
-                  sBookName: res[i]["sBookName"],
-                  sBookNum: res[i]["sBookNum"],
-                  sChapter: res[i]["sChapter"],
-                  sVerse: res[i]["sVerse"],
-                  sVerseSummary: res[i]["sVerseSummary"].replaceAll(new RegExp(r'\\'), ''),
-                  eId: res[i]["eId"],
-                  eBookName: res[i]["eBookName"],
-                  eBookNum: res[i]["eBookNum"],
-                  eChapter: res[i]["eChapter"],
-                  eVerse: res[i]["eVerse"],
-                  groupId: res[i]["groupId"],
-                  orderBy: res[i]["orderBy"],
-                  bibleVersion: bibleVersion.table,
-                  bibleCode: bibleVersion.abbreviation,
+          (i) => DailyReading(
+                dateId: res[i]["dateId"],
+                sId: res[i]["sId"],
+                sBookName: res[i]["sBookName"],
+                sBookNum: res[i]["sBookNum"],
+                sChapter: res[i]["sChapter"],
+                sVerse: res[i]["sVerse"],
+                sVerseSummary: res[i]["sVerseSummary"].replaceAll(new RegExp(r'\\'), ''),
+                eId: res[i]["eId"],
+                eBookName: res[i]["eBookName"],
+                eBookNum: res[i]["eBookNum"],
+                eChapter: res[i]["eChapter"],
+                eVerse: res[i]["eVerse"],
+                groupId: res[i]["groupId"],
+                orderBy: res[i]["orderBy"],
+                bibleVersion: bibleVersion.table,
+                bibleCode: bibleVersion.abbreviation,
               ));
     }
 
