@@ -61,7 +61,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget _buildHome(BuildContext context, String title) {
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.purple,
+        // color: AppTheme.purple,
+        image: DecorationImage(
+          image: AssetImage('assets/backgrounds/nature-03.jpg'),
+          fit: BoxFit.cover,
+          // repeat: ImageRepeat.repeatY
+        ),
       ),
       child: Center(
         child: Column(

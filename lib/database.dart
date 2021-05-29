@@ -5,10 +5,10 @@ import "package:path/path.dart";
 import 'package:sqflite/sqflite.dart';
 import 'app_config.dart';
 
-class DatabaseProvider {
-  static final DatabaseProvider _instance = new DatabaseProvider.internal();
+class DatabaseService {
+  static final DatabaseService _instance = new DatabaseService.internal();
 
-  factory DatabaseProvider() => _instance;
+  factory DatabaseService() => _instance;
   static Database _db;
 
   Future<Database> get db async {
@@ -19,7 +19,7 @@ class DatabaseProvider {
     return _db;
   }
 
-  DatabaseProvider.internal();
+  DatabaseService.internal();
 
   /// Initialize DB
   initDb() async {

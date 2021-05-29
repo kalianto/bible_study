@@ -233,5 +233,6 @@ class AppTheme {
     {'darkColor': AppTheme.darkGrey, 'lightColor': AppTheme.lightGrey},
     {'darkColor': AppTheme.blueText, 'lightColor': AppTheme.cyan},
     {'darkColor': AppTheme.darkGrey, 'lightColor': AppTheme.lightGrey},
+    {'darkColor': AppTheme.darkGrey, 'lightColor': AppTheme.lightGrey},
   ];
 }

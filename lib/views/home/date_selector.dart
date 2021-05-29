@@ -25,7 +25,7 @@ class _DateSelectorState extends State<DateSelector> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 24, right: 24),
+      padding: const EdgeInsets.only(left: 12, right: 12),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
         IconButton(
           icon: FaIcon(FontAwesomeIcons.angleLeft),
