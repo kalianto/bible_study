@@ -7,8 +7,8 @@ import '../../models/bible_version.dart';
 import '../../services/bible_version.dart';
 import '../../providers/my_bible.dart';
 
-class BibleAppBar extends StatelessWidget {
-  BibleAppBar({Key key, this.title}) : super(key: key);
+class BibleReadingBar extends StatelessWidget {
+  BibleReadingBar({Key key, this.title}) : super(key: key);
 
   final String title;
 

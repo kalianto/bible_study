@@ -1,30 +1,23 @@
 import 'package:flutter/material.dart';
 
+// import '../../app_theme.dart';
 import '../../common/child_page_appbar.dart';
 
-class SettingsPage extends StatefulWidget {
+class NewsPage extends StatefulWidget {
   @override
-  _SettingsState createState() => _SettingsState();
+  _NewsPageState createState() => _NewsPageState();
 }
 
-class _SettingsState extends State<SettingsPage> {
+class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: _buildPage(context),
-      ),
-    );
-  }
-
-  Widget _buildPage(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           body: Container(
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  ChildPageAppBar(title: 'Settings'),
+                  ChildPageAppBar(title: 'News'),
                   Container(
                     padding: const EdgeInsets.only(top: 50),
                     child: SingleChildScrollView(

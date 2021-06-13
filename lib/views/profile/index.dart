@@ -137,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
             Padding(
               padding: const EdgeInsets.all(0),
               child: Text(
-                'Edit Profile',
+                'Personal',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -205,7 +205,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
             Padding(
               padding: const EdgeInsets.all(0),
               child: Text(
-                'Edit Address',
+                'Address',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -239,7 +239,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                 border: AppTheme.inputBorderless,
                 filled: true,
                 fillColor: AppTheme.notWhite,
-                labelText: 'Suburb',
+                labelText: 'Suburb/Region/Town',
                 enabled: _editing,
                 // icon: Icon(Icons.lock),
               ),
@@ -256,7 +256,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     border: AppTheme.inputBorderless,
                     filled: true,
                     fillColor: AppTheme.notWhite,
-                    labelText: 'State',
+                    labelText: 'State/Province',
                     enabled: _editing,
                     // icon: Icon(Icons.lock),
                   ),

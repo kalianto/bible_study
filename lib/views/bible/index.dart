@@ -10,7 +10,7 @@ import '../../models/daily_reading.dart';
 import '../../services/bible_view.dart';
 import '../../providers/bible_verse_list.dart';
 import 'bible_bottom_bar.dart';
-import 'bible_app_bar.dart';
+import 'bible_reading_bar.dart';
 
 class BibleViewPage extends StatefulWidget {
   BibleViewPage({Key key, this.readingItem}) : super(key: key);
@@ -47,7 +47,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
           key: _scaffoldKey,
           body: Stack(
             children: <Widget>[
-              BibleAppBar(
+              BibleReadingBar(
                 title: widget.readingItem.shortSummary(),
               ),
               /// Bible Content

@@ -31,10 +31,12 @@ class HomeDrawer extends StatelessWidget {
         'Bible in different languages', '/bible'),
     DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL',
         'COOL group details', '/cool-group'),
+    DrawerList(Icon(FontAwesomeIcons.newspaper, color: AppTheme.blueText), 'News & Updates',
+        'News, updates, announcements', '/news'),
     DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.deactivatedText), 'Settings',
         'Personal settings, App settings', '/settings'),
-    DrawerList(Icon(FontAwesomeIcons.fileAlt, color: AppTheme.blueText), 'Sample Pages',
-        'Other pages template', '/pages'),
+    // DrawerList(Icon(FontAwesomeIcons.fileAlt, color: AppTheme.blueText), 'Sample Pages',
+    //     'Other pages template', '/pages'),
   ];
 
   @override

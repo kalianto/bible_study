@@ -18,6 +18,15 @@ class _CoolGroupState extends State<CoolGroup> {
               child: Column(
                 children: <Widget>[
                   ChildPageAppBar(title: 'COOL Group'),
+                  Container(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: SingleChildScrollView(
+                        child: Container(
+                          padding: const EdgeInsets.all(40),
+                          child: Text('The content of this page is being constructed'),
+                        )
+                    ),
+                  ),
                 ],
               ),
             ),

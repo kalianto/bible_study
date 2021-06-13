@@ -1,4 +1,3 @@
-import 'package:cool/views/bible/bible_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
