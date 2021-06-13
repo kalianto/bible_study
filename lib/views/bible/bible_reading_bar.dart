@@ -3,72 +3,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
-import '../../models/bible_version.dart';
-import '../../services/bible_version.dart';
 import '../../providers/my_bible.dart';
+import 'bible_version_dialog.dart';
 
 class BibleReadingBar extends StatelessWidget {
   BibleReadingBar({Key key, this.title}) : super(key: key);
 
   final String title;
-
-  Widget buildBibleVersion(BuildContext context, data, myBible) {
-    return InkWell(
-        onTap: () {
-          _showBibleVersionDialog(context, data, myBible);
-        },
-        child: Chip(
-            backgroundColor: AppTheme.blueText.withOpacity(0.8),
-            label: Text(
-              data.firstWhere((item) => item.id == myBible.version)?.abbreviation,
-              style: TextStyle(color: AppTheme.nearlyWhite, fontWeight: FontWeight.w600),
-            )));
-  }
-
-  Future<List<BibleVersion>> getBibleVersion() async {
-    var dbClient = BibleVersionProvider();
-    List<BibleVersion> bibleVersionList = await dbClient.getAllBibleVersion();
-    return bibleVersionList;
-  }
-
-  List<SimpleDialogOption> _generateBibleVersionDialogItem(
-      BuildContext context, List<BibleVersion> data) {
-    return List.generate(
-        data.length,
-        (i) => SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context, data[i].id);
-              },
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: 50,
-                    child: Text(data[i].abbreviation),
-                  ),
-                  Padding(padding: const EdgeInsets.all(10), child: Text(data[i].version)),
-                ],
-              ),
-            ));
-  }
-
-  _showBibleVersionDialog(BuildContext context, List<BibleVersion> data, MyBible myBible) {
-    SimpleDialog dialog = SimpleDialog(
-      title: const Text('Select Bible Version'),
-      children: _generateBibleVersionDialogItem(context, data),
-    );
-
-    Future futureValue = showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return dialog;
-        });
-
-    futureValue.then((bibleVersion) async {
-      if (bibleVersion != null) {
-        await myBible.saveMyBibleVersion(bibleVersion);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +68,7 @@ class BibleReadingBar extends StatelessWidget {
                               ),
                             ),
                             Consumer<MyBible>(builder: (context, myBible, child) {
-                              return buildBibleVersion(context, snapshot.data, myBible);
+                              return BibleVersionDialog(data: snapshot.data, myBible: myBible);
                             }),
                           ])),
                     ],
