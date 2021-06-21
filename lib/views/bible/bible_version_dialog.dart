@@ -6,14 +6,24 @@ import '../../services/bible_version.dart';
 import '../../providers/my_bible.dart';
 
 class BibleVersionDialog extends StatelessWidget {
-  BibleVersionDialog({Key key, this.data, this.myBible}) : super(key: key);
+  BibleVersionDialog({Key key, this.myBible}) : super(key: key);
 
-  final List<BibleVersion> data;
   final MyBible myBible;
 
   @override
   Widget build(BuildContext context) {
-    return buildBibleVersion(context, data, myBible);
+    //return buildBibleVersion(context, data, myBible);
+    return FutureBuilder(
+      future: getBibleVersion(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (ConnectionState.active != null && !snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return buildBibleVersion(context, snapshot.data, myBible);
+      }
+    );
   }
 
   Widget buildBibleVersion(BuildContext context, data, myBible) {
