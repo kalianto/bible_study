@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_config.dart';
@@ -8,6 +10,7 @@ class MyBible with ChangeNotifier {
 
   int version;
   int lastBibleVerse;
+  String bookChapter;
 
   Future<void> getMyBibleVersion() async {
     final prefs = await SharedPreferences.getInstance();
@@ -37,6 +40,24 @@ class MyBible with ChangeNotifier {
     prefs.setInt(key, lastVerse);
     lastBibleVerse = lastVerse;
     notifyListeners();
+  }
+
+  void updateBookChapterText(String value) {
+    bookChapter = value;
+    notifyListeners();
+  }
+
+  String getBookChapterText() {
+    Map<String, dynamic> bookChapterObject = jsonDecode(bookChapter);
+    return bookChapterObject['bookName'] + ' ' + bookChapterObject['chapterStart'].toString();
+  }
+
+  int formatBibleId(int book, int chapter, int verse) {
+    return int.parse(
+      book.toString() +
+      chapter.toString().padLeft(3, '0') +
+      '001'
+    );
   }
 }
 

@@ -10,6 +10,7 @@ import 'views/profile/index.dart';
 import 'views/bible/page.dart';
 import 'views/bible/index.dart';
 import 'views/cool_group/index.dart';
+import 'views/news/index.dart';
 import 'views/samples/index.dart';
 import 'views/splash_screen.dart';
 
@@ -46,6 +47,9 @@ class BaseRouter {
         break;
       case '/home':
         return ScaleRoute(page: Home(title: 'Home'));
+        break;
+      case '/news':
+        return ScaleRoute(page: NewsPage());
         break;
       case '/':
       default:

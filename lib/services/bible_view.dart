@@ -4,6 +4,7 @@ import '../models/daily_reading.dart';
 import '../models/bible_view.dart';
 import '../services/bible_version.dart';
 import '../models/bible_version.dart';
+import '../helpers/bible_helper.dart' as BibleHelper;
 
 class BibleViewProvider {
   final dbProvider = DatabaseService();
@@ -33,7 +34,7 @@ class BibleViewProvider {
                 bookVerse: res[k]["bookVerse"],
                 bibleVersion: bibleVersion.table,
                 bibleCode: bibleVersion.abbreviation,
-                bookText: parseText(res[k]["bookText"]),
+                bookText: BibleHelper.parseText(res[k]["bookText"]),
               ));
     }
 
@@ -44,14 +45,14 @@ class BibleViewProvider {
     var dbClient = await dbProvider.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     List<BibleView> bibleViewList = [];
-    List<int> verses = splitVerse(verseStart);
-    verses.removeLast();
+    List<int> verses = BibleHelper.splitVerse(verseStart);
+    verses.removeAt(0);
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
         'SELECT a.id, a.b as bookNum, a.c as bookChapter, a.v as bookVerse, ' +
             'a.t as bookText, b.n as bookName ' +
             'from ${bibleVersion.table} a ' +
             'join ${bibleVersion.keyTable} b on b.b = a.b ' +
-            'where ((a.b = ? and a.c = ?))' +
+            'where ((a.c = ? and a.b = ?))' +
             'order by a.id ASC',
         verses);
 
@@ -66,23 +67,23 @@ class BibleViewProvider {
             bookVerse: res[k]["bookVerse"],
             bibleVersion: bibleVersion.table,
             bibleCode: bibleVersion.abbreviation,
-            bookText: parseText(res[k]["bookText"]),
+            bookText: BibleHelper.parseText(res[k]["bookText"]),
           ));
     }
 
     return bibleViewList;
   }
   
-  String parseText(String text) {
-    return text.replaceAll(new RegExp(r"\\"), "");
-  }
+  // String parseText(String text) {
+  //   return text.replaceAll(new RegExp(r"\\"), "");
+  // }
 
-  List<int> splitVerse(int verse) {
-    String verses = verse.toString();
-    List<int> verseList = [];
-    verseList.add(int.parse(verses.substring(verses.length - 3)));
-    verseList.add(int.parse(verses.substring(verses.length - 6, verses.length - 3)));
-    verseList.add(int.parse(verses.substring(0, verses.length - 6)));
-    return verseList;
-  }
+  // List<int> splitVerse(int verse) {
+  //   String verses = verse.toString();
+  //   List<int> verseList = [];
+  //   verseList.add(int.parse(verses.substring(verses.length - 3)));
+  //   verseList.add(int.parse(verses.substring(verses.length - 6, verses.length - 3)));
+  //   verseList.add(int.parse(verses.substring(0, verses.length - 6)));
+  //   return verseList;
+  // }
 }
