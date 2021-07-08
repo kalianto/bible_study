@@ -32,11 +32,31 @@ class HomeAppBar extends StatelessWidget {
                     value: 'share',
                     child: Text('Share Summary'),
                   ),
+                  PopupMenuDivider(),
+                  const PopupMenuItem<String>(
+                    value: 'copyTB',
+                    child: Text('Copy Summary TB'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'copyKJV',
+                    child: Text('Copy Summary KJV'),
+                  ),
                 ],
                 onSelected: (value) async {
-                  MyReadingItem readingItem = await loadDailyReadingItem(date, myBible.version);
-                  String readingSummary = readingItem.generateSummary();
+                  String readingSummary;
+                  if (value == 'copyTB') {
+                    MyReadingItem readingItem = await loadDailyReadingItem(date, 8);
+                    readingSummary = readingItem.generateSummary();
+                  }
+                  if (value == 'copyKJV') {
+                    MyReadingItem readingItem = await loadDailyReadingItem(date, 4);
+                    readingSummary = readingItem.generateSummary();
+                  }
                   if (value == 'copy') {
+                    MyReadingItem readingItem = await loadDailyReadingItem(date, myBible.version);
+                    readingSummary = readingItem.generateSummary();
+                  }
+                  if (value != 'share') {
                     Clipboard.setData(new ClipboardData(text: readingSummary));
                     ScaffoldMessenger.of(context)
                       ..removeCurrentSnackBar()
