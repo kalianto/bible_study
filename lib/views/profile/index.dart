@@ -273,7 +273,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     fillColor: AppTheme.notWhite,
                     labelText: 'Postcode',
                     enabled: _editing,
-                    // icon: Icon(Icons.lock),
+                    icon: Icon(Icons.lock),
                   ),
                 )),
               ]),
