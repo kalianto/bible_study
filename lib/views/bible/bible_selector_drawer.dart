@@ -62,37 +62,37 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
   }
 
   Widget buildBookList(BuildContext context) {
-    return Column(children: <Widget>[
-      Container(
-          // padding: const EdgeInsets.only(top: 20),
-          child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          enabledBorder: AppTheme.inputBorderless,
-          focusedBorder: AppTheme.inputBorderless,
-          border: AppTheme.inputBorderless,
-          filled: true,
-          fillColor: AppTheme.notWhite,
-          hintText: 'Search',
-          // labelText: 'Search',
-        ),
-        onChanged: (value) {
-          var searchBookChapter = staticBookChapterList;
-          if (value == '') {
-            setState(() {
-              bookChapterList = searchBookChapter;
-            });
-          } else {
-            setState(() {
-              bookChapterList = searchBookChapter
-                  .where((f) => f.bookName.toLowerCase().contains(value.toLowerCase()))
-                  .toList();
-            });
-          }
-        },
-      )),
-      Expanded(
-          child: ListView.builder(
+    Widget searchBar = Container(
+        height: 60,
+        // padding: const EdgeInsets.only(top: 20),
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            enabledBorder: AppTheme.inputBorderless,
+            focusedBorder: AppTheme.inputBorderless,
+            border: AppTheme.inputBorderless,
+            filled: true,
+            fillColor: AppTheme.notWhite,
+            hintText: 'Search',
+            // labelText: 'Search',
+          ),
+          onChanged: (value) {
+            var searchBookChapter = staticBookChapterList;
+            if (value == '') {
+              setState(() {
+                bookChapterList = searchBookChapter;
+              });
+            } else {
+              setState(() {
+                bookChapterList = searchBookChapter
+                    .where((f) => f.bookName.toLowerCase().contains(value.toLowerCase()))
+                    .toList();
+              });
+            }
+          },
+        ));
+
+    ListView bookSelectionList = ListView.builder(
         padding: const EdgeInsets.all(0),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
@@ -119,45 +119,78 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
                     setIsBookSelection(false);
                   },
                 ),
-                //Divider(),
+                Divider(),
               ]));
-        },
-      ))
+        });
+
+    return Stack(children: [
+      searchBar,
+      Container(padding: const EdgeInsets.only(top: 60), child: bookSelectionList),
     ]);
   }
 
   Widget buildChapterList(BuildContext context) {
     MyBible myBible = Provider.of<MyBible>(context, listen: false);
-    if (selectedBookChapter != null) {
-      return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-        ),
-        itemCount: selectedBookChapter.chapters.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            decoration: AppTheme.boxDecoration,
-            child: InkWell(
-              child: Center(
-                child: Text('${index + 1}', style: AppTheme.headline5),
-              ),
-              onTap: () {
-                int selectedChapter =
-                    myBible.formatBibleId(selectedBookChapter.bookId, index + 1, 1);
-                myBible.saveMyBibleLastVerse(selectedChapter);
-                // myBible.updateBookChapterText(selectedBookChapter.bookName + ' ' + (index + 1).toString());
-                Navigator.of(context).pop();
-              },
-            ),
-          );
-        },
-      );
-    }
-    return Container(
+
+    Widget emptyContainer = Container(
         child: Center(
-      child: Text('Please select a book first'),
-    ));
+          child: Text('Please select a book first'),
+        ));
+
+    Widget returnBar = Container(
+        height: 60,
+        child: TextButton.icon(
+          icon: const Icon(FontAwesomeIcons.arrowLeft, color: AppTheme.deactivatedText),
+          onPressed: () {
+            setIsBookSelection(true);
+          },
+          label: Text(
+            'Back',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              fontFamily: AppTheme.fontName,
+              fontWeight: FontWeight.w700,
+              fontSize: 20,
+              letterSpacing: 1.2,
+              color: AppTheme.deactivatedText,
+            ),
+          ),
+        ));
+
+    GridView chapterSelection = GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+      ),
+      itemCount: selectedBookChapter?.chapters?.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          padding: const EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
+          decoration: AppTheme.boxDecoration,
+          child: InkWell(
+            child: Center(
+              child: Text('${index + 1}', style: AppTheme.headline5),
+            ),
+            onTap: () {
+              int selectedChapter = myBible.formatBibleId(selectedBookChapter.bookId, index + 1, 1);
+              myBible.saveMyBibleLastVerse(selectedChapter);
+              // myBible.updateBookChapterText(selectedBookChapter.bookName + ' ' + (index + 1).toString());
+              Navigator.of(context).pop();
+            },
+          ),
+        );
+      },
+    );
+
+    return selectedBookChapter != null
+        ? Stack(children: [
+      returnBar,
+      Container(padding: const EdgeInsets.only(top: 40),
+          child: Center(child: Text(selectedBookChapter.bookName, style: AppTheme.headline6)),
+        height: 140,
+          ),
+      Container(padding: const EdgeInsets.only(top: 120), child: chapterSelection),
+    ])
+        : emptyContainer;
   }
 }
