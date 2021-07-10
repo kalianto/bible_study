@@ -1,4 +1,5 @@
 import 'package:cool/app_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -134,8 +135,8 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
 
     Widget emptyContainer = Container(
         child: Center(
-          child: Text('Please select a book first'),
-        ));
+      child: Text('Please select a book first'),
+    ));
 
     Widget returnBar = Container(
         height: 60,
@@ -157,14 +158,17 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
           ),
         ));
 
+    ;
     GridView chapterSelection = GridView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
       ),
       itemCount: selectedBookChapter?.chapters?.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(6),
           margin: const EdgeInsets.all(10),
           decoration: AppTheme.boxDecoration,
           child: InkWell(
@@ -184,13 +188,14 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
 
     return selectedBookChapter != null
         ? Stack(children: [
-      returnBar,
-      Container(padding: const EdgeInsets.only(top: 40),
-          child: Center(child: Text(selectedBookChapter.bookName, style: AppTheme.headline6)),
-        height: 140,
-          ),
-      Container(padding: const EdgeInsets.only(top: 120), child: chapterSelection),
-    ])
+            returnBar,
+            Container(
+              padding: const EdgeInsets.only(top: 40),
+              child: Center(child: Text(selectedBookChapter.bookName, style: AppTheme.headline6)),
+              height: 140,
+            ),
+            Container(padding: const EdgeInsets.only(top: 120), child: chapterSelection),
+          ])
         : emptyContainer;
   }
 }
