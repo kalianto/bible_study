@@ -11,11 +11,12 @@ class MyBible with ChangeNotifier {
   int version;
   int lastBibleVerse;
   String bookChapter;
+  int DEFAULT_BIBLE_VERSION = 8; // TB
 
   Future<void> getMyBibleVersion() async {
     final prefs = await SharedPreferences.getInstance();
     final bibleVersion = AppConfig.bibleVersion;
-    version = prefs.getInt(bibleVersion) ?? 1;
+    version = prefs.getInt(bibleVersion) ?? DEFAULT_BIBLE_VERSION;
     notifyListeners();
   }
 
