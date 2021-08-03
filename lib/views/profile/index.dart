@@ -503,7 +503,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     children: <TextSpan>[
                       TextSpan(text: 'You haven\'t joined any group. '),
                       TextSpan(
-                          text: 'Join Now',
+                          text: 'Find a COOL group',
                           style: TextStyle(color: AppTheme.blueText, fontWeight: FontWeight.w600),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {

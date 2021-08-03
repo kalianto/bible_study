@@ -56,6 +56,7 @@ class AppTheme {
 
   /// purple
   static const Color purpleText = Color(0xFF6a4c93);
+  static const Color lightPurple = Color(0xFFb583fc);
   static const Color purple = Color(0xFF4F39B5);
 
   /// primary font name
