@@ -1,10 +1,10 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -77,8 +77,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   Future onClickNotification(String payload) async {
     print('I got something, dude');
-    String fileName = await _downloadAndSaveFile(
-        'https://via.placeholder.com/800x200', 'attachment_img.jpg');
+    // String fileName = await _downloadAndSaveFile(
+    //     'https://via.placeholder.com/800x200', 'attachment_img.jpg');
   }
 
   @override
@@ -163,13 +163,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         ]));
   }
 
-  Future<String> _downloadAndSaveFile(String url, String fileName) async {
-
-    Directory directory = await getApplicationDocumentsDirectory();
-    String filePath = '${directory.path}/$fileName';
-    var response = await http.get(url);
-    File file = File(filePath);
-    await file.writeAsBytes(response.bodyBytes);
-    return filePath;
-  }
+  // Future<String> _downloadAndSaveFile(String url, String fileName) async {
+  //
+  //   Directory directory = await getApplicationDocumentsDirectory();
+  //   String filePath = '${directory.path}/$fileName';
+  //   var response = await http.get(url);
+  //   File file = File(filePath);
+  //   await file.writeAsBytes(response.bodyBytes);
+  //   return filePath;
+  // }
 }

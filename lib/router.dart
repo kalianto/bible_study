@@ -11,6 +11,7 @@ import 'views/bible/page.dart';
 import 'views/bible/index.dart';
 import 'views/cool_group/index.dart';
 import 'views/news/index.dart';
+import 'views/feedback/index.dart';
 import 'views/samples/index.dart';
 import 'views/splash_screen.dart';
 
@@ -31,13 +32,13 @@ class BaseRouter {
         return SlideFromRoute(widget: SamplePages(), direction: 'right');
         break;
       case '/register':
-        return ScaleRoute(page: RegisterPage());
+        return ScaleRoute(widget: RegisterPage());
         break;
       case '/error':
-        return ScaleRoute(page: ErrorLoading(title: 'Loading Error'));
+        return ScaleRoute(widget: ErrorLoading(title: 'Loading Error'));
         break;
       case '/login':
-        return ScaleRoute(page: LoginPage());
+        return ScaleRoute(widget: LoginPage());
         break;
       case '/bible-view':
         return SlideFromRoute(widget: BibleViewPage(readingItem: settings.arguments), direction: 'right');
@@ -46,10 +47,13 @@ class BaseRouter {
         return SlideFromRoute(widget: BiblePage(), direction: 'right');
         break;
       case '/home':
-        return ScaleRoute(page: Home(title: 'Home'));
+        return ScaleRoute(widget: Home(title: 'Home'));
         break;
       case '/news':
-        return ScaleRoute(page: NewsPage());
+        return ScaleRoute(widget: NewsPage());
+        break;
+      case '/feedback':
+        return SlideFromRoute(widget: FeedbackPage(), direction: 'right');
         break;
       case '/':
       default:
@@ -96,16 +100,16 @@ class SlideFromRoute extends PageRouteBuilder {
 }
 
 class ScaleRoute extends PageRouteBuilder {
-  final Widget page;
+  final Widget widget;
 
-  ScaleRoute({this.page})
+  ScaleRoute({this.widget})
       : super(
           pageBuilder: (
             BuildContext context,
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-              page,
+          widget,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,

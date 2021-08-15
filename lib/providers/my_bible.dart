@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_config.dart';
 
+const int DEFAULT_BIBLE_VERSION = 8; // TB
 
 class MyBible with ChangeNotifier {
   MyBible({this.version, this.lastBibleVerse});
@@ -15,7 +16,7 @@ class MyBible with ChangeNotifier {
   Future<void> getMyBibleVersion() async {
     final prefs = await SharedPreferences.getInstance();
     final bibleVersion = AppConfig.bibleVersion;
-    version = prefs.getInt(bibleVersion) ?? 1;
+    version = prefs.getInt(bibleVersion) ?? DEFAULT_BIBLE_VERSION;
     notifyListeners();
   }
 
@@ -52,13 +53,13 @@ class MyBible with ChangeNotifier {
     return bookChapterObject['bookName'] + ' ' + bookChapterObject['chapterStart'].toString();
   }
 
-  int formatBibleId(int book, int chapter, int verse) {
-    return int.parse(
-      book.toString() +
-      chapter.toString().padLeft(3, '0') +
-      '001'
-    );
-  }
+  // int formatBibleId(int book, int chapter, int verse) {
+  //   return int.parse(
+  //     book.toString() +
+  //     chapter.toString().padLeft(3, '0') +
+  //     '001'
+  //   );
+  // }
 }
 
 Future<MyBible> loadMyBible() async {
