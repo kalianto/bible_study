@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sendgrid_mailer/sendgrid_mailer.dart';
 
 import '../../app_theme.dart';
 
@@ -10,6 +11,13 @@ class FeedbackPage extends StatefulWidget {
 class _FeedbackPageState extends State<FeedbackPage> {
   final _subjectController = TextEditingController();
   final _messageController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _subjectController.dispose();
+    _messageController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +72,43 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   ),
                   SizedBox(height: 20),
                   Align(
-                    alignment: Alignment.centerLeft,
+                      alignment: Alignment.centerLeft,
                       child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Submit'),
-                  ))
+                        onPressed: () async {
+                          final mailer = Mailer(
+                              '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');
+                          final toAddress = Address('kalianto@gmail.com');
+                          final fromAddress = Address('kalianto@outlook.com');
+                          final content = Content('text/plain', _messageController.text);
+                          final subject = 'CooLTest F: ' + _subjectController.text;
+                          final personalization = Personalization([toAddress]);
+
+                          final email =
+                          Email([personalization], fromAddress, subject, content: [content]);
+                          mailer.send(email).then((result) {
+                            print('Email Sent');
+                            _messageController.text = '';
+                            _subjectController.text = '';
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Feedback Sent'),
+                                    content:
+                                    Text('Your feedback is valuable. We will get back to you.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                          child: Text('Close'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          }),
+                                    ],
+                                  );
+                                });
+                          });
+                        },
+                        child: Text('Submit'),
+                      ))
                 ]),
               ),
             )));
