@@ -15,3 +15,11 @@ List<int> splitVerse(int verse) {
   /// [verseNum, chapterNum, bookNum]
   return verseList;
 }
+
+int formatBibleId(int book, int chapter, int verse) {
+  return int.parse(
+      book.toString() +
+          chapter.toString().padLeft(3, '0') +
+          verse.toString().padLeft(3, '0')
+  );
+}

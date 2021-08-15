@@ -14,14 +14,20 @@ class BibleViewProvider {
     var dbClient = await dbProvider.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     List<BibleView> bibleViewList = [];
+    /// Get start and end of bible verse from reading item
+    int lastVerse = await getMaxChapterVerse(bibleVersion, item.eBookNum, item.eChapter);
+    int lastReadingItem = BibleHelper.formatBibleId(item.eBookNum, item.eChapter, lastVerse);
+    int firstReadingItem = BibleHelper.formatBibleId(item.sBookNum, item.sChapter, 1);
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
         'SELECT a.id, a.b as bookNum, a.c as bookChapter, a.v as bookVerse, ' +
             'a.t as bookText, b.n as bookName ' +
             'from ${bibleVersion.table} a ' +
             'join ${bibleVersion.keyTable} b on b.b = a.b ' +
-            'where ((a.b = ? and a.c = ?) OR (a.b = ? and a.c = ?))' +
+            // 'where ((a.b = ? and a.c = ?) OR (a.b = ? and a.c = ?))' +
+            'where id between ? AND ? '
             'order by a.id ASC',
-        [item.sBookNum, item.sChapter, item.eBookNum, item.eChapter]);
+        //[item.sBookNum, item.sChapter, item.eBookNum, item.eChapter]);
+        [firstReadingItem, lastReadingItem]);
 
     if (res.length > 0) {
       bibleViewList = List.generate(
@@ -72,6 +78,22 @@ class BibleViewProvider {
     }
 
     return bibleViewList;
+  }
+
+  Future<int> getMaxChapterVerse(BibleVersion bibleVersion, int book, int chapter) async {
+    var dbClient = await dbProvider.db;
+    List<Map<String, dynamic>> res = await dbClient.rawQuery(
+        'SELECT MAX(v) as lastVerse from  ${bibleVersion.table} a ' +
+        'where b = ? and c = ?',
+        [book, chapter]
+    );
+
+    int lastVerse = 0;
+    if (res.length > 0) {
+      lastVerse = res[0]['lastVerse'];
+    }
+
+    return lastVerse;
   }
   
   // String parseText(String text) {

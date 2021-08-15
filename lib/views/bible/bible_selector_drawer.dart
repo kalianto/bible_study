@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../services/book_chapter.dart';
 import '../../models/book_chapter.dart';
 import '../../providers/my_bible.dart';
+import '../../helpers/bible_helper.dart' as BibleHelper;
 
 class BibleSelectorDrawer extends StatefulWidget {
   @override
@@ -158,7 +159,6 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
           ),
         ));
 
-    ;
     GridView chapterSelection = GridView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
@@ -176,7 +176,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
               child: Text('${index + 1}', style: AppTheme.headline5),
             ),
             onTap: () {
-              int selectedChapter = myBible.formatBibleId(selectedBookChapter.bookId, index + 1, 1);
+              int selectedChapter = BibleHelper.formatBibleId(selectedBookChapter.bookId, index + 1, 1);
               myBible.saveMyBibleLastVerse(selectedChapter);
               // myBible.updateBookChapterText(selectedBookChapter.bookName + ' ' + (index + 1).toString());
               Navigator.of(context).pop();

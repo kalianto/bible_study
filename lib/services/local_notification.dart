@@ -1,9 +1,9 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LocalNofitication {
   static LocalNofitication _localNotification;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
 
   LocalNofitication._createInstance();
 
