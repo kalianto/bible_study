@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../app_theme.dart';
 import '../models/profile.dart';
@@ -89,29 +90,55 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: AppTheme.notWhite,
               ),
             ),
-            SizedBox(height: 50),
-            FloatingActionButton.extended(
+            SizedBox(height: 30),
+            // FloatingActionButton(
+            //   onPressed: () {
+            //     _loadProfile();
+            //     if (!isLoggedIn) {
+            //       Navigator.pushNamed(context, '/login');
+            //     } else if (profile.email == null) {
+            //       Navigator.pushNamed(context, '/register');
+            //       // } else if (profile.email == '') {
+            //       //   Navigator.pushNamed(context, '/login');
+            //     } else {
+            //       Navigator.pushNamed(context, '/home');
+            //     }
+            //   },
+            //   child:
+            //       const FaIcon(FontAwesomeIcons.arrowRight, size: 20, color: AppTheme.nearlyWhite),
+            //   backgroundColor: AppTheme.blueText.withOpacity(0.8),
+            //   shape: CircleBorder(
+            //       side: BorderSide(
+            //           width: 5.0,
+            //           color: AppTheme.white.withOpacity(0.4),
+            //           style: BorderStyle.solid)),
+            //   elevation: 2.0,
+            // ),
+            ElevatedButton(
               onPressed: () {
                 _loadProfile();
-                if (!isLoggedIn) {
-                  Navigator.pushNamed(context, '/login');
-                } else if (profile.email == null) {
+                // print(profile);
+                if (profile.email == null) {
                   Navigator.pushNamed(context, '/register');
-                  // } else if (profile.email == '') {
-                  //   Navigator.pushNamed(context, '/login');
+                } else if (!isLoggedIn) {
+                  Navigator.pushNamed(context, '/login');
+                // } else if (profile.email == null) {
+                //   Navigator.pushNamed(context, '/register');
                 } else {
                   Navigator.pushNamed(context, '/home');
                 }
               },
-              label: Text(
-                'START',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: AppTheme.yellowText,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              backgroundColor: AppTheme.blueText.withOpacity(0.8),
+              child:
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                      child: const FaIcon(FontAwesomeIcons.arrowRight, size: 24, color: AppTheme.nearlyWhite),
+                  ),
+              style: ElevatedButton.styleFrom(
+                  shape: new CircleBorder(
+                      side: BorderSide(
+                          width: 5.0,
+                          color: AppTheme.white.withOpacity(0.4),
+                          style: BorderStyle.solid))),
             ),
             Container(
               padding: const EdgeInsets.only(top: 20),

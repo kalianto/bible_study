@@ -2,18 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 // import 'package:path_provider/path_provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 // import 'package:http/http.dart' as http;
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
 
 import '../../providers/my_bible.dart';
 import 'daily_reading_item.dart';
 import 'date_selector.dart';
 import 'drawer.dart';
 import 'home_app_bar.dart';
-//import 'rhema.dart';
+import 'bottom_bar.dart';
+import 'rhema.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -85,15 +88,19 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Consumer<MyBible>(builder: (context, myBible, child) {
       return SafeArea(
-          child: Scaffold(
-        key: _scaffoldKey,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
-          child: HomeAppBar(date: date, myBible: myBible),
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(60),
+            child: HomeAppBar(date: date, myBible: myBible),
+          ),
+          body: buildHomeContent(context, myBible),
+          drawer: HomeDrawer(),
+          bottomNavigationBar: HomeBottomNavigationBar(),
+          // floatingActionButton: const FloatingActionButton(onPressed: null),
+          // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
         ),
-        body: buildHomeContent(context, myBible),
-        drawer: HomeDrawer(),
-      ));
+      );
     });
   }
 
@@ -106,9 +113,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     //   summaryText: 'Bacaan Hari Ini',
     //   htmlFormatSummaryText: true,
     // );
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
-      'id',   //Required for Android 8.0 or after
+    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'id', //Required for Android 8.0 or after
       'channel', //Required for Android 8.0 or after
       'description', //Required for Android 8.0 or after
       importance: Importance.max,
@@ -120,56 +126,54 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
 
     const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
     return Container(
         padding: const EdgeInsets.only(top: 16, bottom: 0),
         child: Column(children: <Widget>[
           DateSelector(date: date, setDate: setDate),
           DailyReadingItem(date: date, myBible: myBible),
           SizedBox(height: 20),
-          Container(
-            child: ElevatedButton(
-              onPressed: () async {
-                await flutterLocalNotificationsPlugin.show(
-                  12345,
-                  "A notification From COOL App",
-                  "This notification was sent using Flutter Local Notification",
-                  platformChannelSpecifics,
-                  payload: 'Simple Notification',
-                );
-              },
-              child: Text('Notification'),
-            )
-          ),
-          SizedBox(height: 20),
-          Container(
-              child: ElevatedButton(
-                onPressed: () async {
-                  var time = tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10));
-                  await flutterLocalNotificationsPlugin.zonedSchedule(
-                    123456,
-                    "A scheduled notification From COOL App",
-                    "This notification will run 10s after the button clicked",
-                    time,
-                    platformChannelSpecifics,
-                    androidAllowWhileIdle: true,
-                    // payload: 'Scheduled Notification',
-                  );
-                },
-                child: Text('Scheduled Notification after 10s'),
-              )
-          )
-          //Rhema(),
+          // Container(
+          //     child: ElevatedButton(
+          //   onPressed: () async {
+          //     await flutterLocalNotificationsPlugin.show(
+          //       12345,
+          //       "A notification From COOL App",
+          //       "This notification was sent using Flutter Local Notification",
+          //       platformChannelSpecifics,
+          //       payload: 'Simple Notification',
+          //     );
+          //   },
+          //   child: Text('Notification'),
+          // )),
+          // SizedBox(height: 20),
+          // Container(
+          //     child: ElevatedButton(
+          //   onPressed: () async {
+          //     var time = tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10));
+          //     await flutterLocalNotificationsPlugin.zonedSchedule(
+          //       123456,
+          //       "A scheduled notification From COOL App",
+          //       "This notification will run 10s after the button clicked",
+          //       time,
+          //       platformChannelSpecifics,
+          //       androidAllowWhileIdle: true,
+          //       // payload: 'Scheduled Notification',
+          //     );
+          //   },
+          //   child: Text('Scheduled Notification after 10s'),
+          // ))
+          Rhema(),
         ]));
   }
 
-  // Future<String> _downloadAndSaveFile(String url, String fileName) async {
-  //
-  //   Directory directory = await getApplicationDocumentsDirectory();
-  //   String filePath = '${directory.path}/$fileName';
-  //   var response = await http.get(url);
-  //   File file = File(filePath);
-  //   await file.writeAsBytes(response.bodyBytes);
-  //   return filePath;
-  // }
+// Future<String> _downloadAndSaveFile(String url, String fileName) async {
+//
+//   Directory directory = await getApplicationDocumentsDirectory();
+//   String filePath = '${directory.path}/$fileName';
+//   var response = await http.get(url);
+//   File file = File(filePath);
+//   await file.writeAsBytes(response.bodyBytes);
+//   return filePath;
+// }
 }
