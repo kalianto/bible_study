@@ -1,21 +1,19 @@
 // import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-// import 'package:path_provider/path_provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
+import 'package:provider/provider.dart';
 // import 'package:http/http.dart' as http;
 import 'package:timezone/data/latest.dart' as tz;
+
 // import 'package:timezone/timezone.dart' as tz;
 
 import '../../providers/my_bible.dart';
+import 'bottom_bar.dart';
 import 'daily_reading_item.dart';
 import 'date_selector.dart';
 import 'drawer.dart';
 import 'home_app_bar.dart';
-import 'bottom_bar.dart';
 import 'rhema.dart';
 
 class Home extends StatefulWidget {
