@@ -1,10 +1,8 @@
 // import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
-// import 'package:http/http.dart' as http;
-import 'package:timezone/data/latest.dart' as tz;
 
 // import 'package:timezone/timezone.dart' as tz;
 
@@ -30,8 +28,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   double topBarOpacity = 1.0;
 
   DateTime date;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -39,20 +37,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     date = new DateTime.now();
     requestPermissions();
 
-    var androidSettings = AndroidInitializationSettings('app_icon');
-    var iOSSettings = IOSInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
-    );
-
-    var initSetttings = InitializationSettings(
-      android: androidSettings,
-      iOS: iOSSettings,
-      macOS: null,
-    );
-    flutterLocalNotificationsPlugin.initialize(initSetttings,
-        onSelectNotification: onClickNotification);
+    // var androidSettings = AndroidInitializationSettings('app_icon');
+    // var iOSSettings = IOSInitializationSettings(
+    //   requestSoundPermission: false,
+    //   requestBadgePermission: false,
+    //   requestAlertPermission: false,
+    // );
+    //
+    // var initSetttings = InitializationSettings(
+    //   android: androidSettings,
+    //   iOS: iOSSettings,
+    //   macOS: null,
+    // );
+    // flutterLocalNotificationsPlugin.initialize(initSetttings,
+    //     onSelectNotification: onClickNotification);
   }
 
   void setDate(DateTime newDate) {
@@ -67,13 +65,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void requestPermissions() {
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+    // flutterLocalNotificationsPlugin
+    //     .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+    //     ?.requestPermissions(
+    //       alert: true,
+    //       badge: true,
+    //       sound: true,
+    //     );
   }
 
   Future onClickNotification(String payload) async {
@@ -103,7 +101,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Widget buildHomeContent(BuildContext context, MyBible myBible) {
-    tz.initializeTimeZones();
+    // return Container();
+    // tz.initializeTimeZones();
     // const bigPicture = BigPictureStyleInformation(
     //   new FilePathAndroidBitmap(attachmentPicturePath),
     //   contentTitle: '<b>COOL Image</b>',
@@ -111,20 +110,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     //   summaryText: 'Bacaan Hari Ini',
     //   htmlFormatSummaryText: true,
     // );
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'id', //Required for Android 8.0 or after
-      'channel', //Required for Android 8.0 or after
-      'description', //Required for Android 8.0 or after
-      importance: Importance.max,
-      priority: Priority.high,
-      playSound: true,
-      timeoutAfter: 5000,
-      styleInformation: DefaultStyleInformation(true, true),
-      // styleInformation: bigPicture,
-    );
-
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+    // const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    //   'id', //Required for Android 8.0 or after
+    //   'channel', //Required for Android 8.0 or after
+    //   // 'description', //Required for Android 8.0 or after
+    //   importance: Importance.max,
+    //   priority: Priority.high,
+    //   playSound: true,
+    //   timeoutAfter: 5000,
+    //   styleInformation: DefaultStyleInformation(true, true),
+    //   // styleInformation: bigPicture,
+    // );
+    //
+    // const NotificationDetails platformChannelSpecifics =
+    //     NotificationDetails(android: androidPlatformChannelSpecifics);
     return Container(
         padding: const EdgeInsets.only(top: 16, bottom: 0),
         child: Column(children: <Widget>[

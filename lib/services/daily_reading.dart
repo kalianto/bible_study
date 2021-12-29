@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'package:intl/intl.dart';
+
+import '../../helpers/date_helper.dart' as DateHelper;
+// import 'package:intl/intl.dart';
 import '../database.dart';
+import '../models/bible_version.dart';
 import '../models/daily_reading.dart';
 import '../services/bible_version.dart';
-import '../models/bible_version.dart';
-import '../../helpers/date_helper.dart' as DateHelper;
 
 class DailyReadingProvider {
   final dbProvider = DatabaseService();

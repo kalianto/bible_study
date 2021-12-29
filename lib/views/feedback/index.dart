@@ -19,6 +19,21 @@ class _FeedbackPageState extends State<FeedbackPage> {
     _messageController.dispose();
   }
 
+  void showSendingMessage(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text('Sending Feedback'),
+            children: <Widget>[
+              Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Text('Please wait....\nYour feedback is being sent.')),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -80,22 +95,30 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           final toAddress = Address('kalianto@gmail.com');
                           final fromAddress = Address('kalianto@outlook.com');
                           final content = Content('text/plain', _messageController.text);
-                          final subject = 'CooLTest F: ' + _subjectController.text;
+                          final subject = 'CooLTest From: ' + _subjectController.text;
                           final personalization = Personalization([toAddress]);
 
                           final email =
-                          Email([personalization], fromAddress, subject, content: [content]);
+                              Email([personalization], fromAddress, subject, content: [content]);
+
+                          /// Show sending dialog
+                          showSendingMessage(context);
+
                           mailer.send(email).then((result) {
                             print('Email Sent');
                             _messageController.text = '';
                             _subjectController.text = '';
+
+                            // close sending dialog
+                            Navigator.pop(context);
+
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: Text('Feedback Sent'),
                                     content:
-                                    Text('Your feedback is valuable. We will get back to you.'),
+                                        Text('Your feedback is valuable. We will get back to you.'),
                                     actions: <Widget>[
                                       TextButton(
                                           child: Text('Close'),

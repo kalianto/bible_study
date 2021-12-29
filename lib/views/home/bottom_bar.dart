@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 // import 'package:flutter/services.dart';
 
 import '../../app_theme.dart';
@@ -16,11 +17,11 @@ class HomeBottomNavigationBar extends StatelessWidget {
         // color: AppTheme.nearlyBlack.withOpacity(0.8),
         child: IconTheme(
           data: IconThemeData(color: AppTheme.darkGreen),
-          child: BottomBarNavigation(),
+          child: BottomBarNavigation(context),
         ));
   }
 
-  Widget BottomBarNavigation() {
+  Widget BottomBarNavigation(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(bottom: 15),
       height: 80,
@@ -45,7 +46,8 @@ class HomeBottomNavigationBar extends StatelessWidget {
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.flagCheckered, size: 22, color: AppTheme.mandarin),
+                icon: const FaIcon(FontAwesomeIcons.flagCheckered,
+                    size: 22, color: AppTheme.mandarin),
               ),
               Text('RHEMA',
                   style: TextStyle(
@@ -85,6 +87,9 @@ class HomeBottomNavigationBar extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 icon: const FaIcon(FontAwesomeIcons.bible, size: 22, color: AppTheme.blueText),
+                onPressed: () {
+                  Navigator.of(context).popAndPushNamed('/bible');
+                },
               ),
               Text('BIBLE',
                   style: TextStyle(
