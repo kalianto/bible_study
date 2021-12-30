@@ -183,6 +183,14 @@ class AppTheme {
     ),
   );
 
+  static const OutlineInputBorder inputBorderBlue = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+    borderSide: BorderSide(
+      color: blueText,
+      width: 3.0,
+    ),
+  );
+
   static const OutlineInputBorder inputBorderless = OutlineInputBorder(
     borderSide: BorderSide(
       color: white,

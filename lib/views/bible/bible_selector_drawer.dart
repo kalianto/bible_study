@@ -1,13 +1,13 @@
 import 'package:cool/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
-import '../../services/book_chapter.dart';
+import '../../helpers/bible_helper.dart' as BibleHelper;
 import '../../models/book_chapter.dart';
 import '../../providers/my_bible.dart';
-import '../../helpers/bible_helper.dart' as BibleHelper;
+import '../../services/book_chapter.dart';
 
 class BibleSelectorDrawer extends StatefulWidget {
   @override
@@ -139,25 +139,32 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
       child: Text('Please select a book first'),
     ));
 
-    Widget returnBar = Container(
-        height: 60,
-        child: TextButton.icon(
-          icon: const Icon(FontAwesomeIcons.arrowLeft, color: AppTheme.deactivatedText),
-          onPressed: () {
-            setIsBookSelection(true);
-          },
-          label: Text(
-            'Back',
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontFamily: AppTheme.fontName,
-              fontWeight: FontWeight.w700,
-              fontSize: 20,
-              letterSpacing: 1.2,
-              color: AppTheme.deactivatedText,
-            ),
-          ),
-        ));
+    // Widget returnBar = Container(
+    //     height: 60,
+    //     child: TextButton.icon(
+    //       icon: const Icon(FontAwesomeIcons.arrowLeft, color: AppTheme.deactivatedText),
+    //       onPressed: () {
+    //         setIsBookSelection(true);
+    //       },
+    //       label: Text(
+    //         '',
+    //         textAlign: TextAlign.right,
+    //         style: TextStyle(
+    //           fontFamily: AppTheme.fontName,
+    //           fontWeight: FontWeight.w700,
+    //           fontSize: 20,
+    //           letterSpacing: 1.2,
+    //           color: AppTheme.deactivatedText,
+    //         ),
+    //       ),
+    //     ));
+    Widget returnBar = IconButton(
+      icon: const Icon(FontAwesomeIcons.arrowLeft),
+      iconSize: 22,
+      onPressed: () => setIsBookSelection(true),
+      tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+      color: AppTheme.darkGrey,
+    );
 
     GridView chapterSelection = GridView.builder(
       scrollDirection: Axis.vertical,
@@ -176,7 +183,8 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
               child: Text('${index + 1}', style: AppTheme.headline5),
             ),
             onTap: () {
-              int selectedChapter = BibleHelper.formatBibleId(selectedBookChapter.bookId, index + 1, 1);
+              int selectedChapter =
+                  BibleHelper.formatBibleId(selectedBookChapter.bookId, index + 1, 1);
               myBible.saveMyBibleLastVerse(selectedChapter);
               // myBible.updateBookChapterText(selectedBookChapter.bookName + ' ' + (index + 1).toString());
               Navigator.of(context).pop();

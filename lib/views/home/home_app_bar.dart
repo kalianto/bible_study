@@ -41,6 +41,11 @@ class HomeAppBar extends StatelessWidget {
                     value: 'copyKJV',
                     child: Text('Copy Summary KJV'),
                   ),
+                  PopupMenuDivider(),
+                  const PopupMenuItem<String>(
+                    value: 'GEMA',
+                    child: Text('GEMA'),
+                  ),
                 ],
                 onSelected: (value) async {
                   String readingSummary;
@@ -55,6 +60,9 @@ class HomeAppBar extends StatelessWidget {
                   if (value == 'copy') {
                     MyReadingItem readingItem = await loadDailyReadingItem(date, myBible.version);
                     readingSummary = readingItem.generateSummary();
+                  }
+                  if (value == 'GEMA') {
+                    readingSummary = await loadDailyReadingSummaryFull(date);
                   }
                   if (value != 'share') {
                     Clipboard.setData(new ClipboardData(text: readingSummary));

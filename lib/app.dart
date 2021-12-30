@@ -1,6 +1,6 @@
-import 'dart:io';
+// import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
 
@@ -12,15 +12,6 @@ class BibleStudy extends StatelessWidget {
   /// root of BibleStudy application
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Platform.isAndroid ? Brightness.dark : Brightness.light,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarDividerColor: Colors.grey,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
-
     return FutureBuilder(
       future: loadMyBible(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {

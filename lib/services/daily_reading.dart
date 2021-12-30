@@ -1,9 +1,11 @@
 import 'dart:async';
-import 'package:intl/intl.dart';
+
+import '../../helpers/date_helper.dart' as DateHelper;
+// import 'package:intl/intl.dart';
 import '../database.dart';
+import '../models/bible_version.dart';
 import '../models/daily_reading.dart';
 import '../services/bible_version.dart';
-import '../models/bible_version.dart';
 
 class DailyReadingProvider {
   final dbProvider = DatabaseService();
@@ -11,7 +13,7 @@ class DailyReadingProvider {
 
   Future<List<DailyReading>> getDailyReading(DateTime date, {int bibleVersionId = 8}) async {
     var dbClient = await dbProvider.db;
-    var dateId = DateFormat('dMM').format(date);
+    var dateId = DateHelper.formatDate(date, 'dMM');
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
 
     List<DailyReading> dailyReadingList = [];
