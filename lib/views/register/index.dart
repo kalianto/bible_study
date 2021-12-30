@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../app_theme.dart';
 import '../../app_config.dart';
+import '../../app_theme.dart';
+import '../../helpers/helper.dart' as Helper;
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -99,8 +100,7 @@ class _RegisterState extends State<RegisterPage> {
                   style: TextButton.styleFrom(
                       primary: AppTheme.blueText,
                       backgroundColor: AppTheme.blueText,
-                      padding: const EdgeInsets.symmetric(horizontal: 20)
-                  ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20)),
                   onPressed: () async {
                     //Navigator.pushNamed(context, '/home');
                     // try {
@@ -127,11 +127,18 @@ class _RegisterState extends State<RegisterPage> {
                     //   // _emailController.text = "";
                     //   // TODO: alertdialog with error
                     // }
-                    final prefs = await SharedPreferences.getInstance();
-                    final key = AppConfig.profile;
-                    prefs.setString(key, jsonEncode({'email': _usernameController.text}));
-                    prefs.setBool(AppConfig.isLoggedIn, true);
-                    Navigator.popAndPushNamed(context, '/home');
+                    String emailAddress = _usernameController.text;
+                    bool emailValid = Helper.isValidEmail(emailAddress);
+                    if (!emailValid) {
+                      Helper.showAlertDialog(
+                          'Invalid Email Address', 'Please enter a valid email address.', context);
+                    } else {
+                      final prefs = await SharedPreferences.getInstance();
+                      final key = AppConfig.profile;
+                      prefs.setString(key, jsonEncode({'email': emailAddress}));
+                      prefs.setBool(AppConfig.isLoggedIn, true);
+                      Navigator.popAndPushNamed(context, '/home');
+                    }
                   },
                 ),
                 SizedBox(height: 10.0),

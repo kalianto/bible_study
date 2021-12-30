@@ -1,15 +1,17 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:device_info/device_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../helpers/helper.dart' as Helper;
+import '../app_config.dart';
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
 // import 'package:http/http.dart' as http;
 
 import '../app_theme.dart';
-import '../app_config.dart';
 import '../models/profile.dart';
 
 class LoginPage extends StatefulWidget {
@@ -99,8 +101,7 @@ class _LoginState extends State<LoginPage> {
                   style: TextButton.styleFrom(
                       primary: AppTheme.darkGreen,
                       backgroundColor: AppTheme.darkGreen,
-                      padding: const EdgeInsets.symmetric(horizontal: 20)
-                  ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20)),
                   onPressed: () async {
                     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
                     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -109,6 +110,10 @@ class _LoginState extends State<LoginPage> {
                     print(Platform.isAndroid);
                     print('Device Info');
                     print(deviceInfo.hashCode);
+
+                    setState(() {
+                      errorMessage = '';
+                    });
                     // try {
                     //   var url = 'http://localhost:3001/auth';
                     //   var response = await http.post(url, body: {});
@@ -142,32 +147,43 @@ class _LoginState extends State<LoginPage> {
                     //   // _emailController.text = "";
                     //   // TODO: alertdialog with error
                     // }
-                    final prefs = await SharedPreferences.getInstance();
-                    final key = AppConfig.profile;
-                    Profile profile = (prefs.getString(key) != null)
-                        ? Profile.fromJson(jsonDecode(prefs.getString(key)))
-                        : new Profile();
-                    final _isLoggedIn = AppConfig.isLoggedIn;
-                    bool isLoggedIn = prefs.getBool(_isLoggedIn) ?? false;
-                    print('Profile:');
-                    print(profile);
-                    print ('Is Logged In: $isLoggedIn');
+                    String emailAddress = _usernameController.text;
+                    bool emailValid = Helper.isValidEmail(emailAddress);
 
-                    if (profile.email == null) {
+                    if (!emailValid) {
                       setState(() {
-                        errorMessage =
-                        'There is no profile found. Please register to use this app.';
+                        errorMessage = 'Please enter a valid email address.';
                       });
-                      print('Profile email is: ${profile.email}');
-                    } else if (profile.email == _usernameController.text) {
-                      prefs.setBool(_isLoggedIn, true);
-                      print('Profile email is: ${profile.email} == ${_usernameController.text}');
-                      Navigator.of(context).popAndPushNamed('/home');
+                      // Helper.showAlertDialog(
+                      //     'Invalid Email Address', 'Please enter a valid email address.', context);
                     } else {
-                      setState(() {
-                        errorMessage = 'Username or email address is incorrect';
-                      });
-                      print('What happened here?');
+                      final prefs = await SharedPreferences.getInstance();
+                      final key = AppConfig.profile;
+                      Profile profile = (prefs.getString(key) != null)
+                          ? Profile.fromJson(jsonDecode(prefs.getString(key)))
+                          : new Profile();
+                      final _isLoggedIn = AppConfig.isLoggedIn;
+                      bool isLoggedIn = prefs.getBool(_isLoggedIn) ?? false;
+                      print('Profile:');
+                      print(profile);
+                      print('Is Logged In: $isLoggedIn');
+
+                      if (profile.email == null) {
+                        setState(() {
+                          errorMessage =
+                              'There is no profile found. Please register to use this app.';
+                        });
+                        print('Profile email is: ${profile.email}');
+                      } else if (profile.email == _usernameController.text) {
+                        prefs.setBool(_isLoggedIn, true);
+                        print('Profile email is: ${profile.email} == ${_usernameController.text}');
+                        Navigator.of(context).popAndPushNamed('/home');
+                      } else {
+                        setState(() {
+                          errorMessage = 'Username or email address is incorrect';
+                        });
+                        print('What happened here?');
+                      }
                     }
                   },
                 ),
@@ -186,8 +202,7 @@ class _LoginState extends State<LoginPage> {
                     },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.all(0),
-                    )
-                ),
+                    )),
               ],
             ),
             Container(
