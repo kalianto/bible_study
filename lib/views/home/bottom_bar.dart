@@ -22,6 +22,8 @@ class HomeBottomNavigationBar extends StatelessWidget {
   }
 
   Widget BottomBarNavigation(BuildContext context) {
+    double iconFontSize = 10.0;
+
     return Container(
       padding: const EdgeInsets.only(bottom: 15),
       height: 80,
@@ -37,7 +39,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
               ),
               Text('READING',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: iconFontSize,
                   )),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
@@ -51,7 +53,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
               ),
               Text('RHEMA',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: iconFontSize,
                   )),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
@@ -64,7 +66,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
               ),
               Text('PLAN',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: iconFontSize,
                   )),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
@@ -77,7 +79,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
               ),
               Text('COOL',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: iconFontSize,
                   )),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
@@ -93,7 +95,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
               ),
               Text('BIBLE',
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: iconFontSize,
                   )),
             ],
             mainAxisAlignment: MainAxisAlignment.end,

@@ -1,8 +1,8 @@
 import 'package:cool/app_theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../helpers/bible_helper.dart' as BibleHelper;
 import '../../models/book_chapter.dart';
@@ -19,6 +19,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
   List<BookChapter> bookChapterList = [];
   List<BookChapter> staticBookChapterList = [];
   BookChapter selectedBookChapter;
+  AutoScrollController scrollController;
 
   TextEditingController controller = new TextEditingController();
 
@@ -26,7 +27,11 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
   void initState() {
     super.initState();
     setIsBookSelection(true);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _loadBookChapters());
+    scrollController = AutoScrollController(
+        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+        axis: Axis.vertical);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadSelectionDrawers(context));
   }
 
   void setBookChapter(BookChapter bookChapter) {
@@ -51,19 +56,44 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
     });
   }
 
+  Future _scrollToIndex(context) async {
+    MyBible myBible = Provider.of<MyBible>(context, listen: false);
+    int index = myBible.lastBibleVerseArray['book'] - 1;
+    await scrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
+    scrollController.highlight(index);
+  }
+
+  Future _loadSelectionDrawers(BuildContext context) {
+    _loadBookChapters();
+    _scrollToIndex(context);
+  }
+
+  Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
+        key: ValueKey(index),
+        controller: scrollController,
+        index: index,
+        child: child,
+        highlightColor: AppTheme.darkGrey.withOpacity(0.5),
+      );
+
   @override
   Widget build(BuildContext context) {
+    // setIsBookSelection(false);
+    MyBible myBible = Provider.of<MyBible>(context, listen: false);
+
     return Container(
       child: AnimatedCrossFade(
         duration: const Duration(milliseconds: 500),
-        firstChild: buildBookList(context),
-        secondChild: buildChapterList(context),
+        firstChild: buildBookList(context, myBible),
+        secondChild: buildChapterList(context, myBible),
         crossFadeState: isBookSelection ? CrossFadeState.showFirst : CrossFadeState.showSecond,
       ),
     );
   }
 
-  Widget buildBookList(BuildContext context) {
+  Widget buildBookList(BuildContext context, MyBible myBible) {
+    List selectedBibleVerse = BibleHelper.splitVerse(myBible.lastBibleVerse);
+
     Widget searchBar = Container(
         height: 60,
         // padding: const EdgeInsets.only(top: 20),
@@ -97,31 +127,37 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
     ListView bookSelectionList = ListView.builder(
         padding: const EdgeInsets.all(0),
         scrollDirection: Axis.vertical,
+        controller: scrollController,
         shrinkWrap: true,
         itemCount: bookChapterList.length,
-        itemBuilder: (context, index) {
-          return Container(
-              margin: const EdgeInsets.all(0),
-              // decoration: BoxDecoration(
-              //   color: AppTheme.nearlyDarkBlue.withOpacity(0.2),
-              //   borderRadius: AppTheme.borderRadius,
-              // ),
+        itemBuilder: (context, bookIndex) {
+          bool isSelected = bookChapterList[bookIndex].bookId == selectedBibleVerse[2];
+          return _wrapScrollTag(
+              index: bookIndex,
               child: Column(children: <Widget>[
-                ListTile(
-                  leading: bookChapterList[index].bookId < 40
-                      ? FaIcon(FontAwesomeIcons.bible)
-                      : FaIcon(FontAwesomeIcons.cross),
-                  title: Text(
-                    bookChapterList[index].bookName,
-                    style: AppTheme.headline6,
-                  ),
-                  dense: true,
-                  onTap: () {
-                    setBookChapter(bookChapterList[index]);
-                    setIsBookSelection(false);
-                  },
-                ),
-                Divider(),
+                Container(
+                    color: isSelected
+                        ? AppTheme.deactivatedText.withOpacity(0.2)
+                        : AppTheme.white.withOpacity(0),
+                    child: ListTile(
+                      leading: bookChapterList[bookIndex].bookId < 40
+                          ? FaIcon(FontAwesomeIcons.bible)
+                          : FaIcon(FontAwesomeIcons.cross),
+                      title: Text(
+                        bookChapterList[bookIndex].bookName,
+                        style: TextStyle(
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
+                          fontSize: 18,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      // dense: true,
+                      onTap: () {
+                        setBookChapter(bookChapterList[bookIndex]);
+                        setIsBookSelection(false);
+                      },
+                    )),
+                // Divider(),
               ]));
         });
 
@@ -131,9 +167,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
     ]);
   }
 
-  Widget buildChapterList(BuildContext context) {
-    MyBible myBible = Provider.of<MyBible>(context, listen: false);
-
+  Widget buildChapterList(BuildContext context, MyBible myBible) {
     Widget emptyContainer = Container(
         child: Center(
       child: Text('Please select a book first'),
@@ -173,19 +207,32 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
         crossAxisCount: 4,
       ),
       itemCount: selectedBookChapter?.chapters?.length,
-      itemBuilder: (BuildContext context, int index) {
+      itemBuilder: (BuildContext context, int chapterIndex) {
         return Container(
           padding: const EdgeInsets.all(6),
           margin: const EdgeInsets.all(10),
           decoration: AppTheme.boxDecoration,
           child: InkWell(
             child: Center(
-              child: Text('${index + 1}', style: AppTheme.headline5),
+              child: Text('${chapterIndex + 1}', style: AppTheme.headline5),
             ),
             onTap: () {
+              BookChapter prevBookChapter;
               int selectedChapter =
-                  BibleHelper.formatBibleId(selectedBookChapter.bookId, index + 1, 1);
+                  BibleHelper.formatBibleId(selectedBookChapter.bookId, chapterIndex + 1, 1);
               myBible.saveMyBibleLastVerse(selectedChapter);
+              int prevChapter = chapterIndex - 1;
+              if (prevChapter < 0) {
+                prevChapter =
+                    staticBookChapterList.indexWhere((f) => f.bookId == selectedBookChapter.bookId);
+                // the first book,
+                if (prevChapter > 0) {
+                  prevBookChapter = staticBookChapterList.elementAt((prevChapter - 1));
+                }
+                print('Prev Book Chapter');
+                print(prevBookChapter);
+              }
+              int nextChapter = chapterIndex + 1;
               // myBible.updateBookChapterText(selectedBookChapter.bookName + ' ' + (index + 1).toString());
               Navigator.of(context).pop();
             },

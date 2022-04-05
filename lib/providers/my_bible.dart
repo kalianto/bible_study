@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../app_config.dart';
+import '../helpers/bible_helper.dart' as BibleHelper;
 
 const int DEFAULT_BIBLE_VERSION = 8; // TB
 
@@ -12,6 +14,7 @@ class MyBible with ChangeNotifier {
   int version;
   int lastBibleVerse;
   String bookChapter;
+  Map<String, int> lastBibleVerseArray;
 
   Future<void> getMyBibleVersion() async {
     final prefs = await SharedPreferences.getInstance();
@@ -32,6 +35,7 @@ class MyBible with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final lastBibleVerseKey = AppConfig.lastBibleVerse;
     lastBibleVerse = prefs.getInt(lastBibleVerseKey) ?? 1001001;
+    updateLastBibleVerseArray(lastBibleVerse);
     notifyListeners();
   }
 
@@ -40,7 +44,18 @@ class MyBible with ChangeNotifier {
     final key = AppConfig.lastBibleVerse;
     prefs.setInt(key, lastVerse);
     lastBibleVerse = lastVerse;
+    updateLastBibleVerseArray(lastBibleVerse);
     notifyListeners();
+  }
+
+  void updateLastBibleVerseArray(int value) {
+    List<int> array = BibleHelper.splitVerse(value);
+    lastBibleVerseArray = {
+      'verse': array[0],
+      'chapter': array[1],
+      'book': array[2],
+    };
+    // notifyListeners();
   }
 
   void updateBookChapterText(String value) {

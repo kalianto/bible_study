@@ -1,4 +1,5 @@
 class BookChapter {
+  //final int id;
   final int bookId;
   final int chapterStart;
   final int chapterEnd;
@@ -6,8 +7,9 @@ class BookChapter {
   final List<int> chapters;
 
   BookChapter({
+    //this.id,
     this.bookId,
-    this.chapterStart, 
+    this.chapterStart,
     this.chapterEnd,
     this.bookName,
     this.chapters,
@@ -15,6 +17,7 @@ class BookChapter {
 
   factory BookChapter.fromMapEntry(Map item) {
     return BookChapter(
+      //id: item["id"],
       bookId: item["bookId"],
       chapterStart: item["chapterStart"],
       chapterEnd: item["chapterEnd"],
