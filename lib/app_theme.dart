@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class AppColorTheme {
@@ -214,6 +215,17 @@ class AppTheme {
         blurRadius: 2.0,
       )
     ],
+  );
+
+  static final BoxDecoration boxShadowless = BoxDecoration(
+    color: AppTheme.white,
+    borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(4.0),
+      bottomLeft: Radius.circular(4.0),
+      bottomRight: Radius.circular(4.0),
+      topRight: Radius.circular(4.0),
+    ),
+    border: Border.all(color: AppTheme.lightGrey),
   );
 
   static final borderRadius = BorderRadius.only(

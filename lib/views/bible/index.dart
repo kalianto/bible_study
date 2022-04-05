@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:provider/provider.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../app_theme.dart';
 import '../../models/bible_view.dart';
-import '../../providers/my_bible.dart';
 import '../../models/daily_reading.dart';
-import '../../services/bible_view.dart';
 import '../../providers/bible_verse_list.dart';
+import '../../providers/my_bible.dart';
+import '../../services/bible_view.dart';
 import 'bible_bottom_bar.dart';
 import 'bible_reading_bar.dart';
 
@@ -26,6 +26,9 @@ class _BibleViewPageState extends State<BibleViewPage> {
   AutoScrollController scrollController;
   double topBarOpacity = 1.0;
 
+  double swipeLeft = -10.0;
+  double swipeRight = 10.0;
+
   @override
   void initState() {
     super.initState();
@@ -42,27 +45,32 @@ class _BibleViewPageState extends State<BibleViewPage> {
         ChangeNotifierProvider<BibleVerseList>(create: (context) => BibleVerseList()),
       ],
       child: SafeArea(
-        child: Scaffold(
-          key: _scaffoldKey,
-          body: Stack(
-            children: <Widget>[
-              BibleReadingBar(
-                title: widget.readingItem.shortSummary(),
-              ),
-              /// Bible Content
-              Container(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
-                child: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
-                  return _buildReadingView(context, bibleVerseList);
-                }),
-              ),
-            ],
-          ),
-          bottomNavigationBar: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
-            return new BibleBottomBar(bibleVerseList: bibleVerseList);
-          }),
-        )
-      ),
+          child: Scaffold(
+        key: _scaffoldKey,
+        body: GestureDetector(
+            onHorizontalDragUpdate: (dragEndDetails) {
+              if (dragEndDetails.primaryDelta < swipeLeft) {
+              } else if (dragEndDetails.primaryDelta > swipeRight) {}
+            },
+            child: Stack(
+              children: <Widget>[
+                BibleReadingBar(
+                  title: widget.readingItem.shortSummary(),
+                ),
+
+                /// Bible Content
+                Container(
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
+                  child: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+                    return _buildReadingView(context, bibleVerseList);
+                  }),
+                ),
+              ],
+            )),
+        bottomNavigationBar: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+          return new BibleBottomBar(bibleVerseList: bibleVerseList);
+        }),
+      )),
     );
   }
 
@@ -199,10 +207,10 @@ class _BibleViewPageState extends State<BibleViewPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      CircularProgressIndicator(),
-                      SizedBox(height: 30),
-                      Text('Loading Content'),
-                    ]));
+                  CircularProgressIndicator(),
+                  SizedBox(height: 30),
+                  Text('Loading Content'),
+                ]));
           }
 
           if (ConnectionState.done != null && snapshot.hasError) {
@@ -232,6 +240,5 @@ class _BibleViewPageState extends State<BibleViewPage> {
         },
       );
     });
-
   }
 }

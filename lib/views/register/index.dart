@@ -90,11 +90,11 @@ class _RegisterState extends State<RegisterPage> {
                 SizedBox(height: 20.0),
                 TextButton(
                   child: Text(
-                    'Sign Up',
+                    'SIGN UP',
                     style: TextStyle(
                       fontSize: 20,
                       color: AppTheme.white,
-                      fontWeight: FontWeight.bold,
+                      // fontWeight: FontWeight.bold,
                     ),
                   ),
                   style: TextButton.styleFrom(
