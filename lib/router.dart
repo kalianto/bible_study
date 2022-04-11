@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 
-import 'views/login.dart';
-import 'views/register/index.dart';
-import 'views/error_loading.dart';
-import 'views/home/index.dart';
-import 'views/settings/index.dart';
-import 'views/profile/index.dart';
-import 'views/bible/page.dart';
 import 'views/bible/index.dart';
+import 'views/bible/page.dart';
 import 'views/cool_group/index.dart';
-import 'views/news/index.dart';
+import 'views/error_loading.dart';
 import 'views/feedback/index.dart';
+import 'views/home/index.dart';
+import 'views/login.dart';
+import 'views/news/index.dart';
+import 'views/plans/index.dart';
+import 'views/profile/index.dart';
+import 'views/register/index.dart';
+import 'views/rhemas/index.dart';
 import 'views/samples/index.dart';
+import 'views/settings/index.dart';
 import 'views/splash_screen.dart';
 
 class BaseRouter {
@@ -28,6 +30,12 @@ class BaseRouter {
       case '/cool-group':
         return SlideFromRoute(widget: CoolGroup(), direction: 'right');
         break;
+      case '/plans':
+        return SlideFromRoute(widget: ReadingPlans(), direction: 'right');
+        break;
+      case '/rhema':
+        return SlideFromRoute(widget: RhemaPage(), direction: 'right');
+        break;
       case '/pages':
         return SlideFromRoute(widget: SamplePages(), direction: 'right');
         break;
@@ -41,7 +49,8 @@ class BaseRouter {
         return ScaleRoute(widget: LoginPage());
         break;
       case '/bible-view':
-        return SlideFromRoute(widget: BibleViewPage(readingItem: settings.arguments), direction: 'right');
+        return SlideFromRoute(
+            widget: BibleViewPage(readingItem: settings.arguments), direction: 'right');
         break;
       case '/bible':
         return SlideFromRoute(widget: BiblePage(), direction: 'right');
@@ -57,7 +66,9 @@ class BaseRouter {
         break;
       case '/':
       default:
-        return SlideFromRoute(widget: SplashScreen(title: GlobalConfiguration().getValue('appName')), direction: 'left');
+        return SlideFromRoute(
+            widget: SplashScreen(title: GlobalConfiguration().getValue('appName')),
+            direction: 'left');
         break;
     }
   }
@@ -70,8 +81,11 @@ class SlideFromRoute extends PageRouteBuilder {
 
   SlideFromRoute({this.widget, this.direction})
       : super(
-          pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => widget,
-          transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+          pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) =>
+              widget,
+          transitionsBuilder: (BuildContext context, Animation<double> animation,
+              Animation<double> secondaryAnimation, Widget child) {
             switch (direction) {
               case 'bottom':
                 begin = const Offset(0, 1);
@@ -109,7 +123,7 @@ class ScaleRoute extends PageRouteBuilder {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-          widget,
+              widget,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,
