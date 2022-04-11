@@ -36,6 +36,9 @@ class HomeBottomNavigationBar extends StatelessWidget {
               IconButton(
                 icon: const FaIcon(FontAwesomeIcons.prayingHands,
                     size: 22, color: AppTheme.greenText),
+                onPressed: () {
+                  Navigator.of(context).popAndPushNamed('/home');
+                },
               ),
               Text('READING',
                   style: TextStyle(
@@ -50,6 +53,9 @@ class HomeBottomNavigationBar extends StatelessWidget {
               IconButton(
                 icon: const FaIcon(FontAwesomeIcons.flagCheckered,
                     size: 22, color: AppTheme.mandarin),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/rhema');
+                },
               ),
               Text('RHEMA',
                   style: TextStyle(
@@ -63,6 +69,9 @@ class HomeBottomNavigationBar extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 icon: const FaIcon(FontAwesomeIcons.cross, size: 22, color: AppTheme.redText),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/plans');
+                },
               ),
               Text('PLAN',
                   style: TextStyle(
@@ -76,6 +85,9 @@ class HomeBottomNavigationBar extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 icon: const FaIcon(FontAwesomeIcons.users, size: 22, color: AppTheme.yellowText),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/cool-group');
+                },
               ),
               Text('COOL',
                   style: TextStyle(
@@ -90,7 +102,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
               IconButton(
                 icon: const FaIcon(FontAwesomeIcons.bible, size: 22, color: AppTheme.blueText),
                 onPressed: () {
-                  Navigator.of(context).popAndPushNamed('/bible');
+                  Navigator.of(context).pushNamed('/bible');
                 },
               ),
               Text('BIBLE',
