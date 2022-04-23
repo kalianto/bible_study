@@ -56,7 +56,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
             child: Stack(
               children: <Widget>[
                 BibleReadingBar(
-                  title: widget.readingItem.shortSummary(),
+                  item: widget.readingItem,
                 ),
 
                 /// Bible Content

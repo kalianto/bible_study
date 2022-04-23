@@ -3,13 +3,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
+import '../../models/daily_reading.dart';
+import '../../modules/daily_reading.dart' as DailyReadingModule;
 import '../../providers/my_bible.dart';
 import 'bible_version_dialog.dart';
 
 class BibleReadingBar extends StatelessWidget {
-  BibleReadingBar({Key key, this.title}) : super(key: key);
+  BibleReadingBar({Key key, this.item}) : super(key: key);
 
-  final String title;
+  final DailyReading item;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +33,6 @@ class BibleReadingBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-                  print(myBible.version);
-
-                  /// TODO: Update title here
-                  /// Request reading item based on updated myBible.version
-                  ///
                   return IconButton(
                     icon: const Icon(FontAwesomeIcons.arrowLeft),
                     iconSize: 22,
@@ -48,21 +45,7 @@ class BibleReadingBar extends StatelessWidget {
                   return Expanded(
                       child:
                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-                    Flexible(
-                      // padding: const EdgeInsets.all(8.0),
-                      child: FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Text(title,
-                            //textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontFamily: AppTheme.fontName,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                              letterSpacing: 1.2,
-                              color: AppTheme.darkGrey,
-                            )),
-                      ),
-                    ),
+                    _buildTitle(item, myBible.version),
                     Consumer<MyBibleProvider>(builder: (context, myBible, child) {
                       return BibleVersionDialog(myBible: myBible);
                     }),
@@ -73,6 +56,32 @@ class BibleReadingBar extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildTitle(DailyReading item, int bibleVersion) {
+    return FutureBuilder(
+      future: DailyReadingModule.getDailyReadingItemById(item.id, bibleVersion),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (ConnectionState.active != null && !snapshot.hasData) {
+          return Text('loading');
+        }
+        return Flexible(
+          // padding: const EdgeInsets.all(8.0),
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(snapshot.data.shortSummary(),
+                //textAlign: TextAlign.right,
+                style: TextStyle(
+                  fontFamily: AppTheme.fontName,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  letterSpacing: 1.2,
+                  color: AppTheme.darkGrey,
+                )),
+          ),
+        );
+      },
     );
   }
 }
