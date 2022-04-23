@@ -4,8 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 import '../../models/daily_reading.dart';
+import '../../modules/daily_reading.dart' as DailyReadingModule;
 import '../../providers/my_bible.dart';
-import '../../services/daily_reading.dart';
 
 class DailyReadingItem extends StatelessWidget {
   DailyReadingItem({
@@ -28,17 +28,9 @@ class DailyReadingItem extends StatelessWidget {
     );
   }
 
-  /// TODO: move this to own file
-  Future<List<DailyReading>> getDailyReadingSummary(DateTime date, int bibleVersionId) async {
-    var dbClient = DailyReadingService();
-    List<DailyReading> dailyReadingList =
-        await dbClient.getDailyReading(date, bibleVersionId: bibleVersionId);
-    return dailyReadingList;
-  }
-
   Widget _buildReadingItemSummary(BuildContext context, DateTime date, int bibleVersionIndex) {
     return FutureBuilder(
-        future: getDailyReadingSummary(date, bibleVersionIndex),
+        future: DailyReadingModule.getDailyReadingSummary(date, bibleVersionIndex),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
