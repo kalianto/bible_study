@@ -42,7 +42,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<BibleVerseList>(create: (context) => BibleVerseList()),
+        ChangeNotifierProvider<BibleVerseListProvider>(
+            create: (context) => BibleVerseListProvider()),
       ],
       child: SafeArea(
           child: Scaffold(
@@ -61,13 +62,15 @@ class _BibleViewPageState extends State<BibleViewPage> {
                 /// Bible Content
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
-                  child: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+                  child:
+                      Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
                     return _buildReadingView(context, bibleVerseList);
                   }),
                 ),
               ],
             )),
-        bottomNavigationBar: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+        bottomNavigationBar:
+            Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
           return new BibleBottomBar(bibleVerseList: bibleVerseList);
         }),
       )),
@@ -160,7 +163,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
     return futureValue;
   }
 
-  Widget _getRowOnly(int index, BibleView data, BibleVerseList bibleVerseList) => InkWell(
+  Widget _getRowOnly(int index, BibleView data, BibleVerseListProvider bibleVerseList) => InkWell(
         onTap: () {
           bibleVerseList.addRemoveItem(data);
         },
@@ -187,7 +190,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
         ),
       );
 
-  Widget _getRowWithHeading(int index, BibleView data, BibleVerseList bibleVerseList) =>
+  Widget _getRowWithHeading(int index, BibleView data, BibleVerseListProvider bibleVerseList) =>
       Column(children: <Widget>[
         Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -196,8 +199,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
         _getRowOnly(index, data, bibleVerseList),
       ]);
 
-  Widget _buildReadingView(BuildContext context, BibleVerseList bibleVerseList) {
-    return Consumer<MyBible>(builder: (context, myBible, child) {
+  Widget _buildReadingView(BuildContext context, BibleVerseListProvider bibleVerseList) {
+    return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
       return FutureBuilder(
         future: getBookContent(myBible.version),
         builder: (context, snapshot) {

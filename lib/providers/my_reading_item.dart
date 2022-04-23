@@ -4,8 +4,8 @@ import '../../helpers/date_helper.dart' as DateHelper;
 import '../models/daily_reading.dart';
 import '../services/daily_reading.dart';
 
-class MyReadingItem with ChangeNotifier {
-  MyReadingItem({this.date, this.bibleVersionId});
+class MyReadingItemProvider with ChangeNotifier {
+  MyReadingItemProvider({this.date, this.bibleVersionId});
 
   DateTime date;
   int bibleVersionId;
@@ -24,18 +24,19 @@ class MyReadingItem with ChangeNotifier {
   }
 }
 
-Future<MyReadingItem> loadDailyReadingItem(DateTime date, int bibleVersionId) async {
-  MyReadingItem readingItem = MyReadingItem(date: date, bibleVersionId: bibleVersionId);
+Future<MyReadingItemProvider> loadDailyReadingItem(DateTime date, int bibleVersionId) async {
+  MyReadingItemProvider readingItem =
+      MyReadingItemProvider(date: date, bibleVersionId: bibleVersionId);
   await readingItem.getDailyReadingSummary();
   return readingItem;
 }
 
 Future<String> loadDailyReadingSummaryFull(DateTime date) async {
-  MyReadingItem readingItem1 = MyReadingItem(date: date, bibleVersionId: 8);
+  MyReadingItemProvider readingItem1 = MyReadingItemProvider(date: date, bibleVersionId: 8);
   await readingItem1.getDailyReadingSummary();
   String summary1 = readingItem1.generateSummary();
 
-  MyReadingItem readingItem2 = MyReadingItem(date: date, bibleVersionId: 4);
+  MyReadingItemProvider readingItem2 = MyReadingItemProvider(date: date, bibleVersionId: 4);
   await readingItem2.getDailyReadingSummary();
   String summary2 = readingItem2.generateSummary();
 

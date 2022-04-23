@@ -15,7 +15,7 @@ class DailyReadingItem extends StatelessWidget {
   }) : super(key: key);
 
   final DateTime date;
-  final MyBible myBible;
+  final MyBibleProvider myBible;
 
   @override
   Widget build(BuildContext context) {

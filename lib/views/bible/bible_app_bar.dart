@@ -31,7 +31,7 @@ class BibleAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Consumer<MyBible>(builder: (context, myBible, child) {
+                Consumer<MyBibleProvider>(builder: (context, myBible, child) {
                   return IconButton(
                     icon: const Icon(FontAwesomeIcons.arrowLeft),
                     iconSize: 22,
@@ -40,15 +40,15 @@ class BibleAppBar extends StatelessWidget {
                     color: AppTheme.darkGrey,
                   );
                 }),
-                Consumer<MyBible>(builder: (context, myBible, child) {
+                Consumer<MyBibleProvider>(builder: (context, myBible, child) {
                   return Expanded(
                       child:
                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
                     Flexible(
                       // padding: const EdgeInsets.all(8.0),
                       child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: BibleAppBarTitle(myBible: myBible, action: action),
+                        fit: BoxFit.fitWidth,
+                        child: BibleAppBarTitle(myBible: myBible, action: action),
                       ),
                     ),
                     BibleVersionDialog(myBible: myBible),

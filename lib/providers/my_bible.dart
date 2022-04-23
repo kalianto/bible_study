@@ -8,8 +8,8 @@ import '../helpers/bible_helper.dart' as BibleHelper;
 
 const int DEFAULT_BIBLE_VERSION = 8; // TB
 
-class MyBible with ChangeNotifier {
-  MyBible({this.version, this.lastBibleVerse});
+class MyBibleProvider with ChangeNotifier {
+  MyBibleProvider({this.version, this.lastBibleVerse});
 
   int version;
   int lastBibleVerse;
@@ -77,8 +77,8 @@ class MyBible with ChangeNotifier {
   // }
 }
 
-Future<MyBible> loadMyBible() async {
-  MyBible myBibleVersion = new MyBible();
+Future<MyBibleProvider> loadMyBible() async {
+  MyBibleProvider myBibleVersion = new MyBibleProvider();
   await myBibleVersion.getMyBibleVersion();
   await myBibleVersion.getMyBibleLastVerse();
   return myBibleVersion;

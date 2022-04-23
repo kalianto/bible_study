@@ -35,7 +35,7 @@ class _BibleContentState extends State<BibleContent> {
   }
 
   Widget _buildReadingView(BuildContext context) {
-    return Consumer<MyBible>(builder: (context, myBible, child) {
+    return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
       return FutureBuilder(
         future: getBookContent(myBible),
         builder: (context, snapshot) {
@@ -94,7 +94,7 @@ class _BibleContentState extends State<BibleContent> {
         highlightColor: AppTheme.darkGrey.withOpacity(0.5),
       );
 
-  Future<List<BibleView>> getBookContent(MyBible myBible) async {
+  Future<List<BibleView>> getBookContent(MyBibleProvider myBible) async {
     var dbClient = BibleViewService();
     List<BibleView> bibleViewList = await dbClient.getBibleContent(
         bibleVersionId: myBible.version, verseStart: myBible.lastBibleVerse);
@@ -102,7 +102,7 @@ class _BibleContentState extends State<BibleContent> {
   }
 
   Widget _getRowOnly(int index, BibleView data) {
-    return Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+    return Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
       return InkWell(
         onTap: () {
           bibleVerseList.addRemoveItem(data);

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:share/share.dart';
 
 import '../../app_theme.dart';
 import '../../providers/my_bible.dart';
 import '../../providers/my_reading_item.dart';
 
 class HomeAppBar extends StatelessWidget {
-
   HomeAppBar({this.date, this.myBible}) : super();
   final DateTime date;
-  final MyBible myBible;
+  final MyBibleProvider myBible;
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +49,16 @@ class HomeAppBar extends StatelessWidget {
                 onSelected: (value) async {
                   String readingSummary;
                   if (value == 'copyTB') {
-                    MyReadingItem readingItem = await loadDailyReadingItem(date, 8);
+                    MyReadingItemProvider readingItem = await loadDailyReadingItem(date, 8);
                     readingSummary = readingItem.generateSummary();
                   }
                   if (value == 'copyKJV') {
-                    MyReadingItem readingItem = await loadDailyReadingItem(date, 4);
+                    MyReadingItemProvider readingItem = await loadDailyReadingItem(date, 4);
                     readingSummary = readingItem.generateSummary();
                   }
                   if (value == 'copy') {
-                    MyReadingItem readingItem = await loadDailyReadingItem(date, myBible.version);
+                    MyReadingItemProvider readingItem =
+                        await loadDailyReadingItem(date, myBible.version);
                     readingSummary = readingItem.generateSummary();
                   }
                   if (value == 'GEMA') {

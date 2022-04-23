@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import '../models/bible_view.dart';
 
-class BibleVerseList with ChangeNotifier {
-  BibleVerseList();
+class BibleVerseListProvider with ChangeNotifier {
+  BibleVerseListProvider();
 
   List<BibleView> listItems = [];
 

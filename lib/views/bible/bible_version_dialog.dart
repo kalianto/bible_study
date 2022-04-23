@@ -8,7 +8,7 @@ import '../../services/bible_version.dart';
 class BibleVersionDialog extends StatelessWidget {
   BibleVersionDialog({Key key, this.myBible}) : super(key: key);
 
-  final MyBible myBible;
+  final MyBibleProvider myBible;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class BibleVersionDialog extends StatelessWidget {
             )));
   }
 
-  _showBibleVersionDialog(BuildContext context, List<BibleVersion> data, MyBible myBible) {
+  _showBibleVersionDialog(BuildContext context, List<BibleVersion> data, MyBibleProvider myBible) {
     SimpleDialog dialog = SimpleDialog(
       title: const Text('Select Bible Version'),
       children: _generateBibleVersionDialogItem(context, data),

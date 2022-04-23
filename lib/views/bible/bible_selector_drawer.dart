@@ -47,7 +47,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
   }
 
   Future<void> _loadBookChapters() async {
-    MyBible myBible = Provider.of<MyBible>(context, listen: false);
+    MyBibleProvider myBible = Provider.of<MyBibleProvider>(context, listen: false);
     var dbClient = BookChapterService();
     List<BookChapter> list = await dbClient.getAllBookChapters(myBible.version);
     setState(() {
@@ -57,7 +57,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
   }
 
   Future _scrollToIndex(context) async {
-    MyBible myBible = Provider.of<MyBible>(context, listen: false);
+    MyBibleProvider myBible = Provider.of<MyBibleProvider>(context, listen: false);
     int index = myBible.lastBibleVerseArray['book'] - 1;
     await scrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
     scrollController.highlight(index);
@@ -79,7 +79,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
   @override
   Widget build(BuildContext context) {
     // setIsBookSelection(false);
-    MyBible myBible = Provider.of<MyBible>(context, listen: false);
+    MyBibleProvider myBible = Provider.of<MyBibleProvider>(context, listen: false);
 
     return Container(
       child: AnimatedCrossFade(
@@ -91,7 +91,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
     );
   }
 
-  Widget buildBookList(BuildContext context, MyBible myBible) {
+  Widget buildBookList(BuildContext context, MyBibleProvider myBible) {
     List selectedBibleVerse = BibleHelper.splitVerse(myBible.lastBibleVerse);
 
     Widget searchBar = Container(
@@ -167,7 +167,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
     ]);
   }
 
-  Widget buildChapterList(BuildContext context, MyBible myBible) {
+  Widget buildChapterList(BuildContext context, MyBibleProvider myBible) {
     Widget emptyContainer = Container(
         child: Center(
       child: Text('Please select a book first'),

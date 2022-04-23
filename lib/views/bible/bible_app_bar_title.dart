@@ -9,7 +9,7 @@ import '../../services/book_chapter.dart';
 class BibleAppBarTitle extends StatelessWidget {
   BibleAppBarTitle({Key key, this.myBible, this.action}) : super(key: key);
 
-  final MyBible myBible;
+  final MyBibleProvider myBible;
   final Function action;
 
   @override
@@ -45,7 +45,7 @@ class BibleAppBarTitle extends StatelessWidget {
   }
 }
 
-Future<String> getBookChapter(MyBible myBible) async {
+Future<String> getBookChapter(MyBibleProvider myBible) async {
   List<int> verses = BibleHelper.splitVerse(myBible.lastBibleVerse);
   int bookId = verses[2];
   var dbClient = BookChapterService();

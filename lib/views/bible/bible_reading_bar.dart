@@ -30,7 +30,7 @@ class BibleReadingBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Consumer<MyBible>(builder: (context, myBible, child) {
+                Consumer<MyBibleProvider>(builder: (context, myBible, child) {
                   print(myBible.version);
 
                   /// TODO: Update title here
@@ -44,7 +44,7 @@ class BibleReadingBar extends StatelessWidget {
                     color: AppTheme.darkGrey,
                   );
                 }),
-                Consumer<MyBible>(builder: (context, myBible, child) {
+                Consumer<MyBibleProvider>(builder: (context, myBible, child) {
                   return Expanded(
                       child:
                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
@@ -63,7 +63,7 @@ class BibleReadingBar extends StatelessWidget {
                             )),
                       ),
                     ),
-                    Consumer<MyBible>(builder: (context, myBible, child) {
+                    Consumer<MyBibleProvider>(builder: (context, myBible, child) {
                       return BibleVersionDialog(myBible: myBible);
                     }),
                   ]));
