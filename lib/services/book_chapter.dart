@@ -5,12 +5,12 @@ import '../models/bible_version.dart';
 import '../models/book_chapter.dart';
 import '../services/bible_version.dart';
 
-class BookChapterProvider {
-  final dbProvider = DatabaseService();
-  final bibleVersionProvider = BibleVersionProvider();
+class BookChapterService {
+  final dbService = DatabaseService();
+  final bibleVersionProvider = BibleVersionService();
 
   Future<List<BookChapter>> getAllBookChapters(int bibleVersionId) async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     List<BookChapter> bookChapterList = [];
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
@@ -28,7 +28,7 @@ class BookChapterProvider {
   }
 
   Future<BookChapter> getBookChapter(int bibleVersionId, int bookId) async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     BookChapter bookChapter;
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
@@ -37,7 +37,8 @@ class BookChapterProvider {
             'from ${bibleVersion.table} a ' +
             'join ${bibleVersion.keyTable} b on b.b = a.b ' +
             'where a.b = ? '
-            'GROUP BY a.b', [bookId]);
+                'GROUP BY a.b',
+        [bookId]);
 
     if (res.length > 0) {
       bookChapter = BookChapter.fromMapEntry(res[0]);

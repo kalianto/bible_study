@@ -5,15 +5,16 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
 
 import 'app_theme.dart';
-import 'router.dart';
+import 'modules/my_bible.dart' as MyBibleModule;
 import 'providers/my_bible.dart';
+import 'router.dart';
 
 class BibleStudy extends StatelessWidget {
   /// root of BibleStudy application
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: loadMyBible(),
+      future: MyBibleModule.loadMyBible(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (ConnectionState.active != null && !snapshot.hasData) {
           return Center(
@@ -21,7 +22,7 @@ class BibleStudy extends StatelessWidget {
           );
         }
 
-        return ChangeNotifierProvider<MyBible>.value(
+        return ChangeNotifierProvider<MyBibleProvider>.value(
             value: snapshot.data,
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

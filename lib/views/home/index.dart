@@ -82,7 +82,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MyBible>(builder: (context, myBible, child) {
+    return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
       return SafeArea(
         child: Scaffold(
           key: _scaffoldKey,
@@ -100,7 +100,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
-  Widget buildHomeContent(BuildContext context, MyBible myBible) {
+  Widget buildHomeContent(BuildContext context, MyBibleProvider myBible) {
     // return Container();
     // tz.initializeTimeZones();
     // const bigPicture = BigPictureStyleInformation(

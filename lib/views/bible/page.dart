@@ -35,7 +35,8 @@ class _BiblePageState extends State<BiblePage> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<BibleVerseList>(create: (context) => BibleVerseList()),
+        ChangeNotifierProvider<BibleVerseListProvider>(
+            create: (context) => BibleVerseListProvider()),
       ],
       child: SafeArea(
           child: Scaffold(
@@ -57,7 +58,8 @@ class _BiblePageState extends State<BiblePage> {
         drawer: Drawer(
           child: BibleSelectorDrawer(),
         ),
-        bottomNavigationBar: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+        bottomNavigationBar:
+            Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
           return new BibleBottomBar(bibleVerseList: bibleVerseList);
         }),
       )),

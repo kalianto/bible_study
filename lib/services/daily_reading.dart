@@ -7,12 +7,12 @@ import '../models/bible_version.dart';
 import '../models/daily_reading.dart';
 import '../services/bible_version.dart';
 
-class DailyReadingProvider {
-  final dbProvider = DatabaseService();
-  final bibleVersionProvider = BibleVersionProvider();
+class DailyReadingService {
+  final dbService = DatabaseService();
+  final bibleVersionProvider = BibleVersionService();
 
   Future<List<DailyReading>> getDailyReading(DateTime date, {int bibleVersionId = 8}) async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     var dateId = DateHelper.formatDate(date, 'dMM');
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
 

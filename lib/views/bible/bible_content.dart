@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:provider/provider.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../app_theme.dart';
-import '../../services/bible_view.dart';
 import '../../models/bible_view.dart';
-import '../../providers/my_bible.dart';
+import '../../modules/bible_view.dart' as BibleViewModule;
 import '../../providers/bible_verse_list.dart';
-
+import '../../providers/my_bible.dart';
 
 class BibleContent extends StatefulWidget {
   @override
@@ -21,11 +20,7 @@ class _BibleContentState extends State<BibleContent> {
   void initState() {
     super.initState();
     scrollController = AutoScrollController(
-        viewportBoundaryGetter: () =>
-            Rect.fromLTRB(0, 0, 0, MediaQuery
-                .of(context)
-                .padding
-                .bottom),
+        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.vertical);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(context));
@@ -40,9 +35,9 @@ class _BibleContentState extends State<BibleContent> {
   }
 
   Widget _buildReadingView(BuildContext context) {
-    return Consumer<MyBible>(builder: (context, myBible, child) {
+    return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
       return FutureBuilder(
-        future: getBookContent(myBible),
+        future: BibleViewModule.getBookContent(myBible),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
@@ -50,10 +45,10 @@ class _BibleContentState extends State<BibleContent> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      CircularProgressIndicator(),
-                      SizedBox(height: 30),
-                      Text('Loading Content'),
-                    ]));
+                  CircularProgressIndicator(),
+                  SizedBox(height: 30),
+                  Text('Loading Content'),
+                ]));
           }
 
           if (ConnectionState.done != null && snapshot.hasError) {
@@ -91,8 +86,7 @@ class _BibleContentState extends State<BibleContent> {
     scrollController.highlight(index);
   }
 
-  Widget _wrapScrollTag({int index, Widget child}) =>
-      AutoScrollTag(
+  Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
         key: ValueKey(index),
         controller: scrollController,
         index: index,
@@ -100,17 +94,8 @@ class _BibleContentState extends State<BibleContent> {
         highlightColor: AppTheme.darkGrey.withOpacity(0.5),
       );
 
-  Future<List<BibleView>> getBookContent(MyBible myBible) async {
-    var dbClient = BibleViewProvider();
-    List<BibleView> bibleViewList = await dbClient.getBibleContent(
-        bibleVersionId: myBible.version,
-        verseStart: myBible.lastBibleVerse
-    );
-    return bibleViewList;
-  }
-
   Widget _getRowOnly(int index, BibleView data) {
-    return Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+    return Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
       return InkWell(
         onTap: () {
           bibleVerseList.addRemoveItem(data);
@@ -119,8 +104,8 @@ class _BibleContentState extends State<BibleContent> {
           padding: const EdgeInsets.all(8),
           decoration: bibleVerseList.isSelected(data.id)
               ? BoxDecoration(
-            color: AppTheme.darkGrey.withOpacity(0.5),
-          )
+                  color: AppTheme.darkGrey.withOpacity(0.5),
+                )
               : BoxDecoration(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -140,12 +125,11 @@ class _BibleContentState extends State<BibleContent> {
     });
   }
 
-  Widget _getRowWithHeading(int index, BibleView data) =>
-      Column(children: <Widget>[
+  Widget _getRowWithHeading(int index, BibleView data) => Column(children: <Widget>[
         Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child:
-            Text(data.bookName + ' ' + data.bookChapter.toString(), style: AppTheme.headline5)),
+                Text(data.bookName + ' ' + data.bookChapter.toString(), style: AppTheme.headline5)),
         _getRowOnly(index, data),
       ]);
 
@@ -195,8 +179,8 @@ class _BibleContentState extends State<BibleContent> {
       title: Text('Reference'),
       content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[Text(text, style: AppTheme.body1)],
-          )),
+        children: <Widget>[Text(text, style: AppTheme.body1)],
+      )),
       actions: <Widget>[
         TextButton(
             child: Text('Close'),
@@ -214,5 +198,4 @@ class _BibleContentState extends State<BibleContent> {
 
     return futureValue;
   }
-
 }

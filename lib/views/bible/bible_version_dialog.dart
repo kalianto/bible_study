@@ -2,28 +2,27 @@ import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
 import '../../models/bible_version.dart';
-import '../../services/bible_version.dart';
+import '../../modules/bible_version.dart' as BibleVersionModule;
 import '../../providers/my_bible.dart';
 
 class BibleVersionDialog extends StatelessWidget {
   BibleVersionDialog({Key key, this.myBible}) : super(key: key);
 
-  final MyBible myBible;
+  final MyBibleProvider myBible;
 
   @override
   Widget build(BuildContext context) {
     //return buildBibleVersion(context, data, myBible);
     return FutureBuilder(
-      future: getBibleVersion(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (ConnectionState.active != null && !snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return buildBibleVersion(context, snapshot.data, myBible);
-      }
-    );
+        future: BibleVersionModule.getBibleVersion(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (ConnectionState.active != null && !snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return buildBibleVersion(context, snapshot.data, myBible);
+        });
   }
 
   Widget buildBibleVersion(BuildContext context, data, myBible) {
@@ -39,7 +38,7 @@ class BibleVersionDialog extends StatelessWidget {
             )));
   }
 
-  _showBibleVersionDialog(BuildContext context, List<BibleVersion> data, MyBible myBible) {
+  _showBibleVersionDialog(BuildContext context, List<BibleVersion> data, MyBibleProvider myBible) {
     SimpleDialog dialog = SimpleDialog(
       title: const Text('Select Bible Version'),
       children: _generateBibleVersionDialogItem(context, data),
@@ -51,6 +50,7 @@ class BibleVersionDialog extends StatelessWidget {
           return dialog;
         });
 
+    /// From _generateBibleVersionDialogItem() onPressed()
     futureValue.then((bibleVersion) async {
       if (bibleVersion != null) {
         await myBible.saveMyBibleVersion(bibleVersion);
@@ -62,25 +62,19 @@ class BibleVersionDialog extends StatelessWidget {
       BuildContext context, List<BibleVersion> data) {
     return List.generate(
         data.length,
-            (i) => SimpleDialogOption(
-          onPressed: () {
-            Navigator.pop(context, data[i].id);
-          },
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: 50,
-                child: Text(data[i].abbreviation),
+        (i) => SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, data[i].id);
+              },
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: 50,
+                    child: Text(data[i].abbreviation),
+                  ),
+                  Padding(padding: const EdgeInsets.all(10), child: Text(data[i].version)),
+                ],
               ),
-              Padding(padding: const EdgeInsets.all(10), child: Text(data[i].version)),
-            ],
-          ),
-        ));
+            ));
   }
-}
-
-Future<List<BibleVersion>> getBibleVersion() async {
-  var dbClient = BibleVersionProvider();
-  List<BibleVersion> bibleVersionList = await dbClient.getAllBibleVersion();
-  return bibleVersionList;
 }

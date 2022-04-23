@@ -5,9 +5,9 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import '../../app_theme.dart';
 import '../../models/bible_view.dart';
 import '../../models/daily_reading.dart';
+import '../../modules/bible_view.dart' as BibleViewModule;
 import '../../providers/bible_verse_list.dart';
 import '../../providers/my_bible.dart';
-import '../../services/bible_view.dart';
 import 'bible_bottom_bar.dart';
 import 'bible_reading_bar.dart';
 
@@ -42,7 +42,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<BibleVerseList>(create: (context) => BibleVerseList()),
+        ChangeNotifierProvider<BibleVerseListProvider>(
+            create: (context) => BibleVerseListProvider()),
       ],
       child: SafeArea(
           child: Scaffold(
@@ -61,13 +62,15 @@ class _BibleViewPageState extends State<BibleViewPage> {
                 /// Bible Content
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
-                  child: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+                  child:
+                      Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
                     return _buildReadingView(context, bibleVerseList);
                   }),
                 ),
               ],
             )),
-        bottomNavigationBar: Consumer<BibleVerseList>(builder: (context, bibleVerseList, child) {
+        bottomNavigationBar:
+            Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
           return new BibleBottomBar(bibleVerseList: bibleVerseList);
         }),
       )),
@@ -78,12 +81,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
     int index = widget.readingItem.sVerse - 1;
     await scrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
     scrollController.highlight(index);
-  }
-
-  Future<List<BibleView>> getBookContent(int bibleVersion) async {
-    var dbClient = BibleViewProvider();
-    List<BibleView> bibleViewList = await dbClient.getBibleView(widget.readingItem, bibleVersion);
-    return bibleViewList;
   }
 
   Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
@@ -160,7 +157,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
     return futureValue;
   }
 
-  Widget _getRowOnly(int index, BibleView data, BibleVerseList bibleVerseList) => InkWell(
+  Widget _getRowOnly(int index, BibleView data, BibleVerseListProvider bibleVerseList) => InkWell(
         onTap: () {
           bibleVerseList.addRemoveItem(data);
         },
@@ -187,7 +184,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
         ),
       );
 
-  Widget _getRowWithHeading(int index, BibleView data, BibleVerseList bibleVerseList) =>
+  Widget _getRowWithHeading(int index, BibleView data, BibleVerseListProvider bibleVerseList) =>
       Column(children: <Widget>[
         Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -196,10 +193,10 @@ class _BibleViewPageState extends State<BibleViewPage> {
         _getRowOnly(index, data, bibleVerseList),
       ]);
 
-  Widget _buildReadingView(BuildContext context, BibleVerseList bibleVerseList) {
-    return Consumer<MyBible>(builder: (context, myBible, child) {
+  Widget _buildReadingView(BuildContext context, BibleVerseListProvider bibleVerseList) {
+    return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
       return FutureBuilder(
-        future: getBookContent(myBible.version),
+        future: BibleViewModule.getBibleViewContent(widget.readingItem, myBible.version),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
