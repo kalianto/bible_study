@@ -1,10 +1,8 @@
-import 'package:cool/models/book_chapter.dart';
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
-import '../../helpers/bible_helper.dart' as BibleHelper;
+import '../../modules/my_bible.dart' as MyBibleModule;
 import '../../providers/my_bible.dart';
-import '../../services/book_chapter.dart';
 
 class BibleAppBarTitle extends StatelessWidget {
   BibleAppBarTitle({Key key, this.myBible, this.action}) : super(key: key);
@@ -15,7 +13,7 @@ class BibleAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getBookChapter(myBible),
+        future: MyBibleModule.getBookChapter(myBible),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
@@ -43,12 +41,4 @@ class BibleAppBarTitle extends StatelessWidget {
               ))),
     );
   }
-}
-
-Future<String> getBookChapter(MyBibleProvider myBible) async {
-  List<int> verses = BibleHelper.splitVerse(myBible.lastBibleVerse);
-  int bookId = verses[2];
-  var dbClient = BookChapterService();
-  BookChapter bookChapter = await dbClient.getBookChapter(myBible.version, bookId);
-  return bookChapter.bookName + ' ' + verses[1].toString();
 }
