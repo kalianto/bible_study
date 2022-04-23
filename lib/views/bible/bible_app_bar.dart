@@ -1,10 +1,10 @@
-import 'package:cool/views/bible/bible_app_bar_title.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
 import '../../providers/my_bible.dart';
+import 'bible_app_bar_title.dart';
 import 'bible_version_dialog.dart';
 
 class BibleAppBar extends StatelessWidget {
