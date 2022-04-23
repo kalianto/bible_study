@@ -4,10 +4,10 @@ import '../database.dart';
 import '../models/bible_version.dart';
 
 class BibleVersionService {
-  final dbProvider = DatabaseService();
+  final dbService = DatabaseService();
 
   Future<BibleVersion> getBibleVersion(int bibleVersionId) async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     BibleVersion bibleVersion;
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
         'SELECT a.id, a."table", a.abbreviation, a.language, a.version, a.info_text, ' +
@@ -24,7 +24,7 @@ class BibleVersionService {
   }
 
   Future<List<BibleVersion>> getAllBibleVersion() async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     List<BibleVersion> bibleVersionList = [];
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
         'SELECT a.id, a."table", a.abbreviation, a.language, a.version, a.info_text, ' +

@@ -6,11 +6,11 @@ import '../models/book_chapter.dart';
 import '../services/bible_version.dart';
 
 class BookChapterService {
-  final dbProvider = DatabaseService();
+  final dbService = DatabaseService();
   final bibleVersionProvider = BibleVersionService();
 
   Future<List<BookChapter>> getAllBookChapters(int bibleVersionId) async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     List<BookChapter> bookChapterList = [];
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
@@ -28,7 +28,7 @@ class BookChapterService {
   }
 
   Future<BookChapter> getBookChapter(int bibleVersionId, int bookId) async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     BookChapter bookChapter;
     List<Map<String, dynamic>> res = await dbClient.rawQuery(

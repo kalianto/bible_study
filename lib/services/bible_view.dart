@@ -8,11 +8,11 @@ import '../models/daily_reading.dart';
 import '../services/bible_version.dart';
 
 class BibleViewService {
-  final dbProvider = DatabaseService();
+  final dbService = DatabaseService();
   final bibleVersionProvider = BibleVersionService();
 
   Future<List<BibleView>> getBibleView(DailyReading item, int bibleVersionId) async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     List<BibleView> bibleViewList = [];
 
@@ -50,7 +50,7 @@ class BibleViewService {
   }
 
   Future<List<BibleView>> getBibleContent({int bibleVersionId = 8, int verseStart}) async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     List<BibleView> bibleViewList = [];
     List<int> verses = BibleHelper.splitVerse(verseStart);
@@ -83,7 +83,7 @@ class BibleViewService {
   }
 
   Future<int> getMaxChapterVerse(BibleVersion bibleVersion, int book, int chapter) async {
-    var dbClient = await dbProvider.db;
+    var dbClient = await dbService.db;
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
         'SELECT MAX(v) as lastVerse from  ${bibleVersion.table} a ' + 'where b = ? and c = ?',
         [book, chapter]);
