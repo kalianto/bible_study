@@ -1,8 +1,9 @@
 import 'dart:async';
+
 import '../database.dart';
 import '../models/bible_version.dart';
 
-class BibleVersionProvider {
+class BibleVersionService {
   final dbProvider = DatabaseService();
 
   Future<BibleVersion> getBibleVersion(int bibleVersionId) async {
@@ -31,10 +32,7 @@ class BibleVersionProvider {
             'from bible_version_key a where a.enabled = 1');
 
     if (res.length > 0) {
-      bibleVersionList = List.generate(
-        res.length,
-        (k) => BibleVersion.fromMapEntry(res[k])
-      );
+      bibleVersionList = List.generate(res.length, (k) => BibleVersion.fromMapEntry(res[k]));
     }
 
     return bibleVersionList;

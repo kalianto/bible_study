@@ -5,9 +5,9 @@ import '../models/bible_version.dart';
 import '../models/book_chapter.dart';
 import '../services/bible_version.dart';
 
-class BookChapterProvider {
+class BookChapterService {
   final dbProvider = DatabaseService();
-  final bibleVersionProvider = BibleVersionProvider();
+  final bibleVersionProvider = BibleVersionService();
 
   Future<List<BookChapter>> getAllBookChapters(int bibleVersionId) async {
     var dbClient = await dbProvider.db;
@@ -37,7 +37,8 @@ class BookChapterProvider {
             'from ${bibleVersion.table} a ' +
             'join ${bibleVersion.keyTable} b on b.b = a.b ' +
             'where a.b = ? '
-            'GROUP BY a.b', [bookId]);
+                'GROUP BY a.b',
+        [bookId]);
 
     if (res.length > 0) {
       bookChapter = BookChapter.fromMapEntry(res[0]);

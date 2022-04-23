@@ -81,7 +81,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
   }
 
   Future<List<BibleView>> getBookContent(int bibleVersion) async {
-    var dbClient = BibleViewProvider();
+    var dbClient = BibleViewService();
     List<BibleView> bibleViewList = await dbClient.getBibleView(widget.readingItem, bibleVersion);
     return bibleViewList;
   }

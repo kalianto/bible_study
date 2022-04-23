@@ -31,6 +31,11 @@ class BibleReadingBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Consumer<MyBible>(builder: (context, myBible, child) {
+                  print(myBible.version);
+
+                  /// TODO: Update title here
+                  /// Request reading item based on updated myBible.version
+                  ///
                   return IconButton(
                     icon: const Icon(FontAwesomeIcons.arrowLeft),
                     iconSize: 22,
@@ -39,29 +44,30 @@ class BibleReadingBar extends StatelessWidget {
                     color: AppTheme.darkGrey,
                   );
                 }),
-                Expanded(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Flexible(
-                            // padding: const EdgeInsets.all(8.0),
-                            child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Text(title,
-                                  //textAlign: TextAlign.right,
-                                  style: TextStyle(
-                                    fontFamily: AppTheme.fontName,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20,
-                                    letterSpacing: 1.2,
-                                    color: AppTheme.darkGrey,
-                                  )),
-                            ),
-                          ),
-                          Consumer<MyBible>(builder: (context, myBible, child) {
-                            return BibleVersionDialog(myBible: myBible);
-                          }),
-                        ])),
+                Consumer<MyBible>(builder: (context, myBible, child) {
+                  return Expanded(
+                      child:
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                    Flexible(
+                      // padding: const EdgeInsets.all(8.0),
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(title,
+                            //textAlign: TextAlign.right,
+                            style: TextStyle(
+                              fontFamily: AppTheme.fontName,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                              letterSpacing: 1.2,
+                              color: AppTheme.darkGrey,
+                            )),
+                      ),
+                    ),
+                    Consumer<MyBible>(builder: (context, myBible, child) {
+                      return BibleVersionDialog(myBible: myBible);
+                    }),
+                  ]));
+                }),
               ],
             ),
           )

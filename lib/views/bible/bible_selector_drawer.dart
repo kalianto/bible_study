@@ -48,7 +48,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
 
   Future<void> _loadBookChapters() async {
     MyBible myBible = Provider.of<MyBible>(context, listen: false);
-    var dbClient = BookChapterProvider();
+    var dbClient = BookChapterService();
     List<BookChapter> list = await dbClient.getAllBookChapters(myBible.version);
     setState(() {
       bookChapterList = list;
