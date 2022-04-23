@@ -4,9 +4,9 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../app_theme.dart';
 import '../../models/bible_view.dart';
+import '../../modules/bible_view.dart' as BibleViewModule;
 import '../../providers/bible_verse_list.dart';
 import '../../providers/my_bible.dart';
-import '../../services/bible_view.dart';
 
 class BibleContent extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _BibleContentState extends State<BibleContent> {
   Widget _buildReadingView(BuildContext context) {
     return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
       return FutureBuilder(
-        future: getBookContent(myBible),
+        future: BibleViewModule.getBookContent(myBible),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
@@ -93,13 +93,6 @@ class _BibleContentState extends State<BibleContent> {
         child: child,
         highlightColor: AppTheme.darkGrey.withOpacity(0.5),
       );
-
-  Future<List<BibleView>> getBookContent(MyBibleProvider myBible) async {
-    var dbClient = BibleViewService();
-    List<BibleView> bibleViewList = await dbClient.getBibleContent(
-        bibleVersionId: myBible.version, verseStart: myBible.lastBibleVerse);
-    return bibleViewList;
-  }
 
   Widget _getRowOnly(int index, BibleView data) {
     return Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
