@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
 import '../../models/bible_version.dart';
+import '../../modules/bible_version.dart' as BibleVersionModule;
 import '../../providers/my_bible.dart';
-import '../../services/bible_version.dart';
 
 class BibleVersionDialog extends StatelessWidget {
   BibleVersionDialog({Key key, this.myBible}) : super(key: key);
@@ -14,7 +14,7 @@ class BibleVersionDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     //return buildBibleVersion(context, data, myBible);
     return FutureBuilder(
-        future: getBibleVersion(),
+        future: BibleVersionModule.getBibleVersion(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
@@ -77,10 +77,4 @@ class BibleVersionDialog extends StatelessWidget {
               ),
             ));
   }
-}
-
-Future<List<BibleVersion>> getBibleVersion() async {
-  var dbClient = BibleVersionService();
-  List<BibleVersion> bibleVersionList = await dbClient.getAllBibleVersion();
-  return bibleVersionList;
 }
