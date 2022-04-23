@@ -15,8 +15,10 @@ class DailyReading {
   final int orderBy;
   final String bibleVersion;
   final String bibleCode;
+  final int id;
 
-  DailyReading({this.dateId,
+  DailyReading({
+    this.dateId,
     this.sId,
     this.sBookName,
     this.sBookNum,
@@ -32,11 +34,12 @@ class DailyReading {
     this.orderBy,
     this.bibleVersion,
     this.bibleCode,
+    this.id,
   });
 
   String shortSummary() {
-    String startTitle = this.sBookName + ' ' + this.sChapter.toString() + ':' +
-        this.sVerse.toString();
+    String startTitle =
+        this.sBookName + ' ' + this.sChapter.toString() + ':' + this.sVerse.toString();
     String endTitle = ' - ';
     if (this.eBookNum != this.sBookNum) {
       endTitle += this.eBookName + ' ' + this.eChapter.toString() + ':' + this.eVerse.toString();
@@ -55,5 +58,3 @@ class DailyReading {
     return this.sVerseSummary;
   }
 }
-
-

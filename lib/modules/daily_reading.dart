@@ -7,3 +7,10 @@ Future<List<DailyReading>> getDailyReadingSummary(DateTime date, int bibleVersio
       await dbClient.getDailyReading(date, bibleVersionId: bibleVersionId);
   return dailyReadingList;
 }
+
+Future<DailyReading> getDailyReadingItemById(int id, int bibleVersionId) async {
+  var dbClient = DailyReadingService();
+  DailyReading dailyReading =
+      await dbClient.getDailyReadingItemById(id, bibleVersionId: bibleVersionId);
+  return dailyReading;
+}

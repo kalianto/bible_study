@@ -89,6 +89,7 @@ class DailyReadingItem extends StatelessWidget {
             onTap: () async {
               /// BibleReading IconButton.onPressed return BibleVersion that will be captured here
               /// File: bible_reading_bar.dart
+
               final result = await Navigator.pushNamed(context, '/bible-view', arguments: item);
 
               /// result is not null when user changes bible version
