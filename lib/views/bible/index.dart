@@ -5,9 +5,9 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import '../../app_theme.dart';
 import '../../models/bible_view.dart';
 import '../../models/daily_reading.dart';
+import '../../modules/bible_view.dart' as BibleViewModule;
 import '../../providers/bible_verse_list.dart';
 import '../../providers/my_bible.dart';
-import '../../services/bible_view.dart';
 import 'bible_bottom_bar.dart';
 import 'bible_reading_bar.dart';
 
@@ -81,12 +81,6 @@ class _BibleViewPageState extends State<BibleViewPage> {
     int index = widget.readingItem.sVerse - 1;
     await scrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
     scrollController.highlight(index);
-  }
-
-  Future<List<BibleView>> getBookContent(int bibleVersion) async {
-    var dbClient = BibleViewService();
-    List<BibleView> bibleViewList = await dbClient.getBibleView(widget.readingItem, bibleVersion);
-    return bibleViewList;
   }
 
   Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
@@ -202,7 +196,7 @@ class _BibleViewPageState extends State<BibleViewPage> {
   Widget _buildReadingView(BuildContext context, BibleVerseListProvider bibleVerseList) {
     return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
       return FutureBuilder(
-        future: getBookContent(myBible.version),
+        future: BibleViewModule.getBibleViewContent(widget.readingItem, myBible.version),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
