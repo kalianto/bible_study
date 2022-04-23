@@ -6,8 +6,8 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../helpers/bible_helper.dart' as BibleHelper;
 import '../../models/book_chapter.dart';
+import '../../modules/book_chapter.dart' as BookChapterModule;
 import '../../providers/my_bible.dart';
-import '../../services/book_chapter.dart';
 
 class BibleSelectorDrawer extends StatefulWidget {
   @override
@@ -48,8 +48,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
 
   Future<void> _loadBookChapters() async {
     MyBibleProvider myBible = Provider.of<MyBibleProvider>(context, listen: false);
-    var dbClient = BookChapterService();
-    List<BookChapter> list = await dbClient.getAllBookChapters(myBible.version);
+    List<BookChapter> list = await BookChapterModule.getAllBookChapters(myBible.version);
     setState(() {
       bookChapterList = list;
       staticBookChapterList = list;
