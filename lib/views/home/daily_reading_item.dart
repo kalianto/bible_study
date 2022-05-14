@@ -140,7 +140,7 @@ class DailyReadingItem extends StatelessWidget {
                           padding: const EdgeInsets.all(0),
                           icon: FaIcon(
                             // FontAwesomeIcons.solidCheckCircle,
-                            FontAwesomeIcons.arrowCircleRight,
+                            FontAwesomeIcons.playCircle,
                             color: colorTheme.darkColor,
                           ),
                           onPressed: () {
