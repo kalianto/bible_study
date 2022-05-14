@@ -12,7 +12,6 @@ import 'daily_reading_item.dart';
 import 'date_selector.dart';
 import 'drawer.dart';
 import 'home_app_bar.dart';
-import 'rhema.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -160,7 +159,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           //   },
           //   child: Text('Scheduled Notification after 10s'),
           // ))
-          Rhema(),
+          // Rhema(),
         ]));
   }
 

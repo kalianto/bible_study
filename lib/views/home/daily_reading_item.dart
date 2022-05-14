@@ -90,7 +90,7 @@ class DailyReadingItem extends StatelessWidget {
               /// BibleReading IconButton.onPressed return BibleVersion that will be captured here
               /// File: bible_reading_bar.dart
 
-              final result = await Navigator.pushNamed(context, '/bible-view', arguments: item);
+              final result = await Navigator.pushNamed(context, '/daily-reading', arguments: item);
 
               /// result is not null when user changes bible version
               if (result != null) {
@@ -140,7 +140,7 @@ class DailyReadingItem extends StatelessWidget {
                           padding: const EdgeInsets.all(0),
                           icon: FaIcon(
                             // FontAwesomeIcons.solidCheckCircle,
-                            FontAwesomeIcons.arrowCircleRight,
+                            FontAwesomeIcons.playCircle,
                             color: colorTheme.darkColor,
                           ),
                           onPressed: () {

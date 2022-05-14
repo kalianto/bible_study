@@ -40,7 +40,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
                   Navigator.of(context).popAndPushNamed('/home');
                 },
               ),
-              Text('READING',
+              Text('GEMA',
                   style: TextStyle(
                     fontSize: iconFontSize,
                   )),
@@ -68,12 +68,12 @@ class HomeBottomNavigationBar extends StatelessWidget {
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.cross, size: 22, color: AppTheme.redText),
+                icon: const FaIcon(FontAwesomeIcons.newspaper, size: 22, color: AppTheme.redText),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/plans');
+                  Navigator.of(context).pushNamed('/news');
                 },
               ),
-              Text('PLAN',
+              Text('NEWS',
                   style: TextStyle(
                     fontSize: iconFontSize,
                   )),
