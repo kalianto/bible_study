@@ -10,6 +10,7 @@ import 'views/feedback/index.dart';
 import 'views/home/index.dart';
 import 'views/login.dart';
 import 'views/news/index.dart';
+import 'views/notes/index.dart';
 import 'views/plans/index.dart';
 import 'views/profile/index.dart';
 import 'views/register/index.dart';
@@ -30,6 +31,9 @@ class BaseRouter {
         break;
       case '/cool-group':
         return SlideFromRoute(widget: CoolGroup(), direction: 'right');
+        break;
+      case '/notes':
+        return SlideFromRoute(widget: NotesPage(), direction: 'right');
         break;
       case '/plans':
         return SlideFromRoute(widget: ReadingPlans(), direction: 'right');

@@ -84,12 +84,13 @@ class HomeBottomNavigationBar extends StatelessWidget {
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.users, size: 22, color: AppTheme.yellowText),
+                icon: const FaIcon(FontAwesomeIcons.solidStickyNote,
+                    size: 22, color: AppTheme.yellowText),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/cool-group');
+                  Navigator.of(context).pushNamed('/notes');
                 },
               ),
-              Text('COOL',
+              Text('NOTES',
                   style: TextStyle(
                     fontSize: iconFontSize,
                   )),

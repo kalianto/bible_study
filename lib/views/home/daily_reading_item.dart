@@ -144,7 +144,7 @@ class DailyReadingItem extends StatelessWidget {
                             color: colorTheme.darkColor,
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/bible-view', arguments: item);
+                            Navigator.pushNamed(context, '/daily-reading', arguments: item);
                           },
                           splashColor: colorTheme.darkColor,
                         ),
