@@ -30,6 +30,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
   double swipeLeft = -10.0;
   double swipeRight = 10.0;
   DailyReading readingItem;
+  int dailyReadingIndex;
 
   @override
   void initState() {
@@ -39,7 +40,20 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
         axis: Axis.vertical);
 
     /// WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(context));
-    readingItem = widget.arguments.item;
+    setReadingItem(widget.arguments.item);
+    setDailyReadingIndex(widget.arguments.index);
+  }
+
+  void setDailyReadingIndex(int index) {
+    setState(() {
+      dailyReadingIndex = index;
+    });
+  }
+
+  void setReadingItem(DailyReading item) {
+    setState(() {
+      readingItem = item;
+    });
   }
 
   @override
@@ -53,11 +67,33 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
           child: Scaffold(
         key: _scaffoldKey,
         body: GestureDetector(
-            onHorizontalDragUpdate: (dragEndDetails) {
+            onHorizontalDragUpdate: (dragEndDetails) async {
               if (dragEndDetails.primaryDelta < swipeLeft) {
-                Navigator.of(context).pop();
+                int prevIndex = dailyReadingIndex - 1;
+                if (prevIndex < 0) {
+                  Navigator.of(context).popAndPushNamed('/home');
+                } else {
+                  DailyReadingArguments arguments = new DailyReadingArguments(
+                      index: prevIndex,
+                      item: widget.arguments.itemList[prevIndex],
+                      date: widget.arguments.date,
+                      itemList: widget.arguments.itemList);
+                  final result = await Navigator.popAndPushNamed(context, '/daily-reading',
+                      arguments: arguments);
+                }
               } else if (dragEndDetails.primaryDelta > swipeRight) {
-                Navigator.of(context).pushNamed('/settings');
+                int nextIndex = dailyReadingIndex + 1;
+                if (nextIndex >= widget.arguments.itemList.length) {
+                  Navigator.of(context).popAndPushNamed('/home');
+                } else {
+                  DailyReadingArguments arguments = new DailyReadingArguments(
+                      index: nextIndex,
+                      item: widget.arguments.itemList[nextIndex],
+                      date: widget.arguments.date,
+                      itemList: widget.arguments.itemList);
+                  final result = await Navigator.popAndPushNamed(context, '/daily-reading',
+                      arguments: arguments);
+                }
               }
             },
             child: Stack(
