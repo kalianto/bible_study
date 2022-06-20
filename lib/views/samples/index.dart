@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -81,7 +80,10 @@ class _SamplePagesState extends State<SamplePages> {
                 color: AppTheme.cyan,
                 borderRadius: BorderRadius.all(Radius.circular(30)),
               ),
-              child: FaIcon(FontAwesomeIcons.arrowRight, color: AppTheme.white,),
+              child: FaIcon(
+                FontAwesomeIcons.arrowRight,
+                color: AppTheme.white,
+              ),
             ),
           ],
         ),

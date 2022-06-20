@@ -224,9 +224,9 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
         highlightColor: AppTheme.darkGrey.withOpacity(0.5),
       );
 
-  Future _scrollToIndex(context) async {
+  /*Future _scrollToIndex(context) async {
     int index = widget.readingItem.sVerse - 1;
     await scrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
     scrollController.highlight(index);
-  }
+  }*/
 }

@@ -1,8 +1,9 @@
 import "dart:io";
-import 'dart:typed_data';
+
 import 'package:flutter/services.dart';
 import "package:path/path.dart";
 import 'package:sqflite/sqflite.dart';
+
 import 'app_config.dart';
 
 class DatabaseService {
@@ -36,8 +37,8 @@ class DatabaseService {
         await File(path).writeAsBytes(bytes, flush: true);
       } catch (_) {}
     }
-    // var taskDb = await openDatabase(path, version: 1);
-    var taskDb = await openReadOnlyDatabase(path);
+    var taskDb = await openDatabase(path, version: 1);
+    // var taskDb = await openReadOnlyDatabase(path);
     return taskDb;
   }
 }

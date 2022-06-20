@@ -71,7 +71,7 @@ class DailyReadingItem extends StatelessWidget {
             shrinkWrap: true,
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
-              return _buildItem(
+              return _buildItemBox(
                   context,
                   new AppColorTheme(
                       darkColor: AppTheme.colorSet2[index]['darkColor'],
@@ -89,6 +89,8 @@ class DailyReadingItem extends StatelessWidget {
             onTap: () async {
               /// BibleReading IconButton.onPressed return BibleVersion that will be captured here
               /// File: bible_reading_bar.dart
+              /// However, after implementing Provider in bible_reading_bar, this never gets called
+              /// anymore. i am wondering why????
 
               final result = await Navigator.pushNamed(context, '/daily-reading', arguments: item);
 
@@ -150,5 +152,78 @@ class DailyReadingItem extends StatelessWidget {
                         ),
                       ),
                     ]))));
+  }
+
+  Widget _buildItemBox(BuildContext context, AppColorTheme colorTheme, DailyReading item) {
+    return Container(
+        // padding: const EdgeInsets.only(bottom: 12.0),
+        child: InkWell(
+            onTap: () async {
+              /// BibleReading IconButton.onPressed return BibleVersion that will be captured here
+              /// File: bible_reading_bar.dart
+              /// However, after implementing Provider in bible_reading_bar, this never gets called
+              /// anymore. i am wondering why????
+
+              final result = await Navigator.pushNamed(context, '/daily-reading', arguments: item);
+
+              /// result is not null when user changes bible version
+              if (result != null) {
+                myBible.saveMyBibleVersion(result);
+              }
+            },
+            child: Container(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Container(
+                  padding: const EdgeInsets.only(top: 15, left: 20, right: 5, bottom: 15),
+                  decoration: BoxDecoration(
+                    color: AppTheme.lightGrey.withOpacity(0.3),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4.0),
+                      bottomLeft: Radius.circular(4.0),
+                      bottomRight: Radius.circular(4.0),
+                      topRight: Radius.circular(4.0),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(item.shortSummary(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, color: AppTheme.darkGrey)),
+                            SizedBox(height: 6),
+                            Text(
+                              item.firstVerse(),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: AppTheme.deactivatedText,
+                                  fontSize: 12),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        // padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                        child: IconButton(
+                          padding: const EdgeInsets.all(0),
+                          icon: FaIcon(
+                            FontAwesomeIcons.playCircle,
+                            color: colorTheme.darkColor,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/daily-reading', arguments: item);
+                          },
+                          splashColor: colorTheme.darkColor,
+                        ),
+                      )
+                    ],
+                  ),
+                ))));
   }
 }

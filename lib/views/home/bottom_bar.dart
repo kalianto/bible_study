@@ -17,11 +17,11 @@ class HomeBottomNavigationBar extends StatelessWidget {
         // color: AppTheme.nearlyBlack.withOpacity(0.8),
         child: IconTheme(
           data: IconThemeData(color: AppTheme.darkGreen),
-          child: BottomBarNavigation(context),
+          child: bottomBarNavigation(context),
         ));
   }
 
-  Widget BottomBarNavigation(BuildContext context) {
+  Widget bottomBarNavigation(BuildContext context) {
     double iconFontSize = 10.0;
 
     return Container(
