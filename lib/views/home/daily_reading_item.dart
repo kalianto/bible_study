@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 import '../../models/daily_reading.dart';
+import '../../models/daily_reading_argument.dart';
 import '../../modules/daily_reading.dart' as DailyReadingModule;
 import '../../providers/my_bible.dart';
 
@@ -76,7 +77,8 @@ class DailyReadingItem extends StatelessWidget {
                   new AppColorTheme(
                       darkColor: AppTheme.colorSet2[index]['darkColor'],
                       lightColor: AppTheme.colorSet2[index]['lightColor']),
-                  snapshot.data[index]);
+                  snapshot.data,
+                  index);
             },
           );
         });
@@ -91,8 +93,10 @@ class DailyReadingItem extends StatelessWidget {
               /// File: bible_reading_bar.dart
               /// However, after implementing Provider in bible_reading_bar, this never gets called
               /// anymore. i am wondering why????
-
-              final result = await Navigator.pushNamed(context, '/daily-reading', arguments: item);
+              DailyReadingArguments arguments =
+                  new DailyReadingArguments(index: 1, item: item, date: date);
+              final result =
+                  await Navigator.pushNamed(context, '/daily-reading', arguments: arguments);
 
               /// result is not null when user changes bible version
               if (result != null) {
@@ -146,7 +150,9 @@ class DailyReadingItem extends StatelessWidget {
                             color: colorTheme.darkColor,
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/daily-reading', arguments: item);
+                            DailyReadingArguments arguments =
+                                new DailyReadingArguments(index: 1, item: item, date: date);
+                            Navigator.pushNamed(context, '/daily-reading', arguments: arguments);
                           },
                           splashColor: colorTheme.darkColor,
                         ),
@@ -154,7 +160,8 @@ class DailyReadingItem extends StatelessWidget {
                     ]))));
   }
 
-  Widget _buildItemBox(BuildContext context, AppColorTheme colorTheme, DailyReading item) {
+  Widget _buildItemBox(
+      BuildContext context, AppColorTheme colorTheme, List<DailyReading> items, int index) {
     return Container(
         // padding: const EdgeInsets.only(bottom: 12.0),
         child: InkWell(
@@ -163,8 +170,10 @@ class DailyReadingItem extends StatelessWidget {
               /// File: bible_reading_bar.dart
               /// However, after implementing Provider in bible_reading_bar, this never gets called
               /// anymore. i am wondering why????
-
-              final result = await Navigator.pushNamed(context, '/daily-reading', arguments: item);
+              DailyReadingArguments arguments = new DailyReadingArguments(
+                  index: index, item: items[index], date: date, itemList: items);
+              final result =
+                  await Navigator.pushNamed(context, '/daily-reading', arguments: arguments);
 
               /// result is not null when user changes bible version
               if (result != null) {
@@ -193,12 +202,12 @@ class DailyReadingItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(item.shortSummary(),
+                            Text(items[index].shortSummary(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600, color: AppTheme.darkGrey)),
                             SizedBox(height: 6),
                             Text(
-                              item.firstVerse(),
+                              items[index].firstVerse(),
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
@@ -217,7 +226,9 @@ class DailyReadingItem extends StatelessWidget {
                             color: colorTheme.darkColor,
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/daily-reading', arguments: item);
+                            DailyReadingArguments arguments = new DailyReadingArguments(
+                                index: index, item: items[index], date: date, itemList: items);
+                            Navigator.pushNamed(context, '/daily-reading', arguments: arguments);
                           },
                           splashColor: colorTheme.darkColor,
                         ),

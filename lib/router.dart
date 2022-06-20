@@ -59,7 +59,7 @@ class BaseRouter {
         break;
       case '/daily-reading':
         return SlideFromRoute(
-            widget: DailyReadingPage(readingItem: settings.arguments), direction: 'right');
+            widget: DailyReadingPage(arguments: settings.arguments), direction: 'right');
         break;
       case '/bible':
         return SlideFromRoute(widget: BiblePage(), direction: 'right');
