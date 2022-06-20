@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class AppColorTheme {
@@ -203,16 +201,16 @@ class AppTheme {
   static final BoxDecoration boxDecoration = BoxDecoration(
     color: AppTheme.white,
     borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(4.0),
-      bottomLeft: Radius.circular(4.0),
-      bottomRight: Radius.circular(4.0),
-      topRight: Radius.circular(4.0),
+      topLeft: Radius.circular(3.0),
+      bottomLeft: Radius.circular(2.0),
+      bottomRight: Radius.circular(3.0),
+      topRight: Radius.circular(3.0),
     ),
     boxShadow: <BoxShadow>[
       BoxShadow(
-        color: grey.withOpacity(0.3),
+        color: AppTheme.deactivatedText.withOpacity(0.3),
         offset: Offset(2, 2),
-        blurRadius: 2.0,
+        blurRadius: 10.0,
       )
     ],
   );
@@ -226,6 +224,27 @@ class AppTheme {
       topRight: Radius.circular(4.0),
     ),
     border: Border.all(color: AppTheme.lightGrey),
+  );
+
+  static final BoxDecoration boxBorderless = BoxDecoration(
+    color: AppTheme.white,
+    borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(4.0),
+      bottomLeft: Radius.circular(4.0),
+      bottomRight: Radius.circular(4.0),
+      topRight: Radius.circular(4.0),
+    ),
+  );
+
+  static final BoxDecoration errorBox = BoxDecoration(
+    color: AppTheme.redText.withOpacity(0.3),
+    borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(4.0),
+      bottomLeft: Radius.circular(4.0),
+      bottomRight: Radius.circular(4.0),
+      topRight: Radius.circular(4.0),
+    ),
+    border: Border.all(color: AppTheme.redText),
   );
 
   static final borderRadius = BorderRadius.only(

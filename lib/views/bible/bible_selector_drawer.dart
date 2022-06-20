@@ -62,7 +62,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
     scrollController.highlight(index);
   }
 
-  Future _loadSelectionDrawers(BuildContext context) {
+  void _loadSelectionDrawers(BuildContext context) {
     _loadBookChapters();
     _scrollToIndex(context);
   }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import '../../helpers/date_helper.dart' as DateHelper;
-// import 'package:intl/intl.dart';
 import '../database.dart';
 import '../models/bible_version.dart';
 import '../models/daily_reading.dart';
@@ -18,16 +17,16 @@ class DailyReadingService {
 
     List<DailyReading> dailyReadingList = [];
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
-        'select a.id, a.start as sId, a.end as eId, ' +
-            'd.n as sBookName, b.b as sBookNum, b.c as sChapter , b.v as sVerse, ' +
-            'b.t as sVerseSummary, e.n as eBookName, c.b as eBookNum, c.c as eChapter, ' +
-            'c.v as eVerse, a.date as dateId, a.orderBy, a.groupId ' +
-            'from daily_reading a ' +
-            'join ${bibleVersion.table} b on a.start = b.id ' +
-            'join ${bibleVersion.table} c on a.end = c.id ' +
-            'join ${bibleVersion.keyTable} d on b.b = d.b ' +
-            'join ${bibleVersion.keyTable} e on c.b = e.b ' +
-            'where a.date = ?',
+        'select a.id, a.start as sId, a.end as eId, '
+        'd.n as sBookName, b.b as sBookNum, b.c as sChapter , b.v as sVerse, '
+        'b.t as sVerseSummary, e.n as eBookName, c.b as eBookNum, c.c as eChapter, '
+        'c.v as eVerse, a.date as dateId, a.orderBy, a.groupId '
+        'from daily_reading a '
+        'join ${bibleVersion.table} b on a.start = b.id '
+        'join ${bibleVersion.table} c on a.end = c.id '
+        'join ${bibleVersion.keyTable} d on b.b = d.b '
+        'join ${bibleVersion.keyTable} e on c.b = e.b '
+        'where a.date = ?',
         [dateId]);
     if (res.length > 0) {
       dailyReadingList = List.generate(
@@ -61,16 +60,16 @@ class DailyReadingService {
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
 
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
-        'select a.id, a.start as sId, a.end as eId, ' +
-            'd.n as sBookName, b.b as sBookNum, b.c as sChapter , b.v as sVerse, ' +
-            'b.t as sVerseSummary, e.n as eBookName, c.b as eBookNum, c.c as eChapter, ' +
-            'c.v as eVerse, a.date as dateId, a.orderBy, a.groupId ' +
-            'from daily_reading a ' +
-            'join ${bibleVersion.table} b on a.start = b.id ' +
-            'join ${bibleVersion.table} c on a.end = c.id ' +
-            'join ${bibleVersion.keyTable} d on b.b = d.b ' +
-            'join ${bibleVersion.keyTable} e on c.b = e.b ' +
-            'where a.id = ?',
+        'select a.id, a.start as sId, a.end as eId, '
+        'd.n as sBookName, b.b as sBookNum, b.c as sChapter , b.v as sVerse, '
+        'b.t as sVerseSummary, e.n as eBookName, c.b as eBookNum, c.c as eChapter, '
+        'c.v as eVerse, a.date as dateId, a.orderBy, a.groupId '
+        'from daily_reading a '
+        'join ${bibleVersion.table} b on a.start = b.id '
+        'join ${bibleVersion.table} c on a.end = c.id '
+        'join ${bibleVersion.keyTable} d on b.b = d.b '
+        'join ${bibleVersion.keyTable} e on c.b = e.b '
+        'where a.id = ?',
         [id]);
 
     DailyReading dailyReading;

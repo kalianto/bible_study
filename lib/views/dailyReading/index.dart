@@ -5,6 +5,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import '../../app_theme.dart';
 import '../../models/bible_view.dart';
 import '../../models/daily_reading.dart';
+import '../../models/daily_reading_argument.dart';
 import '../../modules/bible_view.dart' as BibleViewModule;
 import '../../providers/bible_verse_list.dart';
 import '../../providers/my_bible.dart';
@@ -14,9 +15,9 @@ import '../bible/bible_bottom_bar.dart';
 import '../bible/bible_reading_bar.dart';
 
 class DailyReadingPage extends StatefulWidget {
-  DailyReadingPage({Key key, this.readingItem}) : super(key: key);
+  DailyReadingPage({Key key, this.arguments}) : super(key: key);
 
-  final DailyReading readingItem;
+  final DailyReadingArguments arguments;
 
   @override
   _DailyReadingPageState createState() => _DailyReadingPageState();
@@ -26,6 +27,10 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   AutoScrollController scrollController;
+  double swipeLeft = -10.0;
+  double swipeRight = 10.0;
+  DailyReading readingItem;
+  int dailyReadingIndex;
 
   @override
   void initState() {
@@ -35,6 +40,20 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
         axis: Axis.vertical);
 
     /// WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(context));
+    setReadingItem(widget.arguments.item);
+    setDailyReadingIndex(widget.arguments.index);
+  }
+
+  void setDailyReadingIndex(int index) {
+    setState(() {
+      dailyReadingIndex = index;
+    });
+  }
+
+  void setReadingItem(DailyReading item) {
+    setState(() {
+      readingItem = item;
+    });
   }
 
   @override
@@ -47,19 +66,50 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
       child: SafeArea(
           child: Scaffold(
         key: _scaffoldKey,
-        body: Stack(
-          children: <Widget>[
-            BibleReadingBar(item: widget.readingItem),
+        body: GestureDetector(
+            onHorizontalDragUpdate: (dragEndDetails) async {
+              if (dragEndDetails.primaryDelta < swipeLeft) {
+                int prevIndex = dailyReadingIndex - 1;
+                if (prevIndex < 0) {
+                  Navigator.of(context).popAndPushNamed('/home');
+                } else {
+                  DailyReadingArguments arguments = new DailyReadingArguments(
+                      index: prevIndex,
+                      item: widget.arguments.itemList[prevIndex],
+                      date: widget.arguments.date,
+                      itemList: widget.arguments.itemList);
+                  final result = await Navigator.popAndPushNamed(context, '/daily-reading',
+                      arguments: arguments);
+                }
+              } else if (dragEndDetails.primaryDelta > swipeRight) {
+                int nextIndex = dailyReadingIndex + 1;
+                if (nextIndex >= widget.arguments.itemList.length) {
+                  Navigator.of(context).popAndPushNamed('/home');
+                } else {
+                  DailyReadingArguments arguments = new DailyReadingArguments(
+                      index: nextIndex,
+                      item: widget.arguments.itemList[nextIndex],
+                      date: widget.arguments.date,
+                      itemList: widget.arguments.itemList);
+                  final result = await Navigator.popAndPushNamed(context, '/daily-reading',
+                      arguments: arguments);
+                }
+              }
+            },
+            child: Stack(
+              children: <Widget>[
+                BibleReadingBar(item: readingItem),
 
-            /// Bible Content
-            Container(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
-              child: Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
-                return _buildReadingView(context, bibleVerseList);
-              }),
-            ),
-          ],
-        ),
+                /// Bible Content
+                Container(
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
+                  child:
+                      Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
+                    return _buildReadingView(context, bibleVerseList);
+                  }),
+                ),
+              ],
+            )),
         bottomNavigationBar:
             Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
           return new BibleBottomBar(bibleVerseList: bibleVerseList);
@@ -71,7 +121,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
   Widget _buildReadingView(BuildContext context, BibleVerseListProvider bibleVerseList) {
     return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
       return FutureBuilder(
-        future: BibleViewModule.getDailyReadingContent(widget.readingItem, myBible.version),
+        future: BibleViewModule.getDailyReadingContent(readingItem, myBible.version),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
@@ -224,9 +274,9 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
         highlightColor: AppTheme.darkGrey.withOpacity(0.5),
       );
 
-  Future _scrollToIndex(context) async {
+  /*Future _scrollToIndex(context) async {
     int index = widget.readingItem.sVerse - 1;
     await scrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
     scrollController.highlight(index);
-  }
+  }*/
 }

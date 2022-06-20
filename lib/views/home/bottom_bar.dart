@@ -17,11 +17,11 @@ class HomeBottomNavigationBar extends StatelessWidget {
         // color: AppTheme.nearlyBlack.withOpacity(0.8),
         child: IconTheme(
           data: IconThemeData(color: AppTheme.darkGreen),
-          child: BottomBarNavigation(context),
+          child: bottomBarNavigation(context),
         ));
   }
 
-  Widget BottomBarNavigation(BuildContext context) {
+  Widget bottomBarNavigation(BuildContext context) {
     double iconFontSize = 10.0;
 
     return Container(
@@ -84,12 +84,13 @@ class HomeBottomNavigationBar extends StatelessWidget {
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.users, size: 22, color: AppTheme.yellowText),
+                icon: const FaIcon(FontAwesomeIcons.solidStickyNote,
+                    size: 22, color: AppTheme.yellowText),
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/cool-group');
+                  Navigator.of(context).pushNamed('/notes');
                 },
               ),
-              Text('COOL',
+              Text('NOTES',
                   style: TextStyle(
                     fontSize: iconFontSize,
                   )),
