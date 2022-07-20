@@ -38,7 +38,7 @@ class MyBibleProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final lastBibleVerseKey = AppConfig.lastBibleVerse;
     lastBibleVerse = prefs.getInt(lastBibleVerseKey) ?? 1001001;
-    // updateLastBibleVerseArray(lastBibleVerse);
+    updateLastBibleVerseArray(lastBibleVerse);
     notifyListeners();
   }
 
@@ -47,7 +47,7 @@ class MyBibleProvider with ChangeNotifier {
     final key = AppConfig.lastBibleVerse;
     prefs.setInt(key, lastVerse);
     lastBibleVerse = lastVerse;
-    // updateLastBibleVerseArray(lastBibleVerse);
+    updateLastBibleVerseArray(lastBibleVerse);
     notifyListeners();
   }
 
