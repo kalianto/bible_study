@@ -54,7 +54,7 @@ class _BiblePageState extends State<BiblePage> {
         key: _scaffoldKey,
         body: GestureDetector(
             onHorizontalDragEnd: (details) {
-              if (details.primaryVelocity < 0) {
+              if (details.primaryVelocity > 0) {
                 goToPreviousChaper();
                 // Navigator.of(context).pop();
               } else {
