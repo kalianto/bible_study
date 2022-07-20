@@ -42,12 +42,15 @@ class BibleBottomBar extends StatelessWidget {
                       const PopupMenuItem<String>(
                         value: 'clear',
                         child: Text('Clear'),
+                        // child: FaIcon(FontAwesomeIcons.minus),
                       ),
                       const PopupMenuItem<String>(
                         value: 'copy',
                         child: Text('Copy'),
+                        // child: FaIcon(FontAwesomeIcons.copy),
                       ),
-                      const PopupMenuItem<String>(value: 'share', child: Text('Share'))
+                      const PopupMenuItem<String>(value: 'share', child: Text('Share')),
+                      const PopupMenuItem<String>(value: 'report', child: Text('Add Rhema')),
                     ],
                     onSelected: (value) {
                       String shareMessage = '';

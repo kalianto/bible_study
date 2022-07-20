@@ -14,6 +14,7 @@ class BibleAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MyBibleProvider myBible = Provider.of<MyBibleProvider>(context, listen: true);
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.darkGrey.withOpacity(0.4),
@@ -31,29 +32,25 @@ class BibleAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-                  return IconButton(
-                    icon: const Icon(FontAwesomeIcons.arrowLeft),
-                    iconSize: 22,
-                    onPressed: () => Navigator.pop(context, myBible.version),
-                    tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                    color: AppTheme.darkGrey,
-                  );
-                }),
-                Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-                  return Expanded(
-                      child:
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-                    Flexible(
-                      // padding: const EdgeInsets.all(8.0),
-                      child: FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: BibleAppBarTitle(myBible: myBible, action: action),
-                      ),
+                IconButton(
+                  icon: const Icon(FontAwesomeIcons.arrowLeft),
+                  iconSize: 22,
+                  onPressed: () => Navigator.of(context).pop(),
+                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  color: AppTheme.darkGrey,
+                ),
+                Expanded(
+                    child:
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                  Flexible(
+                    // padding: const EdgeInsets.all(8.0),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: BibleAppBarTitle(myBible: myBible, action: action),
                     ),
-                    BibleVersionDialog(myBible: myBible),
-                  ]));
-                }),
+                  ),
+                  BibleVersionDialog(myBible: myBible),
+                ])),
               ],
             ),
           )

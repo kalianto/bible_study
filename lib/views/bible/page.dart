@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/daily_reading.dart';
 import '../../providers/bible_verse_list.dart';
+import '../../providers/my_bible.dart';
 import 'bible_app_bar.dart';
 import 'bible_bottom_bar.dart';
 import 'bible_content.dart';
@@ -31,6 +32,16 @@ class _BiblePageState extends State<BiblePage> {
     _scaffoldKey.currentState.openDrawer();
   }
 
+  void goToPreviousChaper() {
+    MyBibleProvider myBible = Provider.of<MyBibleProvider>(context, listen: false);
+    myBible.goToPreviousVerse();
+  }
+
+  void goToNextChaper() {
+    MyBibleProvider myBible = Provider.of<MyBibleProvider>(context, listen: false);
+    myBible.goToNextVerse();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -42,11 +53,12 @@ class _BiblePageState extends State<BiblePage> {
           child: Scaffold(
         key: _scaffoldKey,
         body: GestureDetector(
-            onHorizontalDragUpdate: (dragEndDetails) {
-              if (dragEndDetails.primaryDelta < swipeLeft) {
-                Navigator.of(context).pop();
-              } else if (dragEndDetails.primaryDelta > swipeRight) {
-                Navigator.of(context).pushNamed('/settings');
+            onHorizontalDragEnd: (details) {
+              if (details.primaryVelocity < 0) {
+                goToPreviousChaper();
+                // Navigator.of(context).pop();
+              } else {
+                goToNextChaper();
               }
             },
             child: Stack(
