@@ -36,7 +36,8 @@ class BibleReadingBar extends StatelessWidget {
                   return IconButton(
                     icon: const Icon(FontAwesomeIcons.arrowLeft),
                     iconSize: 22,
-                    onPressed: () => Navigator.pop(context, myBible.version),
+                    // onPressed: () => Navigator.pop(context, myBible.version),
+                    onPressed: () => Navigator.popAndPushNamed(context, '/home'),
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                     color: AppTheme.darkGrey,
                   );

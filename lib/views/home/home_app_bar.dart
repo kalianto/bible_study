@@ -24,24 +24,24 @@ class HomeAppBar extends StatelessWidget {
               child: PopupMenuButton(
                 icon: FaIcon(FontAwesomeIcons.cog, size: 22, color: AppTheme.white),
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  const PopupMenuItem<String>(
-                    value: 'copy',
-                    child: Text('Copy Summary'),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'share',
-                    child: Text('Share Summary'),
-                  ),
-                  PopupMenuDivider(),
-                  const PopupMenuItem<String>(
-                    value: 'copyTB',
-                    child: Text('Copy Summary TB'),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'copyKJV',
-                    child: Text('Copy Summary KJV'),
-                  ),
-                  PopupMenuDivider(),
+                  // const PopupMenuItem<String>(
+                  //   value: 'copy',
+                  //   child: Text('Copy Summary'),
+                  // ),
+                  // const PopupMenuItem<String>(
+                  //   value: 'share',
+                  //   child: Text('Share Summary'),
+                  // ),
+                  // PopupMenuDivider(),
+                  // const PopupMenuItem<String>(
+                  //   value: 'copyTB',
+                  //   child: Text('Copy Summary TB'),
+                  // ),
+                  // const PopupMenuItem<String>(
+                  //   value: 'copyKJV',
+                  //   child: Text('Copy Summary KJV'),
+                  // ),
+                  // PopupMenuDivider(),
                   const PopupMenuItem<String>(
                     value: 'GEMA',
                     child: Text('GEMA'),

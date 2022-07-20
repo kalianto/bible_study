@@ -21,7 +21,7 @@ class DailyReadingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 10),
+      padding: const EdgeInsets.only(left: 18, right: 18, top: 10),
       child: Column(children: <Widget>[
         _buildReadingItemSummary(context, date, myBible.version),
         SizedBox(height: 20),
@@ -172,8 +172,8 @@ class DailyReadingItem extends StatelessWidget {
               /// anymore. i am wondering why????
               DailyReadingArguments arguments = new DailyReadingArguments(
                   index: index, item: items[index], date: date, itemList: items);
-              final result =
-                  await Navigator.pushNamed(context, '/daily-reading', arguments: arguments);
+              final result = await Navigator.of(context)
+                  .popAndPushNamed('/daily-reading', arguments: arguments);
 
               /// result is not null when user changes bible version
               if (result != null) {
@@ -204,7 +204,9 @@ class DailyReadingItem extends StatelessWidget {
                           children: <Widget>[
                             Text(items[index].shortSummary(),
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w600, color: AppTheme.darkGrey)),
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.darkGrey,
+                                    fontSize: 18)),
                             SizedBox(height: 6),
                             Text(
                               items[index].firstVerse(),
@@ -212,7 +214,7 @@ class DailyReadingItem extends StatelessWidget {
                               style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   color: AppTheme.deactivatedText,
-                                  fontSize: 12),
+                                  fontSize: 13),
                             )
                           ],
                         ),
@@ -228,7 +230,8 @@ class DailyReadingItem extends StatelessWidget {
                           onPressed: () {
                             DailyReadingArguments arguments = new DailyReadingArguments(
                                 index: index, item: items[index], date: date, itemList: items);
-                            Navigator.pushNamed(context, '/daily-reading', arguments: arguments);
+                            Navigator.of(context)
+                                .popAndPushNamed('/daily-reading', arguments: arguments);
                           },
                           splashColor: colorTheme.darkColor,
                         ),

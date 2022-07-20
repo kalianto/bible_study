@@ -7,6 +7,7 @@ Future<MyBibleProvider> loadMyBible() async {
   MyBibleProvider myBibleVersion = new MyBibleProvider();
   await myBibleVersion.getMyBibleVersion();
   await myBibleVersion.getMyBibleLastVerse();
+  await myBibleVersion.loadAllChapters();
   return myBibleVersion;
 }
 
