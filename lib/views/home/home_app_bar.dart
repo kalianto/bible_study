@@ -43,8 +43,12 @@ class HomeAppBar extends StatelessWidget {
                   // ),
                   // PopupMenuDivider(),
                   const PopupMenuItem<String>(
-                    value: 'GEMA',
-                    child: Text('GEMA'),
+                    value: 'copy-gema',
+                    child: Text('Copy GEMA'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'share-gema',
+                    child: Text('Share GEMA'),
                   ),
                 ],
                 onSelected: (value) async {
@@ -64,10 +68,10 @@ class HomeAppBar extends StatelessWidget {
                         await MyReadingItemModule.loadDailyReadingItem(date, myBible.version);
                     readingSummary = readingItem.generateSummary();
                   }
-                  if (value == 'GEMA') {
+                  if (value == 'copy-gema' || value == 'share-gema') {
                     readingSummary = await MyReadingItemModule.loadDailyReadingSummaryFull(date);
                   }
-                  if (value != 'share') {
+                  if (value == 'copy-gema') {
                     Clipboard.setData(new ClipboardData(text: readingSummary));
                     ScaffoldMessenger.of(context)
                       ..removeCurrentSnackBar()
@@ -76,7 +80,7 @@ class HomeAppBar extends StatelessWidget {
                         duration: const Duration(seconds: 2),
                       ));
                   }
-                  if (value == 'share') {
+                  if (value == 'share-gema') {
                     Share.share(readingSummary);
                   }
                 },
