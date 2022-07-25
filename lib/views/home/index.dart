@@ -14,9 +14,10 @@ import 'drawer.dart';
 import 'home_app_bar.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
+  Home({Key key, this.title, this.startDate}) : super(key: key);
 
   final String title;
+  DateTime startDate;
 
   @override
   _HomeState createState() => _HomeState();
@@ -33,7 +34,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    date = new DateTime.now();
+    date = widget.startDate == null ? new DateTime.now() : widget.startDate;
     requestPermissions();
 
     // var androidSettings = AndroidInitializationSettings('app_icon');

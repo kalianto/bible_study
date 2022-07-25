@@ -31,6 +31,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
   double swipeRight = 10.0;
   DailyReading readingItem;
   int dailyReadingIndex;
+  DateTime dailyReadingDate;
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
     /// WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(context));
     setReadingItem(widget.arguments.item);
     setDailyReadingIndex(widget.arguments.index);
+    setDailyReadingDate(widget.arguments.date);
   }
 
   void setDailyReadingIndex(int index) {
@@ -53,6 +55,12 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
   void setReadingItem(DailyReading item) {
     setState(() {
       readingItem = item;
+    });
+  }
+
+  void setDailyReadingDate(DateTime date) {
+    setState(() {
+      dailyReadingDate = date;
     });
   }
 
@@ -71,7 +79,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
               if (dragEndDetails.primaryDelta < swipeLeft) {
                 int nextIndex = dailyReadingIndex + 1;
                 if (nextIndex >= widget.arguments.itemList.length) {
-                  Navigator.of(context).popAndPushNamed('/home');
+                  Navigator.of(context).popAndPushNamed('/home', arguments: dailyReadingDate);
                 } else {
                   DailyReadingArguments arguments = new DailyReadingArguments(
                       index: nextIndex,
@@ -83,7 +91,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
               } else if (dragEndDetails.primaryDelta > swipeRight) {
                 int prevIndex = dailyReadingIndex - 1;
                 if (prevIndex < 0) {
-                  Navigator.of(context).popAndPushNamed('/home');
+                  Navigator.of(context).popAndPushNamed('/home', arguments: dailyReadingDate);
                 } else {
                   DailyReadingArguments arguments = new DailyReadingArguments(
                       index: prevIndex,
