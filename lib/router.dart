@@ -65,7 +65,11 @@ class BaseRouter {
         return SlideFromRoute(widget: BiblePage(), direction: 'right');
         break;
       case '/home':
-        return ScaleRoute(widget: Home(title: 'Home'));
+        return ScaleRoute(
+            widget: Home(
+          title: 'Home',
+          startDate: settings.arguments,
+        ));
         break;
       case '/news':
         return ScaleRoute(widget: NewsPage());
