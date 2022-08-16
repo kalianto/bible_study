@@ -173,6 +173,13 @@ class AppTheme {
     letterSpacing: 0.15,
   );
 
+  static const TextStyle headline7 = TextStyle(
+    fontFamily: fontName,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.15,
+  );
+
   /// Border for Input
   static const OutlineInputBorder inputBorder = OutlineInputBorder(
     borderRadius: const BorderRadius.all(Radius.circular(20.0)),

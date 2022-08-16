@@ -14,6 +14,7 @@ import 'views/notes/index.dart';
 import 'views/plans/index.dart';
 import 'views/profile/index.dart';
 import 'views/register/index.dart';
+import 'views/rhemas/add_rhema.dart';
 import 'views/rhemas/index.dart';
 import 'views/samples/index.dart';
 import 'views/settings/index.dart';
@@ -65,17 +66,17 @@ class BaseRouter {
         return SlideFromRoute(widget: BiblePage(), direction: 'right');
         break;
       case '/home':
-        return ScaleRoute(
-            widget: Home(
-          title: 'Home',
-          startDate: settings.arguments,
-        ));
+        return ScaleRoute(widget: Home(title: 'Home', startDate: settings.arguments));
         break;
       case '/news':
         return ScaleRoute(widget: NewsPage());
         break;
       case '/feedback':
         return SlideFromRoute(widget: FeedbackPage(), direction: 'right');
+        break;
+      case '/add-rhema':
+        return SlideFromRoute(
+            widget: AddRhemaPage(arguments: settings.arguments), direction: 'right');
         break;
       case '/':
       default:

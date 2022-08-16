@@ -81,23 +81,23 @@ class HomeBottomNavigationBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
-          Column(
-            children: <Widget>[
-              IconButton(
-                icon: const FaIcon(FontAwesomeIcons.solidStickyNote,
-                    size: 22, color: AppTheme.yellowText),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/notes');
-                },
-              ),
-              Text('NOTES',
-                  style: TextStyle(
-                    fontSize: iconFontSize,
-                  )),
-            ],
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-          ),
+          // Column(
+          //   children: <Widget>[
+          //     IconButton(
+          //       icon: const FaIcon(FontAwesomeIcons.solidStickyNote,
+          //           size: 22, color: AppTheme.yellowText),
+          //       onPressed: () {
+          //         Navigator.of(context).pushNamed('/notes');
+          //       },
+          //     ),
+          //     Text('NOTES',
+          //         style: TextStyle(
+          //           fontSize: iconFontSize,
+          //         )),
+          //   ],
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   crossAxisAlignment: CrossAxisAlignment.center,
+          // ),
           Column(
             children: <Widget>[
               IconButton(

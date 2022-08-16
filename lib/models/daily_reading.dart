@@ -16,6 +16,7 @@ class DailyReading {
   final String bibleVersion;
   final String bibleCode;
   final int id;
+  final DateTime fullDate;
 
   DailyReading({
     this.dateId,
@@ -35,6 +36,7 @@ class DailyReading {
     this.bibleVersion,
     this.bibleCode,
     this.id,
+    this.fullDate,
   });
 
   String shortSummary() {

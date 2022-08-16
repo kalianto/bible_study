@@ -43,6 +43,7 @@ class BibleViewService {
                 bibleVersion: bibleVersion.table,
                 bibleCode: bibleVersion.abbreviation,
                 bookText: BibleHelper.parseText(res[k]["bookText"]),
+                bibleVersionId: bibleVersionId,
               ));
     }
 
@@ -76,6 +77,7 @@ class BibleViewService {
                 bibleVersion: bibleVersion.table,
                 bibleCode: bibleVersion.abbreviation,
                 bookText: BibleHelper.parseText(res[k]["bookText"]),
+                bibleVersionId: bibleVersionId,
               ));
     }
 
@@ -109,6 +111,7 @@ class BibleViewService {
                 bibleVersion: bibleVersion.table,
                 bibleCode: bibleVersion.abbreviation,
                 bookText: BibleHelper.parseText(res[k]["bookText"]),
+                bibleVersionId: bibleVersionId,
               ));
     }
 

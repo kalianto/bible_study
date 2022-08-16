@@ -49,6 +49,7 @@ class DailyReadingService {
                 bibleVersion: bibleVersion.table,
                 bibleCode: bibleVersion.abbreviation,
                 id: res[i]["id"],
+                fullDate: date,
               ));
     }
 
@@ -93,6 +94,7 @@ class DailyReadingService {
         bibleVersion: bibleVersion.table,
         bibleCode: bibleVersion.abbreviation,
         id: res[0]["id"],
+        fullDate: DateHelper.getDateFromDateId(res[0]["dateId"]),
       );
     }
 

@@ -4,12 +4,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share/share.dart';
 
 import '../../app_theme.dart';
+import '../../models/add_rhema_arguments.dart';
+import '../../models/bible_view.dart';
 import '../../providers/bible_verse_list.dart';
 
 class BibleBottomBar extends StatelessWidget {
-  BibleBottomBar({Key key, this.bibleVerseList}) : super(key: key);
+  BibleBottomBar({Key key, this.bibleVerseList, this.date}) : super(key: key);
 
   final BibleVerseListProvider bibleVerseList;
+  final DateTime date;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,7 @@ class BibleBottomBar extends StatelessWidget {
                         // child: FaIcon(FontAwesomeIcons.copy),
                       ),
                       const PopupMenuItem<String>(value: 'share', child: Text('Share')),
-                      const PopupMenuItem<String>(value: 'report', child: Text('Add Rhema')),
+                      const PopupMenuItem<String>(value: 'add-rhema', child: Text('Add Rhema')),
                     ],
                     onSelected: (value) {
                       String shareMessage = '';
@@ -68,6 +71,15 @@ class BibleBottomBar extends StatelessWidget {
                           content: const Text('Copied to clipboard'),
                           duration: const Duration(seconds: 2),
                         ));
+                      }
+
+                      if (value == 'add-rhema') {
+                        AddRhemaArguments arguments = new AddRhemaArguments(
+                          date: date,
+                          summary: shareMessage,
+                          rhemaVerses: new List<BibleView>.from(bibleVerseList.listItems),
+                        );
+                        Navigator.pushNamed(context, '/add-rhema', arguments: arguments);
                       }
 
                       bibleVerseList.clearList();

@@ -71,7 +71,8 @@ class _BibleViewPageState extends State<BibleViewPage> {
             )),
         bottomNavigationBar:
             Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
-          return new BibleBottomBar(bibleVerseList: bibleVerseList);
+          return new BibleBottomBar(
+              bibleVerseList: bibleVerseList, date: widget.readingItem.fullDate);
         }),
       )),
     );
