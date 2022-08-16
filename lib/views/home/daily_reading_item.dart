@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 import '../../models/daily_reading.dart';
-import '../../models/daily_reading_argument.dart';
+import '../../models/daily_reading_arguments.dart';
 import '../../modules/daily_reading.dart' as DailyReadingModule;
 import '../../providers/my_bible.dart';
 
@@ -21,7 +21,7 @@ class DailyReadingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 18, right: 18, top: 10),
+      padding: const EdgeInsets.only(left: 18, right: 18, top: 18),
       child: Column(children: <Widget>[
         _buildReadingItemSummary(context, date, myBible.version),
         SizedBox(height: 20),

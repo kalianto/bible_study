@@ -5,7 +5,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import '../../app_theme.dart';
 import '../../models/bible_view.dart';
 import '../../models/daily_reading.dart';
-import '../../models/daily_reading_argument.dart';
+import '../../models/daily_reading_arguments.dart';
 import '../../modules/bible_view.dart' as BibleViewModule;
 import '../../providers/bible_verse_list.dart';
 import '../../providers/my_bible.dart';
@@ -118,7 +118,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
             )),
         bottomNavigationBar:
             Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
-          return new BibleBottomBar(bibleVerseList: bibleVerseList);
+          return new BibleBottomBar(bibleVerseList: bibleVerseList, date: readingItem.fullDate);
         }),
       )),
     );

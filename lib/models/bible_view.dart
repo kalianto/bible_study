@@ -7,6 +7,7 @@ class BibleView {
   final String bibleVersion;
   final String bibleCode;
   final String bookText;
+  final int bibleVersionId;
 
   BibleView({
     this.id,
@@ -17,5 +18,6 @@ class BibleView {
     this.bibleVersion,
     this.bibleCode,
     this.bookText,
+    this.bibleVersionId,
   });
 }

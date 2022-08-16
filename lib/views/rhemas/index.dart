@@ -36,54 +36,41 @@ class _RhemaPageState extends State<RhemaPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              ChildPageAppBar(title: 'RHEMA'),
-              // Container(
-              //   padding: const EdgeInsets.only(top: 50),
-              //   child: SingleChildScrollView(
-              //       child: Container(
-              //     padding: const EdgeInsets.all(40),
-              //     child: Text('The content of this page is being constructed'),
-              //   )),
-              // ),
-              Container(
-                  padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
-                  child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        buildRhemaHeader(context),
-                        SizedBox(height: 20),
-                        buildRhemaContent(context),
-                      ])),
-            ],
-          ),
+        body: Stack(
+          children: <Widget>[
+            ChildPageAppBar(title: 'RHEMA'),
+            // buildRhemaHeader(context),
+            // SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
+              child: buildRhemaContent(context),
+            ),
+          ],
         ),
-      )),
+      ),
     );
   }
 
   Widget buildRhemaHeader(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
-        children: <Widget>[
-          Text('Today',
-              style:
-                  TextStyle(color: AppTheme.darkGrey, fontSize: 20, fontWeight: FontWeight.w500)),
-          Text(DateHelper.formatDate(today, 'dd MMM y'),
-              style:
-                  TextStyle(color: AppTheme.blueText, fontSize: 14, fontWeight: FontWeight.w500)),
-        ]);
+    return Container(
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: <Widget>[
+              Text('Today',
+                  style: TextStyle(
+                      color: AppTheme.darkGrey, fontSize: 20, fontWeight: FontWeight.w500)),
+              Text(DateHelper.formatDate(today, 'dd MMM y'),
+                  style: TextStyle(
+                      color: AppTheme.blueText, fontSize: 14, fontWeight: FontWeight.w500)),
+            ]));
   }
 
   Widget buildRhemaContent(BuildContext context) {
     return FutureBuilder(
-        future: RhemaModule.getTodayRhema(),
+        future: RhemaModule.getAllRhemaSummary(),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
@@ -111,10 +98,10 @@ class _RhemaPageState extends State<RhemaPage> {
               Expanded(
                   child: Container(
                       padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: AppTheme.redText.withOpacity(0.2),
-                        borderRadius: AppTheme.borderRadius,
-                      ),
+                      // decoration: BoxDecoration(
+                      //   color: AppTheme.redText.withOpacity(0.2),
+                      //   borderRadius: AppTheme.borderRadius,
+                      // ),
                       child: Column(children: <Widget>[
                         Text('No Rhema item found for',
                             textAlign: TextAlign.center, style: AppTheme.subtitle1),
@@ -129,16 +116,75 @@ class _RhemaPageState extends State<RhemaPage> {
             shrinkWrap: true,
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
-              return Column(children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: AppTheme.boxDecoration,
-                  child: Text(snapshot.data[index].rhemaText),
-                ),
-                SizedBox(
-                  height: 20,
-                )
-              ]);
+              return Container(
+                child: Column(children: <Widget>[
+                  Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: AppTheme.boxDecoration,
+                      child: Column(children: <Widget>[
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                DateHelper.formatDate(
+                                    DateTime.parse(snapshot.data[index].summaryDate), 'dd MMM y'),
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.15,
+                                  color: AppTheme.blueText,
+                                ),
+                              )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                    onTap: () {
+                                      // RhemaModule.deleteRhema(snapshot.data[index].id);
+                                      // setState(() {
+                                      //   snapshot.data.removeAt(index);
+                                      // });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 20),
+                                      child: Icon(
+                                        Icons.share,
+                                        color: AppTheme.nearlyBlack,
+                                      ),
+                                    )),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                  onTap: () {
+                                    // RhemaModule.deleteRhema(snapshot.data[index].id);
+                                    // setState(() {
+                                    //   snapshot.data.removeAt(index);
+                                    // });
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: AppTheme.mandarin,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ]),
+                        SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(snapshot.data[index].summary()),
+                        ),
+                      ])),
+                  SizedBox(
+                    height: 20,
+                  )
+                ]),
+              );
             },
           );
         });

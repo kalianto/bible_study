@@ -1,27 +1,64 @@
-class Rhema {
-  final int id;
-  final String rhemaDate;
-  final String rhemaText;
-  final int bibleVersionId;
-  final List<RhemaVerse> rhemaVerses;
+import '../helpers/date_helper.dart' as DateHelper;
 
-  Rhema({this.id, this.rhemaDate, this.rhemaText, this.bibleVersionId, this.rhemaVerses});
+class Rhema {
+  int id;
+  DateTime rhemaDate;
+  String rhemaText;
+  int bibleVersionId;
+  RhemaVerse rhemaVerses;
+  String dateKey;
+
+  Rhema(
+      {this.id,
+      this.rhemaDate,
+      this.rhemaText,
+      this.bibleVersionId,
+      this.rhemaVerses,
+      this.dateKey});
 
   factory Rhema.fromMapEntry(Map item) {
-    return Rhema(
+    return new Rhema(
       id: item["id"],
-      rhemaDate: item["rhemaDate"],
+      rhemaDate: DateTime.parse(item["rhemaDate"]),
       rhemaText: item["rhemaText"],
       bibleVersionId: item["bibleVersionId"],
-      // rhemaVerses: item["rhemaVerses"],
+      dateKey: DateHelper.formatDate(DateTime.parse(item["rhemaDate"]), 'y-LL-dd'),
+      rhemaVerses: new RhemaVerse(
+          rhemaId: item["id"], verseId: item["verseId"], verseOrder: item['verseOrder']),
     );
   }
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'rhemaDate': rhemaDate.toString(),
+        'rhemaText': rhemaText,
+        'bibleVersionId': bibleVersionId,
+      };
 }
 
 class RhemaVerse {
-  final int rhemaId;
-  final int verseId;
-  final int verseOrder;
+  int rhemaId;
+  int verseId;
+  int verseOrder;
 
   RhemaVerse({this.rhemaId, this.verseId, this.verseOrder});
+
+  Map<String, dynamic> toMap() => {
+        'rhemaId': rhemaId,
+        'verseId': verseId,
+        'verseOrder': verseOrder,
+      };
+}
+
+class RhemaSummary {
+  String summaryDate;
+  List<Rhema> rhemas;
+
+  RhemaSummary({this.summaryDate, this.rhemas});
+
+  String summary() {
+    this.rhemas.forEach((rhema) {
+      print(rhema);
+    });
+    return 'Summary';
+  }
 }
