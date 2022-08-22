@@ -4,6 +4,7 @@ import '../../app_theme.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 import '../../models/add_rhema_arguments.dart';
 import '../../modules/rhema.dart';
+import '../../views/common/simpleDialog.dart';
 
 class AddRhemaPage extends StatefulWidget {
   AddRhemaPage({Key key, this.arguments}) : super(key: key);
@@ -48,35 +49,6 @@ class _AddRhemaPageState extends State<AddRhemaPage> {
       _messageController.text = widget.arguments.summary;
     });
   }
-
-  /*@override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 500,
-      height: 500,
-      child: Stack(
-        children: <Widget>[
-          AnimatedPositioned(
-            top: 300,
-            left: selected ? -100 : 0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.fastOutSlowIn,
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  selected = !selected;
-                });
-              },
-              child: Container(
-                color: Colors.blue,
-                child: const Center(child: Text('Tap me')),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -169,9 +141,15 @@ class _AddRhemaPageState extends State<AddRhemaPage> {
         Align(
             alignment: Alignment.centerLeft,
             child: ElevatedButton(
-              onPressed: () async {
-                print('Add To Rhema');
-                await addRhema(date, _rhemaController.text, widget.arguments.rhemaVerses);
+              onPressed: () {
+                showSimpleDialog(context, 'Adding Rhema', 'Please wait....');
+
+                addRhema(date, _rhemaController.text, widget.arguments.rhemaVerses).then((rhema) {
+                  if (rhema.id != null) {
+                    Navigator.of(context).pop();
+                  }
+                  Navigator.of(context).pop();
+                });
               },
               child: Text('Add'),
             ))

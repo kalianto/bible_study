@@ -20,6 +20,7 @@ class AppTheme {
   static const Color white = Color(0xFFFFFFFF);
   static const Color chipBackground = Color(0xFFEEF1F3);
   static const Color lightGrey = Color(0xFFCCCCCC);
+  static const Color lighterGrey = Color(0xE5DDDDFF);
 
   /// grey and dark colour
   static const Color grey = Color(0xFF3A5160);

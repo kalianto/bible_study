@@ -21,3 +21,9 @@ Future<List<BibleView>> getDailyReadingContent(DailyReading dailyReading, int bi
   List<BibleView> bibleViewList = await dbClient.getDailyReadingContent(dailyReading, bibleVersion);
   return bibleViewList;
 }
+
+Future<BibleView> getBibleViewById(int bibleVersionId, int bibleViewId) async {
+  var dbClient = BibleViewService();
+  BibleView bibleView = await dbClient.getBibleViewById(bibleVersionId, bibleViewId);
+  return bibleView;
+}

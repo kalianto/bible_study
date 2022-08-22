@@ -228,8 +228,6 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
                 if (prevChapter > 0) {
                   prevBookChapter = staticBookChapterList.elementAt((prevChapter - 1));
                 }
-                print('Prev Book Chapter');
-                print(prevBookChapter);
               }
               int nextChapter = chapterIndex + 1;
               // myBible.updateBookChapterText(selectedBookChapter.bookName + ' ' + (index + 1).toString());

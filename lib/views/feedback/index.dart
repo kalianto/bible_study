@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sendgrid_mailer/sendgrid_mailer.dart';
 
 import '../../app_theme.dart';
+import '../common/simpleDialog.dart';
 
 class FeedbackPage extends StatefulWidget {
   @override
@@ -17,21 +18,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
     super.dispose();
     _subjectController.dispose();
     _messageController.dispose();
-  }
-
-  void showSendingMessage(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            title: Text('Sending Feedback'),
-            children: <Widget>[
-              Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Text('Please wait....\nYour feedback is being sent.')),
-            ],
-          );
-        });
   }
 
   @override
@@ -102,10 +88,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               Email([personalization], fromAddress, subject, content: [content]);
 
                           /// Show sending dialog
-                          showSendingMessage(context);
+                          showSimpleDialog(context, 'Sending Feedback',
+                              'Please wait....\nYour feedback is being sent.');
 
                           mailer.send(email).then((result) {
-                            print('Email Sent');
                             _messageController.text = '';
                             _subjectController.text = '';
 
