@@ -24,22 +24,24 @@ Future<List<Rhema>> getRhemaByDate(String date) async {
   return rhemaList;
 }
 
-Future<List<Rhema>> getAllRhema() async {
-  var dbClient = RhemaService();
-
-  List<Rhema> rhemaList = await dbClient.getAllRhema(limit: 10);
-  return rhemaList;
-}
+// Future<List<Rhema>> getAllRhema() async {
+//   var dbClient = RhemaService();
+//
+//   List<Rhema> rhemaList = await dbClient.getAllRhemaList(limit: 10000);
+//   return rhemaList;
+// }
 
 Future<List<RhemaSummary>> getAllRhemaSummary() async {
   var dbClient = RhemaService();
 
-  List<Rhema> rhemaList = await dbClient.getAllRhema(limit: 10);
+  List<Rhema> rhemaList = await dbClient.getRhemaSummary(10000);
   Map<String, List<Rhema>> rhemaSummary = groupBy(rhemaList, (Rhema object) => object.dateKey);
   List<RhemaSummary> list = [];
-  rhemaSummary.forEach(
-      (summaryDate, rhemas) => list.add(RhemaSummary(summaryDate: summaryDate, rhemas: rhemas)));
-  print(list);
+  rhemaSummary.forEach((summaryDate, rhemas) {
+    RhemaSummary rhemaSummary = RhemaSummary(summaryDate: summaryDate, rhemas: rhemas);
+    rhemaSummary.generateVerseSummary();
+    list.add(rhemaSummary);
+  });
   return list;
 }
 
@@ -58,7 +60,9 @@ Future<Rhema> addRhema(DateTime rhemaDate, String rhemaText, List<BibleView> bib
   return rhema;
 }
 
-Future<void> deleteRhema(int rhemaId) async {
+Future<void> deleteRhema(List<Rhema> rhemas) async {
   var dbClient = RhemaService();
-  await dbClient.deleteRhema(rhemaId);
+  for (Rhema rhema in rhemas) {
+    await dbClient.deleteRhema(rhema.id);
+  }
 }

@@ -163,25 +163,20 @@ class _LoginState extends State<LoginPage> {
                           : new Profile();
                       final _isLoggedIn = AppConfig.isLoggedIn;
                       bool isLoggedIn = prefs.getBool(_isLoggedIn) ?? false;
-                      print('Profile:');
                       print(profile);
-                      print('Is Logged In: $isLoggedIn');
 
                       if (profile.email == null) {
                         setState(() {
                           errorMessage =
                               'There is no profile found. Please register to use this app.';
                         });
-                        print('Profile email is: ${profile.email}');
                       } else if (profile.email == _usernameController.text) {
                         prefs.setBool(_isLoggedIn, true);
-                        print('Profile email is: ${profile.email} == ${_usernameController.text}');
                         Navigator.of(context).popAndPushNamed('/home');
                       } else {
                         setState(() {
                           errorMessage = 'Username or email address is incorrect';
                         });
-                        print('What happened here?');
                       }
                     }
                   },

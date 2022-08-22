@@ -144,4 +144,33 @@ class BibleViewService {
   //   verseList.add(int.parse(verses.substring(0, verses.length - 6)));
   //   return verseList;
   // }
+
+  Future<BibleView> getBibleViewById(int bibleVersionId, int bibleViewId) async {
+    var dbClient = await dbService.db;
+    BibleView bibleView;
+    BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
+    List<Map<String, dynamic>> res = await dbClient.rawQuery(
+        'SELECT a.id, a.b as bookNum, a.c as bookChapter, a.v as bookVerse, '
+        'a.t as bookText, b.n as bookName '
+        'from ${bibleVersion.table} a '
+        'join ${bibleVersion.keyTable} b on b.b = a.b '
+        'where a.id = ? ',
+        [bibleViewId]);
+
+    if (res.length > 0) {
+      bibleView = BibleView(
+        id: res[0]["id"],
+        bookName: res[0]["bookName"],
+        bookNum: res[0]["bookNum"],
+        bookChapter: res[0]["bookChapter"],
+        bookVerse: res[0]["bookVerse"],
+        bibleVersion: bibleVersion.table,
+        bibleCode: bibleVersion.abbreviation,
+        bookText: BibleHelper.parseText(res[0]["bookText"]),
+        bibleVersionId: bibleVersionId,
+      );
+    }
+
+    return bibleView;
+  }
 }

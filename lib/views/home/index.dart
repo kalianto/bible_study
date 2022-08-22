@@ -75,7 +75,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Future onClickNotification(String payload) async {
-    print('I got something, dude');
     // String fileName = await _downloadAndSaveFile(
     //     'https://via.placeholder.com/800x200', 'attachment_img.jpg');
   }
