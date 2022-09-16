@@ -105,7 +105,8 @@ Map<String, String> generateBibleVerses(List<BibleView> listItems) {
     /// join the message
     message = message + verseList.join();
     messageHeader = message;
-    message = message + '\n' + textList.join(' ');
+    // message = message + '\n' + textList.join(' ');
+    message = '\n' + textList.join(' ');
     return message;
   }
 
