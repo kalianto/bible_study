@@ -4,7 +4,7 @@ import '../../app_theme.dart';
 import '../../common/child_page_appbar.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 import '../../modules/rhema.dart' as RhemaModule;
-import 'summary.dart';
+import 'details.dart';
 
 class RhemaPage extends StatefulWidget {
   @override
@@ -37,8 +37,7 @@ class _RhemaPageState extends State<RhemaPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-            child: Stack(
+        body: Stack(
           children: <Widget>[
             ChildPageAppBar(title: 'RHEMA'),
             // buildRhemaHeader(context),
@@ -48,7 +47,7 @@ class _RhemaPageState extends State<RhemaPage> {
               child: buildRhemaContent(context),
             ),
           ],
-        )),
+        ),
       ),
     );
   }
@@ -72,7 +71,7 @@ class _RhemaPageState extends State<RhemaPage> {
 
   Widget buildRhemaContent(BuildContext context) {
     return FutureBuilder(
-        future: RhemaModule.getAllRhemaSummary(),
+        future: RhemaModule.getRhemaByDate(today), // RhemaModule.getAllRhemaSummary(),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
@@ -122,11 +121,11 @@ class _RhemaPageState extends State<RhemaPage> {
                 child: Column(children: <Widget>[
                   Container(
                       padding: const EdgeInsets.all(0),
-                      decoration: AppTheme.boxShadowless,
+                      // decoration: AppTheme.boxShadowless,
                       child: Column(children: <Widget>[
                         Container(
                             padding: const EdgeInsets.all(0),
-                            decoration: AppTheme.boxShadowless,
+                            // decoration: AppTheme.boxShadowless,
                             child: Column(children: <Widget>[
                               Container(
                                 padding: const EdgeInsets.all(20),
@@ -146,7 +145,7 @@ class _RhemaPageState extends State<RhemaPage> {
                                                 'dd MMM yyyy'),
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
-                                              fontSize: 16.0,
+                                              fontSize: 18.0,
                                               fontWeight: FontWeight.w500,
                                               letterSpacing: 0.15,
                                               color: AppTheme.blueText,
@@ -193,7 +192,7 @@ class _RhemaPageState extends State<RhemaPage> {
                                       )
                                     ]),
                               ),
-                              RhemaSummaryPage(data: snapshot.data[index], dataIndex: index),
+                              RhemaDetailsPage(data: snapshot.data[index], dataIndex: index),
                             ]))
                       ])),
                   SizedBox(

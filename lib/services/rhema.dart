@@ -8,16 +8,19 @@ import '../models/rhema.dart';
 class RhemaService {
   final dbService = DatabaseService();
 
+  /// date must be in y-MM-dd format
   Future<List<Rhema>> getRhemaByDate(String date) async {
     var dbClient = await dbService.db;
     List<Rhema> rhemaList = [];
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
-        'SELECT a.id, a.rhemaDate, a.rhemaText, a.bibleVersionId, '
-        'b."table" as bibleTable, b.abbreviation as bibleAbbreviation, '
+        'SELECT a.id, a.rhemaDate, a.rhemaText, a.bibleVersionId, a.dateKey, '
+        'b."table" as bibleTable, '
+        'b.abbreviation as bibleAbbreviation, '
         'b.language as bibleLang '
         'fROM rhema a '
         'JOIN bible_version_key b on a.bibleVersionId = b.id '
-        'WHERE a.rhemaDate = ?',
+        'where a.dateKey = ? '
+        'ORDER BY a.rhemaDate DESC ',
         [date]);
 
     if (res.length > 0) {
