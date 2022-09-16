@@ -6,22 +6,32 @@ import '../models/rhema.dart';
 import '../services/rhema.dart';
 
 /// getTodayRhema
-Future<List<Rhema>> getTodayRhema() async {
+Future<List<RhemaSummary>> getTodayRhema() async {
   DateTime date = new DateTime.now();
   DateTime yesterday = date.subtract(const Duration(days: 10));
   var todayDate = DateHelper.formatDate(yesterday, 'y-MM-dd');
-  List<Rhema> rhemaList = await getRhemaByDate(todayDate);
+  List<RhemaSummary> rhemaList = await getRhemaByDate(date);
   return rhemaList;
 }
 
 ///
 /// [date] must in yMMd format, i.e. 2000-01-01
 ///
-Future<List<Rhema>> getRhemaByDate(String date) async {
+Future<List<RhemaSummary>> getRhemaByDate(DateTime date) async {
   var dbClient = RhemaService();
 
-  List<Rhema> rhemaList = await dbClient.getRhemaByDate(date);
-  return rhemaList;
+  String strDate = DateHelper.formatDate(date, 'y-MM-dd');
+  strDate = DateHelper.formatDate(date, 'y-MM-dd');
+  List<Rhema> rhemaList = await dbClient.getRhemaByDate(strDate);
+  List<Rhema> rhemaVerseList = await dbClient.getAllRhemaVerseList(rhemaList);
+  Map<String, List<Rhema>> rhemaSummary = groupBy(rhemaVerseList, (Rhema object) => object.dateKey);
+  List<RhemaSummary> list = [];
+  rhemaSummary.forEach((summaryDate, rhemas) {
+    RhemaSummary rhemaSummary = RhemaSummary(summaryDate: summaryDate, rhemas: rhemas);
+    rhemaSummary.generateVerseSummary();
+    list.add(rhemaSummary);
+  });
+  return list;
 }
 
 // Future<List<Rhema>> getAllRhema() async {
