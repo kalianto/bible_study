@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:share/share.dart';
 
 import '../../app_theme.dart';
 import '../../common/child_page_appbar.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
+import '../../models/rhema.dart';
 import '../../modules/rhema.dart' as RhemaModule;
 import 'details.dart';
 
@@ -179,10 +182,10 @@ class _RhemaPageState extends State<RhemaPage> {
                                             alignment: Alignment.centerRight,
                                             child: InkWell(
                                                 onTap: () {
-                                                  // RhemaModule.deleteRhema(snapshot.data[index].id);
-                                                  // setState(() {
-                                                  //   snapshot.data.removeAt(index);
-                                                  // });
+                                                  String summary = generateRhemaSummary(
+                                                      snapshot.data[index].rhemas);
+                                                  Clipboard.setData(
+                                                      new ClipboardData(text: summary));
                                                 },
                                                 child: Container(
                                                   padding: const EdgeInsets.only(right: 20),
@@ -196,10 +199,9 @@ class _RhemaPageState extends State<RhemaPage> {
                                             alignment: Alignment.centerRight,
                                             child: InkWell(
                                                 onTap: () {
-                                                  // RhemaModule.deleteRhema(snapshot.data[index].id);
-                                                  // setState(() {
-                                                  //   snapshot.data.removeAt(index);
-                                                  // });
+                                                  String summary = generateRhemaSummary(
+                                                      snapshot.data[index].rhemas);
+                                                  Share.share(summary);
                                                 },
                                                 child: Container(
                                                   padding: const EdgeInsets.only(right: 20),
@@ -294,5 +296,22 @@ class _RhemaPageState extends State<RhemaPage> {
         setRhemaDate(rhemaDate);
       });
     }
+  }
+
+  String generateRhemaSummary(List<Rhema> rhemaList) {
+    String header =
+        'DAILY READING REPORT\n*' + DateHelper.formatDate(rhemaDate, 'dd MMM yyyy') + '*\n\n';
+    List<String> messages = [];
+    for (Rhema rhema in rhemaList) {
+      messages.add('*' + rhema.bibleVersesHeader + '*');
+      messages.add(rhema.bibleVerses);
+      if (rhema.rhemaText != '') {
+        messages.add('\n\n*RHEMA*\n\n');
+        messages.add(rhema.rhemaText);
+      }
+      messages.add('\n\n');
+    }
+    String summary = header + messages.join('');
+    return summary;
   }
 }
