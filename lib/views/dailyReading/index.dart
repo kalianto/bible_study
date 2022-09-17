@@ -79,7 +79,8 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
               if (dragEndDetails.primaryDelta < swipeLeft) {
                 int nextIndex = dailyReadingIndex + 1;
                 if (nextIndex >= widget.arguments.itemList.length) {
-                  Navigator.of(context).popAndPushNamed('/home', arguments: dailyReadingDate);
+                  Navigator.of(context)
+                      .pop(); //popAndPushNamed('/home', arguments: dailyReadingDate);
                 } else {
                   DailyReadingArguments arguments = new DailyReadingArguments(
                       index: nextIndex,
@@ -91,7 +92,8 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
               } else if (dragEndDetails.primaryDelta > swipeRight) {
                 int prevIndex = dailyReadingIndex - 1;
                 if (prevIndex < 0) {
-                  Navigator.of(context).popAndPushNamed('/home', arguments: dailyReadingDate);
+                  Navigator.of(context)
+                      .pop(); //popAndPushNamed('/home', arguments: dailyReadingDate);
                 } else {
                   DailyReadingArguments arguments = new DailyReadingArguments(
                       index: prevIndex,

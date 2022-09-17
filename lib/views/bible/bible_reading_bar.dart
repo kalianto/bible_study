@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
-import '../../helpers/date_helper.dart' as DateHelper;
 import '../../models/daily_reading.dart';
 import '../../modules/daily_reading.dart' as DailyReadingModule;
 import '../../providers/my_bible.dart';
@@ -38,8 +37,9 @@ class BibleReadingBar extends StatelessWidget {
                     icon: const Icon(FontAwesomeIcons.arrowLeft),
                     iconSize: 22,
                     // onPressed: () => Navigator.pop(context, myBible.version),
-                    onPressed: () => Navigator.popAndPushNamed(context, '/home',
-                        arguments: DateHelper.getDateFromDateId(item.dateId)),
+                    onPressed: () =>
+                        Navigator.of(context).pop(), // Navigator.popAndPushNamed(context, '/home',
+                    // arguments: DateHelper.getDateFromDateId(item.dateId)),
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                     color: AppTheme.darkGrey,
                   );
