@@ -172,8 +172,8 @@ class DailyReadingItem extends StatelessWidget {
               /// anymore. i am wondering why????
               DailyReadingArguments arguments = new DailyReadingArguments(
                   index: index, item: items[index], date: date, itemList: items);
-              final result = await Navigator.of(context)
-                  .popAndPushNamed('/daily-reading', arguments: arguments);
+              final result =
+                  await Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
 
               /// result is not null when user changes bible version
               if (result != null) {
@@ -230,8 +230,7 @@ class DailyReadingItem extends StatelessWidget {
                           onPressed: () {
                             DailyReadingArguments arguments = new DailyReadingArguments(
                                 index: index, item: items[index], date: date, itemList: items);
-                            Navigator.of(context)
-                                .popAndPushNamed('/daily-reading', arguments: arguments);
+                            Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
                           },
                           splashColor: colorTheme.darkColor,
                         ),
