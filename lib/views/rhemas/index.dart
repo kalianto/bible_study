@@ -183,12 +183,18 @@ class _RhemaPageState extends State<RhemaPage> {
                                           Align(
                                             alignment: Alignment.centerRight,
                                             child: InkWell(
-                                              onTap: () {
-                                                RhemaModule.deleteRhema(snapshot.data[index].rhemas)
-                                                    .then((_) {
-                                                  setState(() {
-                                                    snapshot.data.removeAt(index);
-                                                  });
+                                              onTap: () async {
+                                                showDeleteConfirmation(context).then((answer) {
+                                                  print(answer);
+                                                  if (answer) {
+                                                    RhemaModule.deleteRhema(
+                                                            snapshot.data[index].rhemas)
+                                                        .then((_) {
+                                                      setState(() {
+                                                        snapshot.data.removeAt(index);
+                                                      });
+                                                    });
+                                                  }
                                                 });
                                               },
                                               child: Icon(
@@ -212,6 +218,37 @@ class _RhemaPageState extends State<RhemaPage> {
               );
             },
           );
+        });
+  }
+
+  Future<bool> showDeleteConfirmation(BuildContext context) async {
+    return showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+              child: AlertDialog(
+            title: Text('Delete Rhema'),
+            content: Text('Are you sure you want to delete this rhema?'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop(true);
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppTheme.darkGreen,
+                  ),
+                  child: Text('Yes', style: TextStyle(color: AppTheme.white))),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppTheme.redText,
+                  ),
+                  child: Text('No', style: TextStyle(color: AppTheme.white)))
+            ],
+          ));
         });
   }
 }
