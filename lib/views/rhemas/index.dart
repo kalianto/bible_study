@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:share/share.dart';
 
 import '../../app_theme.dart';
 import '../../common/child_page_appbar.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
+import '../../models/rhema.dart';
 import '../../modules/rhema.dart' as RhemaModule;
 import 'details.dart';
 
@@ -12,19 +15,19 @@ class RhemaPage extends StatefulWidget {
 }
 
 class _RhemaPageState extends State<RhemaPage> {
-  DateTime today;
+  DateTime rhemaDate;
 
   @override
   void initState() {
     super.initState();
-    final today = DateTime.now();
-    // final yesterday = today.subtract(const Duration(days: 1));
-    setToday(today);
+    final rhemaDate = DateTime.now();
+    // final yesterday = rhemaDate.subtract(const Duration(days: 1));
+    setRhemaDate(rhemaDate);
   }
 
-  void setToday(DateTime newDate) {
+  void setRhemaDate(DateTime newDate) {
     setState(() {
-      today = newDate;
+      rhemaDate = newDate;
     });
   }
 
@@ -64,7 +67,7 @@ class _RhemaPageState extends State<RhemaPage> {
               Text('Today',
                   style: TextStyle(
                       color: AppTheme.darkGrey, fontSize: 20, fontWeight: FontWeight.w500)),
-              Text(DateHelper.formatDate(today, 'dd MMM y'),
+              Text(DateHelper.formatDate(rhemaDate, 'dd MMM y'),
                   style: TextStyle(
                       color: AppTheme.blueText, fontSize: 14, fontWeight: FontWeight.w500)),
             ]));
@@ -72,7 +75,7 @@ class _RhemaPageState extends State<RhemaPage> {
 
   Widget buildRhemaContent(BuildContext context) {
     return FutureBuilder(
-        future: RhemaModule.getRhemaByDate(today), // RhemaModule.getAllRhemaSummary(),
+        future: RhemaModule.getRhemaByDate(rhemaDate), // RhemaModule.getAllRhemaSummary(),
         builder: (context, snapshot) {
           if (ConnectionState.active != null && !snapshot.hasData) {
             return Center(
@@ -108,7 +111,16 @@ class _RhemaPageState extends State<RhemaPage> {
                         Text('No Rhema item found for',
                             textAlign: TextAlign.center, style: AppTheme.subtitle1),
                         SizedBox(height: 10),
-                        Text(DateHelper.formatDate(today), style: AppTheme.headline6),
+                        Text(DateHelper.formatDate(rhemaDate), style: AppTheme.headline6),
+                        SizedBox(height: 20),
+                        TextButton(
+                          child: Text('Pick another date',
+                              style: TextStyle(
+                                  color: AppTheme.blueText,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600)),
+                          onPressed: () => pickDate(context),
+                        )
                       ])))
             ]);
           }
@@ -130,7 +142,7 @@ class _RhemaPageState extends State<RhemaPage> {
                             child: Column(children: <Widget>[
                               Container(
                                 // color: AppTheme.nearlyDarkBlue.withOpacity(0.3),
-                                padding: const EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   // border: Border(
                                   //   bottom: BorderSide(width: 2.0, color: AppTheme.notWhite),
@@ -148,18 +160,21 @@ class _RhemaPageState extends State<RhemaPage> {
                                     children: <Widget>[
                                       Align(
                                           alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            DateHelper.formatDate(
-                                                DateTime.parse(snapshot.data[index].summaryDate),
-                                                'dd MMM yyyy'),
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w600,
-                                              letterSpacing: 0.15,
-                                              color: AppTheme.purple,
-                                            ),
-                                          )),
+                                          child: TextButton(
+                                              onPressed: () => pickDate(context),
+                                              child: Text(
+                                                DateHelper.formatDate(
+                                                    DateTime.parse(
+                                                        snapshot.data[index].summaryDate),
+                                                    'dd MMM yyyy'),
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w600,
+                                                  letterSpacing: 0.15,
+                                                  color: AppTheme.purple,
+                                                ),
+                                              ))),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
@@ -167,10 +182,26 @@ class _RhemaPageState extends State<RhemaPage> {
                                             alignment: Alignment.centerRight,
                                             child: InkWell(
                                                 onTap: () {
-                                                  // RhemaModule.deleteRhema(snapshot.data[index].id);
-                                                  // setState(() {
-                                                  //   snapshot.data.removeAt(index);
-                                                  // });
+                                                  String summary = generateRhemaSummary(
+                                                      snapshot.data[index].rhemas);
+                                                  Clipboard.setData(
+                                                      new ClipboardData(text: summary));
+                                                },
+                                                child: Container(
+                                                  padding: const EdgeInsets.only(right: 20),
+                                                  child: Icon(
+                                                    Icons.copy,
+                                                    color: AppTheme.nearlyBlack,
+                                                  ),
+                                                )),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: InkWell(
+                                                onTap: () {
+                                                  String summary = generateRhemaSummary(
+                                                      snapshot.data[index].rhemas);
+                                                  Share.share(summary);
                                                 },
                                                 child: Container(
                                                   padding: const EdgeInsets.only(right: 20),
@@ -183,12 +214,18 @@ class _RhemaPageState extends State<RhemaPage> {
                                           Align(
                                             alignment: Alignment.centerRight,
                                             child: InkWell(
-                                              onTap: () {
-                                                RhemaModule.deleteRhema(snapshot.data[index].rhemas)
-                                                    .then((_) {
-                                                  setState(() {
-                                                    snapshot.data.removeAt(index);
-                                                  });
+                                              onTap: () async {
+                                                showDeleteConfirmation(context).then((answer) {
+                                                  print(answer);
+                                                  if (answer) {
+                                                    RhemaModule.deleteRhema(
+                                                            snapshot.data[index].rhemas)
+                                                        .then((_) {
+                                                      setState(() {
+                                                        snapshot.data.removeAt(index);
+                                                      });
+                                                    });
+                                                  }
                                                 });
                                               },
                                               child: Icon(
@@ -213,5 +250,68 @@ class _RhemaPageState extends State<RhemaPage> {
             },
           );
         });
+  }
+
+  Future<bool> showDeleteConfirmation(BuildContext context) async {
+    return showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+              child: AlertDialog(
+            title: Text('Delete Rhema'),
+            content: Text('Are you sure you want to delete this rhema?'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop(true);
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppTheme.darkGreen,
+                  ),
+                  child: Text('Yes', style: TextStyle(color: AppTheme.white))),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppTheme.redText,
+                  ),
+                  child: Text('No', style: TextStyle(color: AppTheme.white)))
+            ],
+          ));
+        });
+  }
+
+  void pickDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: rhemaDate,
+      firstDate: rhemaDate.subtract(const Duration(days: 365)),
+      lastDate: rhemaDate.add(const Duration(days: 365)),
+    );
+    if (picked != null && picked != rhemaDate) {
+      setState(() {
+        rhemaDate = picked;
+        setRhemaDate(rhemaDate);
+      });
+    }
+  }
+
+  String generateRhemaSummary(List<Rhema> rhemaList) {
+    String header =
+        'DAILY READING REPORT\n*' + DateHelper.formatDate(rhemaDate, 'dd MMM yyyy') + '*\n\n';
+    List<String> messages = [];
+    for (Rhema rhema in rhemaList) {
+      messages.add('*' + rhema.bibleVersesHeader + '*');
+      messages.add(rhema.bibleVerses);
+      if (rhema.rhemaText != '') {
+        messages.add('\n\n*RHEMA*\n\n');
+        messages.add(rhema.rhemaText);
+      }
+      messages.add('\n\n');
+    }
+    String summary = header + messages.join('');
+    return summary;
   }
 }

@@ -26,6 +26,7 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
+      physics: ClampingScrollPhysics(),
       itemCount: data.rhemas.length,
       itemBuilder: (context, index) {
         Rhema rhema = data.rhemas[index];
