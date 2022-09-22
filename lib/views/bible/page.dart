@@ -72,7 +72,7 @@ class _BiblePageState extends State<BiblePage> {
         ),
         bottomNavigationBar:
             Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
-          return new BibleBottomBar(bibleVerseList: bibleVerseList);
+          return new BibleBottomBar(bibleVerseList: bibleVerseList, date: DateTime.now());
         }),
       )),
     );
