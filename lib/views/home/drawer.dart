@@ -1,11 +1,12 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/profile.dart';
-import '../../app_theme.dart';
 import '../../app_config.dart';
+import '../../app_theme.dart';
+import '../../models/profile.dart';
 
 class DrawerList {
   DrawerList(
@@ -27,7 +28,7 @@ class HomeDrawer extends StatelessWidget {
   final List<DrawerList> drawerList = <DrawerList>[
     DrawerList(Icon(FontAwesomeIcons.userCircle, color: AppTheme.lightPurple), 'Profile',
         'Edit personal details', '/profile'),
-    DrawerList(Icon(FontAwesomeIcons.bible, color: AppTheme.yellowText), 'Bible',
+    DrawerList(Icon(FontAwesomeIcons.bible, color: AppTheme.darkGrey), 'Bible',
         'Bible in different languages', '/bible'),
     DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL',
         'COOL group details', '/cool-group'),

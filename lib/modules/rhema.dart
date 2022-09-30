@@ -76,3 +76,8 @@ Future<void> deleteRhema(List<Rhema> rhemas) async {
     await dbClient.deleteRhema(rhema.id);
   }
 }
+
+Future<void> deleteRhemaItem(Rhema rhema) async {
+  var dbClient = RhemaService();
+  await dbClient.deleteRhema(rhema.id);
+}

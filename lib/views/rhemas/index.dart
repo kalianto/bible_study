@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share/share.dart';
 
 import '../../app_theme.dart';
-import '../../common/child_page_appbar.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 import '../../models/rhema.dart';
 import '../../modules/rhema.dart' as RhemaModule;
 import 'details.dart';
+import 'rhema_app_bar.dart';
 
 class RhemaPage extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class RhemaPage extends StatefulWidget {
 
 class _RhemaPageState extends State<RhemaPage> {
   DateTime rhemaDate;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -40,20 +42,21 @@ class _RhemaPageState extends State<RhemaPage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            key: _scaffoldKey,
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(60),
+              child: RhemaAppBar(),
+            ),
             body: Container(
-      decoration: AppTheme.boxDecoration,
-      child: Stack(
-        children: <Widget>[
-          ChildPageAppBar(title: 'RHEMA'),
-          // buildRhemaHeader(context),
-          // SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
-            child: buildRhemaContent(context),
-          ),
-        ],
-      ),
-    )));
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                    child: buildRhemaContent(context),
+                  ),
+                ],
+              ),
+            )));
   }
 
   Widget buildRhemaHeader(BuildContext context) {
@@ -108,19 +111,40 @@ class _RhemaPageState extends State<RhemaPage> {
                       //   borderRadius: AppTheme.borderRadius,
                       // ),
                       child: Column(children: <Widget>[
-                        Text('No Rhema item found for',
+                        SizedBox(height: 30),
+                        Text('No Rhema item found for selected date',
                             textAlign: TextAlign.center, style: AppTheme.subtitle1),
-                        SizedBox(height: 10),
-                        Text(DateHelper.formatDate(rhemaDate), style: AppTheme.headline6),
+                        SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            IconButton(
+                              icon: FaIcon(
+                                FontAwesomeIcons.angleLeft,
+                                color: AppTheme.mandarin,
+                              ),
+                              onPressed: previousDay,
+                            ),
+                            TextButton(
+                              child: Text(DateHelper.formatDate(rhemaDate),
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.15,
+                                    color: AppTheme.mandarin,
+                                  )),
+                              onPressed: () => pickDate(context),
+                            ),
+                            IconButton(
+                              icon: FaIcon(
+                                FontAwesomeIcons.angleRight,
+                                color: AppTheme.mandarin,
+                              ),
+                              onPressed: nextDay,
+                            ),
+                          ],
+                        ),
                         SizedBox(height: 20),
-                        TextButton(
-                          child: Text('Pick another date',
-                              style: TextStyle(
-                                  color: AppTheme.blueText,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600)),
-                          onPressed: () => pickDate(context),
-                        )
                       ])))
             ]);
           }
@@ -142,7 +166,7 @@ class _RhemaPageState extends State<RhemaPage> {
                             child: Column(children: <Widget>[
                               Container(
                                 // color: AppTheme.nearlyDarkBlue.withOpacity(0.3),
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.only(top: 10),
                                 decoration: BoxDecoration(
                                   // border: Border(
                                   //   bottom: BorderSide(width: 2.0, color: AppTheme.notWhite),
@@ -153,14 +177,21 @@ class _RhemaPageState extends State<RhemaPage> {
                                     bottomRight: Radius.circular(10.0),
                                     topRight: Radius.circular(10.0),
                                   ),
-                                  color: AppTheme.nearlyDarkBlue.withOpacity(0.3),
+                                  //color: AppTheme.nearlyDarkBlue.withOpacity(0.3),
                                 ),
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: TextButton(
+                                      Row(
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: FaIcon(
+                                              FontAwesomeIcons.angleLeft,
+                                              color: AppTheme.mandarin,
+                                            ),
+                                            onPressed: previousDay,
+                                          ),
+                                          TextButton(
                                               onPressed: () => pickDate(context),
                                               child: Text(
                                                 DateHelper.formatDate(
@@ -172,9 +203,18 @@ class _RhemaPageState extends State<RhemaPage> {
                                                   fontSize: 18.0,
                                                   fontWeight: FontWeight.w600,
                                                   letterSpacing: 0.15,
-                                                  color: AppTheme.purple,
+                                                  color: AppTheme.mandarin,
                                                 ),
-                                              ))),
+                                              )),
+                                          IconButton(
+                                            icon: FaIcon(
+                                              FontAwesomeIcons.angleRight,
+                                              color: AppTheme.mandarin,
+                                            ),
+                                            onPressed: nextDay,
+                                          ),
+                                        ],
+                                      ),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
@@ -216,7 +256,6 @@ class _RhemaPageState extends State<RhemaPage> {
                                             child: InkWell(
                                               onTap: () async {
                                                 showDeleteConfirmation(context).then((answer) {
-                                                  print(answer);
                                                   if (answer) {
                                                     RhemaModule.deleteRhema(
                                                             snapshot.data[index].rhemas)
@@ -230,7 +269,7 @@ class _RhemaPageState extends State<RhemaPage> {
                                               },
                                               child: Icon(
                                                 Icons.delete,
-                                                color: AppTheme.mandarin,
+                                                color: AppTheme.redText,
                                               ),
                                             ),
                                           ),
@@ -296,6 +335,20 @@ class _RhemaPageState extends State<RhemaPage> {
         setRhemaDate(rhemaDate);
       });
     }
+  }
+
+  void previousDay() {
+    setState(() {
+      DateTime newDate = rhemaDate.subtract(const Duration(days: 1));
+      setRhemaDate(newDate);
+    });
+  }
+
+  void nextDay() {
+    setState(() {
+      DateTime newDate = rhemaDate.add(const Duration(days: 1));
+      setRhemaDate(newDate);
+    });
   }
 
   String generateRhemaSummary(List<Rhema> rhemaList) {
