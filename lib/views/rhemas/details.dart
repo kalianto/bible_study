@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gema/app_theme.dart';
 
 import '../../models/rhema.dart';
+import '../../modules/rhema.dart' as RhemaModule;
 
 class RhemaDetailsPage extends StatefulWidget {
   const RhemaDetailsPage({Key key, this.data, this.dataIndex}) : super(key: key);
@@ -14,6 +15,18 @@ class RhemaDetailsPage extends StatefulWidget {
 }
 
 class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
+  int selectedIndex = -1;
+
+  void setSelectedIndex(int index) {
+    setState(() {
+      if (selectedIndex == index) {
+        selectedIndex = -1;
+      } else {
+        selectedIndex = index;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,46 +43,127 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
       itemCount: data.rhemas.length,
       itemBuilder: (context, index) {
         Rhema rhema = data.rhemas[index];
-        return Container(
-            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 0, right: 0),
-            child: Column(children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    bottomLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0),
-                  ),
-                  color: AppTheme.lightGreen.withOpacity(0.5),
-                ),
+        return InkWell(
+            onTap: () {
+              setSelectedIndex(index);
+            },
+            child: Container(
+                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 0, right: 0),
                 child: Column(children: <Widget>[
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        rhema.bibleVersesHeader,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.15,
-                          color: AppTheme.nearlyBlack,
-                        ),
-                      )),
-                  Text(rhema.bibleVerses),
                   Container(
-                    padding: const EdgeInsets.only(top: 20, bottom: 20),
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'RHEMA',
-                          style: AppTheme.headline7,
-                        )),
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        bottomLeft: Radius.circular(10.0),
+                        bottomRight: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                      color: selectedIndex == index
+                          ? AppTheme.mandarin
+                          : AppTheme.mandarin.withOpacity(0.1),
+                    ),
+                    child: Column(children: <Widget>[
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            rhema.bibleVersesHeader,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.15,
+                              color: AppTheme.nearlyBlack,
+                            ),
+                          )),
+                      Text(rhema.bibleVerses),
+                      Container(
+                        padding: const EdgeInsets.only(top: 20, bottom: 20),
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'RHEMA',
+                              style: AppTheme.headline7,
+                            )),
+                      ),
+                      Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText)),
+                    ]),
                   ),
-                  Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText)),
-                ]),
-              )
-            ]));
+                  selectedIndex == index
+                      ? Container(
+                          child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              child: InkWell(
+                                onTap: () async {
+                                  // showDeleteConfirmation(context).then((answer) {
+                                  //   print(answer);
+                                  //   if (answer) {
+                                  //     RhemaModule.deleteRhema(
+                                  //         snapshot.data[index].rhemas)
+                                  //         .then((_) {
+                                  //       setState(() {
+                                  //         snapshot.data.removeAt(index);
+                                  //       });
+                                  //     });
+                                  //   }
+                                  // });
+                                },
+                                child: Icon(
+                                  Icons.edit,
+                                  color: AppTheme.nearlyBlack,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              child: InkWell(
+                                onTap: () async {
+                                  // showDeleteConfirmation(context).then((answer) {
+                                  //   print(answer);
+                                  //   if (answer) {
+                                  //     RhemaModule.deleteRhema(
+                                  //         snapshot.data[index].rhemas)
+                                  //         .then((_) {
+                                  //       setState(() {
+                                  //         snapshot.data.removeAt(index);
+                                  //       });
+                                  //     });
+                                  //   }
+                                  // });
+                                },
+                                child: Icon(
+                                  Icons.copy,
+                                  color: AppTheme.nearlyBlack,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              child: InkWell(
+                                onTap: () async {
+                                  showDeleteConfirmation(context).then((answer) {
+                                    print(answer);
+                                    if (answer) {
+                                      RhemaModule.deleteRhemaItem(rhema).then((_) {
+                                        setState(() {
+                                          data.rhemas.removeAt(index);
+                                        });
+                                      });
+                                    }
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.delete,
+                                  color: AppTheme.redText,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ))
+                      : Container(),
+                ])));
       },
     );
   }
@@ -130,5 +224,36 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
     } else {
       return Container();
     }
+  }
+
+  Future<bool> showDeleteConfirmation(BuildContext context) async {
+    return showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+              child: AlertDialog(
+            title: Text('Delete Rhema'),
+            content: Text('Are you sure you want to delete this rhema?'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop(true);
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppTheme.darkGreen,
+                  ),
+                  child: Text('Yes', style: TextStyle(color: AppTheme.white))),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: AppTheme.redText,
+                  ),
+                  child: Text('No', style: TextStyle(color: AppTheme.white)))
+            ],
+          ));
+        });
   }
 }

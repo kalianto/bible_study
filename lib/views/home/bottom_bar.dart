@@ -101,7 +101,11 @@ class HomeBottomNavigationBar extends StatelessWidget {
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.bible, size: 22, color: AppTheme.blueText),
+                icon: const FaIcon(
+                  FontAwesomeIcons.bible,
+                  size: 22,
+                  color: AppTheme.darkGrey,
+                ),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/bible');
                 },
