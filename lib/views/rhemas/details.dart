@@ -76,16 +76,20 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
                             ),
                           )),
                       Text(rhema.bibleVerses),
-                      Container(
-                        padding: const EdgeInsets.only(top: 20, bottom: 20),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'RHEMA',
-                              style: AppTheme.headline7,
-                            )),
-                      ),
-                      Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText)),
+                      rhema.rhemaText != ''
+                          ? Container(
+                              padding: const EdgeInsets.only(top: 20, bottom: 20),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'RHEMA',
+                                    style: AppTheme.headline7,
+                                  )),
+                            )
+                          : SizedBox(),
+                      rhema.rhemaText != ''
+                          ? Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText))
+                          : SizedBox(),
                     ]),
                   ),
                   selectedIndex == index
@@ -202,18 +206,20 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
                     borderRadius: AppTheme.borderRadius,
                     color: AppTheme.mandarin.withOpacity(0.5),
                   ),
-                  child: Column(children: <Widget>[
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'RHEMA',
-                          style: AppTheme.headline7,
-                        )),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText)),
-                  ]),
+                  child: rhema.rhemaText != ''
+                      ? Column(children: <Widget>[
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'RHEMA',
+                                style: AppTheme.headline7,
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText)),
+                        ])
+                      : Container(),
                 )
               ]),
             ),
