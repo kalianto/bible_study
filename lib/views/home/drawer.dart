@@ -26,16 +26,11 @@ class HomeDrawer extends StatelessWidget {
   HomeDrawer({Key key}) : super(key: key);
 
   final List<DrawerList> drawerList = <DrawerList>[
-    DrawerList(Icon(FontAwesomeIcons.userCircle, color: AppTheme.lightPurple), 'Profile',
-        'Edit personal details', '/profile'),
-    DrawerList(Icon(FontAwesomeIcons.bible, color: AppTheme.darkGrey), 'Bible',
-        'Bible in different languages', '/bible'),
-    DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL',
-        'COOL group details', '/cool-group'),
-    DrawerList(Icon(FontAwesomeIcons.comments, color: AppTheme.blueText), 'Feedback',
-        'Send us feedback or questions', '/feedback'),
-    DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.mandarin), 'Settings',
-        'Personal settings, App settings', '/settings'),
+    DrawerList(Icon(FontAwesomeIcons.userCircle, color: AppTheme.lightPurple), 'Profile', 'Edit personal details', '/profile'),
+    DrawerList(Icon(FontAwesomeIcons.bible, color: AppTheme.darkGrey), 'Bible', 'Bible in different languages', '/bible'),
+    DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL', 'COOL group details', '/cool-group'),
+    DrawerList(Icon(FontAwesomeIcons.comments, color: AppTheme.blueText), 'Feedback', 'Send us feedback or questions', '/feedback'),
+    DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.mandarin), 'Settings', 'Personal settings, App settings', '/settings'),
     // DrawerList(Icon(FontAwesomeIcons.fileAlt, color: AppTheme.blueText), 'Sample Pages',
     //     'Other pages template', '/pages'),
   ];
@@ -71,62 +66,63 @@ class HomeDrawer extends StatelessWidget {
 
   Widget buildProfilePicture(BuildContext context) {
     return FutureBuilder(
-        future: _loadProfile(),
-        builder: (context, snapshot) {
-          if (ConnectionState.active != null && !snapshot.hasData) {
-            return Center(
-                child: Column(children: <Widget>[
-              SizedBox(height: 20),
-              CircularProgressIndicator(),
-              SizedBox(height: 40),
-              Text('Loading ...'),
-            ]));
-          }
-          return Container(
-            width: double.infinity,
-            height: 200,
-            // padding: const EdgeInsets.only(top: 10.0),
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    height: 80,
-                    width: 80,
-                    // decoration: BoxDecoration(
-                    //   shape: BoxShape.circle,
-                    //   boxShadow: <BoxShadow>[
-                    //     BoxShadow(
-                    //       color: AppTheme.grey.withOpacity(0.6),
-                    //       offset: const Offset(2.0, 4.0),
-                    //       blurRadius: 8,
-                    //     ),
-                    //   ],
-                    // ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(60.0)),
-                      child: Image.asset('assets/images/${snapshot.data.profileIcon}'),
+      future: _loadProfile(),
+      builder: (context, snapshot) {
+        if (ConnectionState.active != null && !snapshot.hasData) {
+          return Center(
+              child: Column(children: <Widget>[
+            SizedBox(height: 20),
+            CircularProgressIndicator(),
+            SizedBox(height: 40),
+            Text('Loading ...'),
+          ]));
+        }
+        return Container(
+          width: double.infinity,
+          height: 200,
+          // padding: const EdgeInsets.only(top: 10.0),
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: 80,
+                  width: 80,
+                  // decoration: BoxDecoration(
+                  //   shape: BoxShape.circle,
+                  //   boxShadow: <BoxShadow>[
+                  //     BoxShadow(
+                  //       color: AppTheme.grey.withOpacity(0.6),
+                  //       offset: const Offset(2.0, 4.0),
+                  //       blurRadius: 8,
+                  //     ),
+                  //   ],
+                  // ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(60.0)),
+                    child: Image.asset('assets/images/${snapshot.data.profileIcon}'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, left: 4),
+                  child: Text(
+                    snapshot.data.fullName(),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.grey,
+                      fontSize: 18,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 4),
-                    child: Text(
-                      snapshot.data.fullName(),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.grey,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   Widget buildProfileMenu(BuildContext context) {
@@ -150,12 +146,7 @@ class HomeDrawer extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     leading: drawerList[index].icon,
-                    title: Text(drawerList[index].title,
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: AppTheme.grey,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: -0.5)),
+                    title: Text(drawerList[index].title, style: TextStyle(fontSize: 16, color: AppTheme.grey, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
                     onTap: () {
                       Navigator.of(context).popAndPushNamed(drawerList[index].link);
                     },

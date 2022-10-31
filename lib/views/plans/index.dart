@@ -13,23 +13,25 @@ class _ReadingPlansState extends State<ReadingPlans> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              ChildPageAppBar(title: 'Reading Plans'),
-              Container(
-                padding: const EdgeInsets.only(top: 50),
-                child: SingleChildScrollView(
+        body: Container(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                ChildPageAppBar(title: 'Reading Plans'),
+                Container(
+                  padding: const EdgeInsets.only(top: 50),
+                  child: SingleChildScrollView(
                     child: Container(
-                  padding: const EdgeInsets.all(40),
-                  child: Text('The content of this page is being constructed'),
-                )),
-              ),
-            ],
+                      padding: const EdgeInsets.all(40),
+                      child: Text('The content of this page is being constructed'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

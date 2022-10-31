@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 
-import 'views/bible/index.dart';
+// import 'views/bible/index.dart';
 import 'views/bible/page.dart';
 import 'views/coolGroup/index.dart';
 import 'views/dailyReading/index.dart';
@@ -54,13 +54,12 @@ class BaseRouter {
       case '/login':
         return ScaleRoute(widget: LoginPage());
         break;
-      case '/bible-view':
-        return SlideFromRoute(
-            widget: BibleViewPage(readingItem: settings.arguments), direction: 'right');
-        break;
+      // case '/bible-view':
+      //   return SlideFromRoute(
+      //       widget: BibleViewPage(readingItem: settings.arguments), direction: 'right');
+      //   break;
       case '/daily-reading':
-        return SlideFromRoute(
-            widget: DailyReadingPage(arguments: settings.arguments), direction: 'right');
+        return SlideFromRoute(widget: DailyReadingPage(arguments: settings.arguments), direction: 'right');
         break;
       case '/bible':
         return SlideFromRoute(widget: BiblePage(), direction: 'right');
@@ -75,14 +74,11 @@ class BaseRouter {
         return SlideFromRoute(widget: FeedbackPage(), direction: 'right');
         break;
       case '/add-rhema':
-        return SlideFromRoute(
-            widget: AddRhemaPage(arguments: settings.arguments), direction: 'right');
+        return SlideFromRoute(widget: AddRhemaPage(arguments: settings.arguments), direction: 'right');
         break;
       case '/':
       default:
-        return SlideFromRoute(
-            widget: SplashScreen(title: GlobalConfiguration().getValue('appName')),
-            direction: 'left');
+        return SlideFromRoute(widget: SplashScreen(title: GlobalConfiguration().getValue('appName')), direction: 'left');
         break;
     }
   }
@@ -95,11 +91,8 @@ class SlideFromRoute extends PageRouteBuilder {
 
   SlideFromRoute({this.widget, this.direction})
       : super(
-          pageBuilder: (BuildContext context, Animation<double> animation,
-                  Animation<double> secondaryAnimation) =>
-              widget,
-          transitionsBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation, Widget child) {
+          pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => widget,
+          transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
             switch (direction) {
               case 'bottom':
                 begin = const Offset(0, 1);

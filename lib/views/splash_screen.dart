@@ -36,18 +36,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      body: _buildHome(context, widget.title),
-    ));
+      child: Scaffold(
+        body: _buildHome(context, widget.title),
+      ),
+    );
   }
 
   void _loadProfile() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final key = AppConfig.profile;
-      Profile _profile = (prefs.getString(key) != null)
-          ? Profile.fromJson(jsonDecode(prefs.getString(key)))
-          : new Profile();
+      Profile _profile = (prefs.getString(key) != null) ? Profile.fromJson(jsonDecode(prefs.getString(key))) : new Profile();
       setState(() {
         profile = _profile;
         isLoggedIn = prefs.getBool(AppConfig.isLoggedIn) ?? false;
@@ -128,27 +127,35 @@ class _SplashScreenState extends State<SplashScreen> {
                 //   // } else if (profile.email == null) {
                 //   //   Navigator.pushNamed(context, '/register');
                 // } else {
-                  Navigator.pushNamed(context, '/home');
+                Navigator.pushNamed(context, '/home');
                 // }
               },
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: const FaIcon(FontAwesomeIcons.arrowRight,
-                    size: 24, color: AppTheme.nearlyWhite),
+                child: const FaIcon(
+                  FontAwesomeIcons.arrowRight,
+                  size: 24,
+                  color: AppTheme.nearlyWhite,
+                ),
               ),
               style: ElevatedButton.styleFrom(
-                  shape: new CircleBorder(
-                      side: BorderSide(
-                          width: 5.0,
-                          color: AppTheme.white.withOpacity(0.4),
-                          style: BorderStyle.solid))),
+                shape: new CircleBorder(
+                  side: BorderSide(
+                    width: 5.0,
+                    color: AppTheme.white.withOpacity(0.4),
+                    style: BorderStyle.solid,
+                  ),
+                ),
+              ),
             ),
             Container(
               padding: const EdgeInsets.only(top: 20),
-              child: Text(errorMessage ?? '',
-                  style: TextStyle(
-                    color: AppTheme.notWhite,
-                  )),
+              child: Text(
+                errorMessage ?? '',
+                style: TextStyle(
+                  color: AppTheme.notWhite,
+                ),
+              ),
             )
           ],
         ),

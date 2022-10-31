@@ -12,7 +12,7 @@ import '../../providers/my_bible.dart';
 
 /// change this two object to daily reading bar
 import '../bible/bible_bottom_bar.dart';
-import '../bible/bible_reading_bar.dart';
+import './daily_reading_appbar.dart';
 
 class DailyReadingPage extends StatefulWidget {
   DailyReadingPage({Key key, this.arguments}) : super(key: key);
@@ -36,9 +36,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
   @override
   void initState() {
     super.initState();
-    scrollController = AutoScrollController(
-        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-        axis: Axis.vertical);
+    scrollController = AutoScrollController(viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom), axis: Axis.vertical);
 
     /// WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToIndex(context));
     setReadingItem(widget.arguments.item);
@@ -68,86 +66,84 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<BibleVerseListProvider>(
-            create: (context) => BibleVerseListProvider()),
+        ChangeNotifierProvider<BibleVerseListProvider>(create: (context) => BibleVerseListProvider()),
       ],
       child: SafeArea(
-          child: Scaffold(
-        key: _scaffoldKey,
-        body: GestureDetector(
+        child: Scaffold(
+          key: _scaffoldKey,
+          body: GestureDetector(
             onHorizontalDragUpdate: (dragEndDetails) {
               if (dragEndDetails.primaryDelta < swipeLeft) {
                 int nextIndex = dailyReadingIndex + 1;
                 if (nextIndex >= widget.arguments.itemList.length) {
-                  Navigator.of(context)
-                      .pop(); //popAndPushNamed('/home', arguments: dailyReadingDate);
+                  Navigator.of(context).pop(); //popAndPushNamed('/home', arguments: dailyReadingDate);
                 } else {
-                  DailyReadingArguments arguments = new DailyReadingArguments(
-                      index: nextIndex,
-                      item: widget.arguments.itemList[nextIndex],
-                      date: widget.arguments.date,
-                      itemList: widget.arguments.itemList);
+                  DailyReadingArguments arguments =
+                      new DailyReadingArguments(index: nextIndex, item: widget.arguments.itemList[nextIndex], date: widget.arguments.date, itemList: widget.arguments.itemList);
                   Navigator.of(context).popAndPushNamed('/daily-reading', arguments: arguments);
                 }
               } else if (dragEndDetails.primaryDelta > swipeRight) {
                 int prevIndex = dailyReadingIndex - 1;
                 if (prevIndex < 0) {
-                  Navigator.of(context)
-                      .pop(); //popAndPushNamed('/home', arguments: dailyReadingDate);
+                  Navigator.of(context).pop(); //popAndPushNamed('/home', arguments: dailyReadingDate);
                 } else {
-                  DailyReadingArguments arguments = new DailyReadingArguments(
-                      index: prevIndex,
-                      item: widget.arguments.itemList[prevIndex],
-                      date: widget.arguments.date,
-                      itemList: widget.arguments.itemList);
+                  DailyReadingArguments arguments =
+                      new DailyReadingArguments(index: prevIndex, item: widget.arguments.itemList[prevIndex], date: widget.arguments.date, itemList: widget.arguments.itemList);
                   Navigator.of(context).popAndPushNamed('/daily-reading', arguments: arguments);
                 }
               }
             },
             child: Stack(
               children: <Widget>[
-                BibleReadingBar(item: readingItem),
+                DailyReadingAppBar(item: readingItem),
 
                 /// Bible Content
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 60),
-                  child:
-                      Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
-                    return _buildReadingView(context, bibleVerseList);
-                  }),
+                  child: Consumer<BibleVerseListProvider>(
+                    builder: (context, bibleVerseList, child) {
+                      return _buildReadingView(context, bibleVerseList);
+                    },
+                  ),
                 ),
               ],
-            )),
-        bottomNavigationBar:
-            Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
-          return new BibleBottomBar(bibleVerseList: bibleVerseList, date: readingItem.fullDate);
-        }),
-      )),
+            ),
+          ),
+          bottomNavigationBar: Consumer<BibleVerseListProvider>(
+            builder: (context, bibleVerseList, child) {
+              return new BibleBottomBar(bibleVerseList: bibleVerseList, date: readingItem.fullDate);
+            },
+          ),
+        ),
+      ),
     );
   }
 
   Widget _buildReadingView(BuildContext context, BibleVerseListProvider bibleVerseList) {
-    return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-      return FutureBuilder(
-        future: BibleViewModule.getDailyReadingContent(readingItem, myBible.version),
-        builder: (context, snapshot) {
-          if (ConnectionState.active != null && !snapshot.hasData) {
-            return Center(
+    return Consumer<MyBibleProvider>(
+      builder: (context, myBible, child) {
+        return FutureBuilder(
+          future: BibleViewModule.getDailyReadingContent(readingItem, myBible.version),
+          builder: (context, snapshot) {
+            if (ConnectionState.active != null && !snapshot.hasData) {
+              return Center(
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                  CircularProgressIndicator(),
-                  SizedBox(height: 30),
-                  Text('Loading Content'),
-                ]));
-          }
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    CircularProgressIndicator(),
+                    SizedBox(height: 30),
+                    Text('Loading Content'),
+                  ],
+                ),
+              );
+            }
 
-          if (ConnectionState.done != null && snapshot.hasError) {
-            return Center(child: Text(snapshot.error));
-          }
+            if (ConnectionState.done != null && snapshot.hasError) {
+              return Center(child: Text(snapshot.error));
+            }
 
-          return ListView.builder(
+            return ListView.builder(
               padding: const EdgeInsets.only(top: 10, bottom: 10),
               scrollDirection: Axis.vertical,
               controller: scrollController,
@@ -166,10 +162,12 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
                   child: _getRowOnly(index, snapshot.data[index], bibleVerseList),
                 );
                 // return _getRow(index, snapshot.data);
-              });
-        },
-      );
-    });
+              },
+            );
+          },
+        );
+      },
+    );
   }
 
   Widget _getBibleText(BibleView data) {
@@ -187,16 +185,21 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
           for (var i = 0; i < splitText.length; i++) {
             textSpan.add(Text(splitText[i], style: AppTheme.body1));
             if (i < matchedText.length) {
-              textSpan.add(InkWell(
+              textSpan.add(
+                InkWell(
                   onTap: () {
                     _showBibleTextDialog(matchedText[i]);
                   },
-                  child: Text('*',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1,
-                      ))));
+                  child: Text(
+                    '*',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+              );
             }
           }
           return Wrap(direction: Axis.horizontal, children: textSpan);
@@ -222,18 +225,20 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
       )),
       actions: <Widget>[
         TextButton(
-            child: Text('Close'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
+          child: Text('Close'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ],
     );
 
     Future futureValue = showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return dialog;
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return dialog;
+      },
+    );
 
     return futureValue;
   }
@@ -254,25 +259,32 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                  padding: const EdgeInsets.only(left: 0, right: 6),
-                  child: Text(
-                    data.bookVerse.toString(),
-                    style: AppTheme.body2,
-                  )),
-              Expanded(child: _getBibleText(data)),
+                padding: const EdgeInsets.only(left: 0, right: 6),
+                child: Text(
+                  data.bookVerse.toString(),
+                  style: AppTheme.body2,
+                ),
+              ),
+              Expanded(
+                child: _getBibleText(data),
+              ),
             ],
           ),
         ),
       );
 
-  Widget _getRowWithHeading(int index, BibleView data, BibleVerseListProvider bibleVerseList) =>
-      Column(children: <Widget>[
-        Container(
+  Widget _getRowWithHeading(int index, BibleView data, BibleVerseListProvider bibleVerseList) => Column(
+        children: <Widget>[
+          Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
-            child:
-                Text(data.bookName + ' ' + data.bookChapter.toString(), style: AppTheme.headline5)),
-        _getRowOnly(index, data, bibleVerseList),
-      ]);
+            child: Text(
+              data.bookName + ' ' + data.bookChapter.toString(),
+              style: AppTheme.headline5,
+            ),
+          ),
+          _getRowOnly(index, data, bibleVerseList),
+        ],
+      );
 
   Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
         key: ValueKey(index),

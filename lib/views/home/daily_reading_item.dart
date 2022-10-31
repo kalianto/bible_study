@@ -22,66 +22,84 @@ class DailyReadingItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 18, right: 18, top: 18),
-      child: Column(children: <Widget>[
-        _buildReadingItemSummary(context, date, myBible.version),
-        SizedBox(height: 20),
-      ]),
+      child: Column(
+        children: <Widget>[
+          _buildReadingItemSummary(context, date, myBible.version),
+          SizedBox(height: 20),
+        ],
+      ),
     );
   }
 
   Widget _buildReadingItemSummary(BuildContext context, DateTime date, int bibleVersionIndex) {
     return FutureBuilder(
-        future: DailyReadingModule.getDailyReadingSummary(date, bibleVersionIndex),
-        builder: (context, snapshot) {
-          if (ConnectionState.active != null && !snapshot.hasData) {
-            return Center(
-                child: Column(
+      future: DailyReadingModule.getDailyReadingSummary(date, bibleVersionIndex),
+      builder: (context, snapshot) {
+        if (ConnectionState.active != null && !snapshot.hasData) {
+          return Center(
+            child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
                 CircularProgressIndicator(),
                 SizedBox(height: 40),
                 Text('Loading Daily Reading ...'),
               ],
-            ));
-          }
-
-          if (ConnectionState.done != null && snapshot.hasError) {
-            return Center(child: Text(snapshot.error));
-          }
-
-          if (ConnectionState.done != null && snapshot.data.length == 0) {
-            return Row(children: <Widget>[
-              Expanded(
-                  child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: AppTheme.redText.withOpacity(0.2),
-                        borderRadius: AppTheme.borderRadius,
-                      ),
-                      child: Column(children: <Widget>[
-                        Text('Unable to load item for',
-                            textAlign: TextAlign.center, style: AppTheme.subtitle1),
-                        SizedBox(height: 10),
-                        Text(DateHelper.formatDate(date), style: AppTheme.headline6),
-                      ])))
-            ]);
-          }
-
-          return ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              return _buildItemBox(
-                  context,
-                  new AppColorTheme(
-                      darkColor: AppTheme.colorSet2[index]['darkColor'],
-                      lightColor: AppTheme.colorSet2[index]['lightColor']),
-                  snapshot.data,
-                  index);
-            },
+            ),
           );
-        });
+        }
+
+        if (ConnectionState.done != null && snapshot.hasError) {
+          return Center(child: Text(snapshot.error));
+        }
+
+        if (ConnectionState.done != null && snapshot.data.length == 0) {
+          return Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppTheme.redText.withOpacity(0.2),
+                    borderRadius: AppTheme.borderRadius,
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'Unable to load item for',
+                        textAlign: TextAlign.center,
+                        style: AppTheme.subtitle1,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        DateHelper.formatDate(date),
+                        style: AppTheme.headline6,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          );
+        }
+
+        return ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: snapshot.data.length,
+          itemBuilder: (context, index) {
+            return _buildItemBox(
+              context,
+              new AppColorTheme(
+                darkColor: AppTheme.colorSet2[index]['darkColor'],
+                lightColor: AppTheme.colorSet2[index]['lightColor'],
+              ),
+              snapshot.data,
+              index,
+            );
+          },
+        );
+      },
+    );
   }
 
   // Widget _buildItem(BuildContext context, AppColorTheme colorTheme, DailyReading item) {
@@ -160,83 +178,91 @@ class DailyReadingItem extends StatelessWidget {
   //                   ]))));
   // }
 
-  Widget _buildItemBox(
-      BuildContext context, AppColorTheme colorTheme, List<DailyReading> items, int index) {
+  Widget _buildItemBox(BuildContext context, AppColorTheme colorTheme, List<DailyReading> items, int index) {
     return Container(
-        // padding: const EdgeInsets.only(bottom: 12.0),
-        child: InkWell(
-            onTap: () async {
-              /// BibleReading IconButton.onPressed return BibleVersion that will be captured here
-              /// File: bible_reading_bar.dart
-              /// However, after implementing Provider in bible_reading_bar, this never gets called
-              /// anymore. i am wondering why????
-              DailyReadingArguments arguments = new DailyReadingArguments(
-                  index: index, item: items[index], date: date, itemList: items);
-              final result =
-                  await Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
+      // padding: const EdgeInsets.only(bottom: 12.0),
+      child: InkWell(
+        onTap: () async {
+          /// BibleReading IconButton.onPressed return BibleVersion that will be captured here
+          /// File: bible_reading_bar.dart
+          /// However, after implementing Provider in bible_reading_bar, this never gets called
+          /// anymore. i am wondering why????
+          DailyReadingArguments arguments = new DailyReadingArguments(index: index, item: items[index], date: date, itemList: items);
+          final result = await Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
 
-              /// result is not null when user changes bible version
-              if (result != null) {
-                myBible.saveMyBibleVersion(result);
-              }
-            },
-            child: Container(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 15, left: 20, right: 5, bottom: 15),
-                  decoration: BoxDecoration(
-                    color: AppTheme.lightGrey.withOpacity(0.3),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(4.0),
-                      bottomLeft: Radius.circular(4.0),
-                      bottomRight: Radius.circular(4.0),
-                      topRight: Radius.circular(4.0),
-                    ),
-                  ),
-                  child: Row(
+          /// result is not null when user changes bible version
+          if (result != null) {
+            myBible.saveMyBibleVersion(result);
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Container(
+            padding: const EdgeInsets.only(top: 15, left: 20, right: 5, bottom: 15),
+            decoration: BoxDecoration(
+              color: AppTheme.lightGrey.withOpacity(0.3),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(4.0),
+                bottomLeft: Radius.circular(4.0),
+                bottomRight: Radius.circular(4.0),
+                topRight: Radius.circular(4.0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(items[index].shortSummary(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.darkGrey,
-                                    fontSize: 18)),
-                            SizedBox(height: 6),
-                            Text(
-                              items[index].firstVerse(),
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: AppTheme.deactivatedText,
-                                  fontSize: 13),
-                            )
-                          ],
+                      Text(
+                        items[index].shortSummary(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.darkGrey,
+                          fontSize: 18,
                         ),
                       ),
-                      Container(
-                        // padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                        child: IconButton(
-                          padding: const EdgeInsets.all(0),
-                          icon: FaIcon(
-                            FontAwesomeIcons.playCircle,
-                            color: colorTheme.darkColor,
-                          ),
-                          onPressed: () {
-                            DailyReadingArguments arguments = new DailyReadingArguments(
-                                index: index, item: items[index], date: date, itemList: items);
-                            Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
-                          },
-                          splashColor: colorTheme.darkColor,
+                      SizedBox(height: 6),
+                      Text(
+                        items[index].firstVerse(),
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: AppTheme.deactivatedText,
+                          fontSize: 13,
                         ),
                       )
                     ],
                   ),
-                ))));
+                ),
+                Container(
+                  // padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                  child: IconButton(
+                    padding: const EdgeInsets.all(0),
+                    icon: FaIcon(
+                      FontAwesomeIcons.playCircle,
+                      color: colorTheme.darkColor,
+                    ),
+                    onPressed: () {
+                      DailyReadingArguments arguments = new DailyReadingArguments(
+                        index: index,
+                        item: items[index],
+                        date: date,
+                        itemList: items,
+                      );
+                      Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
+                    },
+                    splashColor: colorTheme.darkColor,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -124,8 +124,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     // const NotificationDetails platformChannelSpecifics =
     //     NotificationDetails(android: androidPlatformChannelSpecifics);
     return Container(
-        padding: const EdgeInsets.only(top: 16, bottom: 0),
-        child: Column(children: <Widget>[
+      padding: const EdgeInsets.only(top: 16, bottom: 0),
+      child: Column(
+        children: <Widget>[
           DateSelector(date: date, setDate: setDate),
           DailyReadingItem(date: date, myBible: myBible),
           SizedBox(height: 20),
@@ -160,7 +161,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           //   child: Text('Scheduled Notification after 10s'),
           // ))
           // Rhema(),
-        ]));
+        ],
+      ),
+    );
   }
 
 // Future<String> _downloadAndSaveFile(String url, String fileName) async {

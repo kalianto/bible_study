@@ -13,15 +13,16 @@ class BibleAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: MyBibleModule.getBookChapter(myBible),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (ConnectionState.active != null && !snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return buildAppBarTitle(context, snapshot.data);
-        });
+      future: MyBibleModule.getBookChapter(myBible),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (ConnectionState.active != null && !snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return buildAppBarTitle(context, snapshot.data);
+      },
+    );
   }
 
   Widget buildAppBarTitle(BuildContext context, data) {
@@ -30,15 +31,18 @@ class BibleAppBarTitle extends StatelessWidget {
         action();
       },
       child: Chip(
-          backgroundColor: AppTheme.blueText.withOpacity(0.8),
-          label: Text(data,
-              style: TextStyle(
-                fontFamily: AppTheme.fontName,
-                fontWeight: FontWeight.w400,
-                fontSize: 18,
-                letterSpacing: 1.2,
-                color: AppTheme.nearlyWhite,
-              ))),
+        backgroundColor: AppTheme.blueText.withOpacity(0.8),
+        label: Text(
+          data,
+          style: TextStyle(
+            fontFamily: AppTheme.fontName,
+            fontWeight: FontWeight.w400,
+            fontSize: 18,
+            letterSpacing: 1.2,
+            color: AppTheme.nearlyWhite,
+          ),
+        ),
+      ),
     );
   }
 }

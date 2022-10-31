@@ -44,130 +44,139 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
       itemBuilder: (context, index) {
         Rhema rhema = data.rhemas[index];
         return InkWell(
-            onTap: () {
-              setSelectedIndex(index);
-            },
-            child: Container(
-                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 0, right: 0),
-                child: Column(children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        bottomLeft: Radius.circular(10.0),
-                        bottomRight: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                      ),
-                      color: selectedIndex == index
-                          ? AppTheme.mandarin
-                          : AppTheme.mandarin.withOpacity(0.1),
+          onTap: () {
+            setSelectedIndex(index);
+          },
+          child: Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 0, right: 0),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
+                      topRight: Radius.circular(10.0),
                     ),
-                    child: Column(children: <Widget>[
+                    color: selectedIndex == index ? AppTheme.mandarin : AppTheme.mandarin.withOpacity(0.1),
+                  ),
+                  child: Column(
+                    children: <Widget>[
                       Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            rhema.bibleVersesHeader,
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.15,
-                              color: AppTheme.nearlyBlack,
-                            ),
-                          )),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          rhema.bibleVersesHeader,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.15,
+                            color: AppTheme.nearlyBlack,
+                          ),
+                        ),
+                      ),
                       Text(rhema.bibleVerses),
                       rhema.rhemaText != ''
                           ? Container(
                               padding: const EdgeInsets.only(top: 20, bottom: 20),
                               child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'RHEMA',
-                                    style: AppTheme.headline7,
-                                  )),
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'RHEMA',
+                                  style: AppTheme.headline7,
+                                ),
+                              ),
                             )
                           : SizedBox(),
                       rhema.rhemaText != ''
-                          ? Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText))
+                          ? Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(rhema.rhemaText),
+                            )
                           : SizedBox(),
-                    ]),
+                    ],
                   ),
-                  selectedIndex == index
-                      ? Container(
-                          child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              child: InkWell(
-                                onTap: () async {
-                                  // showDeleteConfirmation(context).then((answer) {
-                                  //   print(answer);
-                                  //   if (answer) {
-                                  //     RhemaModule.deleteRhema(
-                                  //         snapshot.data[index].rhemas)
-                                  //         .then((_) {
-                                  //       setState(() {
-                                  //         snapshot.data.removeAt(index);
-                                  //       });
-                                  //     });
-                                  //   }
-                                  // });
-                                },
-                                child: Icon(
-                                  Icons.edit,
-                                  color: AppTheme.nearlyBlack,
-                                ),
+                ),
+                selectedIndex == index
+                    ? Container(
+                        child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () async {
+                                // showDeleteConfirmation(context).then((answer) {
+                                //   print(answer);
+                                //   if (answer) {
+                                //     RhemaModule.deleteRhema(
+                                //         snapshot.data[index].rhemas)
+                                //         .then((_) {
+                                //       setState(() {
+                                //         snapshot.data.removeAt(index);
+                                //       });
+                                //     });
+                                //   }
+                                // });
+                              },
+                              child: Icon(
+                                Icons.edit,
+                                color: AppTheme.nearlyBlack,
                               ),
                             ),
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              child: InkWell(
-                                onTap: () async {
-                                  // showDeleteConfirmation(context).then((answer) {
-                                  //   print(answer);
-                                  //   if (answer) {
-                                  //     RhemaModule.deleteRhema(
-                                  //         snapshot.data[index].rhemas)
-                                  //         .then((_) {
-                                  //       setState(() {
-                                  //         snapshot.data.removeAt(index);
-                                  //       });
-                                  //     });
-                                  //   }
-                                  // });
-                                },
-                                child: Icon(
-                                  Icons.copy,
-                                  color: AppTheme.nearlyBlack,
-                                ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () async {
+                                // showDeleteConfirmation(context).then((answer) {
+                                //   print(answer);
+                                //   if (answer) {
+                                //     RhemaModule.deleteRhema(
+                                //         snapshot.data[index].rhemas)
+                                //         .then((_) {
+                                //       setState(() {
+                                //         snapshot.data.removeAt(index);
+                                //       });
+                                //     });
+                                //   }
+                                // });
+                              },
+                              child: Icon(
+                                Icons.copy,
+                                color: AppTheme.nearlyBlack,
                               ),
                             ),
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              child: InkWell(
-                                onTap: () async {
-                                  showDeleteConfirmation(context).then((answer) {
-                                    print(answer);
-                                    if (answer) {
-                                      RhemaModule.deleteRhemaItem(rhema).then((_) {
-                                        setState(() {
-                                          data.rhemas.removeAt(index);
-                                        });
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () async {
+                                showDeleteConfirmation(context).then((answer) {
+                                  print(answer);
+                                  if (answer) {
+                                    RhemaModule.deleteRhemaItem(rhema).then((_) {
+                                      setState(() {
+                                        data.rhemas.removeAt(index);
                                       });
-                                    }
-                                  });
-                                },
-                                child: Icon(
-                                  Icons.delete,
-                                  color: AppTheme.redText,
-                                ),
+                                    });
+                                  }
+                                });
+                              },
+                              child: Icon(
+                                Icons.delete,
+                                color: AppTheme.redText,
                               ),
                             ),
-                          ],
-                        ))
-                      : Container(),
-                ])));
+                          ),
+                        ],
+                      ))
+                    : Container(),
+              ],
+            ),
+          ),
+        );
       },
     );
   }
@@ -234,32 +243,46 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
 
   Future<bool> showDeleteConfirmation(BuildContext context) async {
     return showDialog<bool>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return Center(
-              child: AlertDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
             title: Text('Delete Rhema'),
             content: Text('Are you sure you want to delete this rhema?'),
             actions: <Widget>[
               TextButton(
-                  onPressed: () async {
-                    Navigator.of(context).pop(true);
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: AppTheme.darkGreen,
+                onPressed: () async {
+                  Navigator.of(context).pop(true);
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: AppTheme.darkGreen,
+                ),
+                child: Text(
+                  'Yes',
+                  style: TextStyle(
+                    color: AppTheme.white,
                   ),
-                  child: Text('Yes', style: TextStyle(color: AppTheme.white))),
+                ),
+              ),
               TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: AppTheme.redText,
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: AppTheme.redText,
+                ),
+                child: Text(
+                  'No',
+                  style: TextStyle(
+                    color: AppTheme.white,
                   ),
-                  child: Text('No', style: TextStyle(color: AppTheme.white)))
+                ),
+              )
             ],
-          ));
-        });
+          ),
+        );
+      },
+    );
   }
 }

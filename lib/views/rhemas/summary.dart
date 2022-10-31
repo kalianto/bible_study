@@ -39,28 +39,36 @@ class _RhemaSummaryPageState extends State<RhemaSummaryPage> {
             },
             body: Container(
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 0),
-              child: Column(children: <Widget>[
-                Text(rhema.bibleVerses),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: AppTheme.boxShadowless,
-                  child: Column(children: <Widget>[
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'RHEMA',
-                          style: AppTheme.headline7,
-                        )),
-                    SizedBox(
-                      height: 10,
+              child: Column(
+                children: <Widget>[
+                  Text(rhema.bibleVerses),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: AppTheme.boxShadowless,
+                    child: Column(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'RHEMA',
+                            style: AppTheme.headline7,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(rhema.rhemaText),
+                        ),
+                      ],
                     ),
-                    Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText)),
-                  ]),
-                )
-              ]),
+                  )
+                ],
+              ),
             ),
             isExpanded: rhema.isExpanded,
           );

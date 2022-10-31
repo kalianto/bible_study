@@ -6,10 +6,10 @@ import '../../app_theme.dart';
 import '../../models/daily_reading.dart';
 import '../../modules/daily_reading.dart' as DailyReadingModule;
 import '../../providers/my_bible.dart';
-import 'bible_version_dialog.dart';
+import '../bible/bible_version_dialog.dart';
 
-class BibleReadingBar extends StatelessWidget {
-  BibleReadingBar({Key key, this.item}) : super(key: key);
+class DailyReadingAppBar extends StatelessWidget {
+  DailyReadingAppBar({Key key, this.item}) : super(key: key);
 
   final DailyReading item;
 
@@ -37,8 +37,7 @@ class BibleReadingBar extends StatelessWidget {
                     icon: const Icon(FontAwesomeIcons.arrowLeft),
                     iconSize: 22,
                     // onPressed: () => Navigator.pop(context, myBible.version),
-                    onPressed: () =>
-                        Navigator.of(context).pop(), // Navigator.popAndPushNamed(context, '/home',
+                    onPressed: () => Navigator.of(context).pop(), // Navigator.popAndPushNamed(context, '/home',
                     // arguments: DateHelper.getDateFromDateId(item.dateId)),
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                     color: AppTheme.darkGrey,
@@ -46,13 +45,16 @@ class BibleReadingBar extends StatelessWidget {
                 }),
                 Consumer<MyBibleProvider>(builder: (context, myBible, child) {
                   return Expanded(
-                      child:
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-                    _buildTitle(item, myBible.version),
-                    Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-                      return BibleVersionDialog(myBible: myBible);
-                    }),
-                  ]));
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        _buildTitle(item, myBible.version),
+                        Consumer<MyBibleProvider>(builder: (context, myBible, child) {
+                          return BibleVersionDialog(myBible: myBible);
+                        }),
+                      ],
+                    ),
+                  );
                 }),
               ],
             ),
@@ -73,15 +75,17 @@ class BibleReadingBar extends StatelessWidget {
           // padding: const EdgeInsets.all(8.0),
           child: FittedBox(
             fit: BoxFit.fitWidth,
-            child: Text(snapshot.data.shortSummary(),
-                //textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontFamily: AppTheme.fontName,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20,
-                  letterSpacing: 1.2,
-                  color: AppTheme.darkGrey,
-                )),
+            child: Text(
+              snapshot.data.shortSummary(),
+              //textAlign: TextAlign.right,
+              style: TextStyle(
+                fontFamily: AppTheme.fontName,
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
+                letterSpacing: 1.2,
+                color: AppTheme.darkGrey,
+              ),
+            ),
           ),
         );
       },

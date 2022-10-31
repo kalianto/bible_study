@@ -46,13 +46,12 @@ class _BiblePageState extends State<BiblePage> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<BibleVerseListProvider>(
-            create: (context) => BibleVerseListProvider()),
+        ChangeNotifierProvider<BibleVerseListProvider>(create: (context) => BibleVerseListProvider()),
       ],
       child: SafeArea(
-          child: Scaffold(
-        key: _scaffoldKey,
-        body: GestureDetector(
+        child: Scaffold(
+          key: _scaffoldKey,
+          body: GestureDetector(
             onHorizontalDragEnd: (details) {
               if (details.primaryVelocity > 0) {
                 goToPreviousChaper();
@@ -66,15 +65,18 @@ class _BiblePageState extends State<BiblePage> {
                 BibleAppBar(action: _openDrawer),
                 BibleContent(),
               ],
-            )),
-        drawer: Drawer(
-          child: BibleSelectorDrawer(),
+            ),
+          ),
+          drawer: Drawer(
+            child: BibleSelectorDrawer(),
+          ),
+          bottomNavigationBar: Consumer<BibleVerseListProvider>(
+            builder: (context, bibleVerseList, child) {
+              return new BibleBottomBar(bibleVerseList: bibleVerseList, date: DateTime.now());
+            },
+          ),
         ),
-        bottomNavigationBar:
-            Consumer<BibleVerseListProvider>(builder: (context, bibleVerseList, child) {
-          return new BibleBottomBar(bibleVerseList: bibleVerseList, date: DateTime.now());
-        }),
-      )),
+      ),
     );
   }
 }

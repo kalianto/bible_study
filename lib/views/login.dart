@@ -98,9 +98,10 @@ class _LoginState extends State<LoginPage> {
                     ),
                   ),
                   style: TextButton.styleFrom(
-                      primary: AppTheme.darkGreen,
-                      backgroundColor: AppTheme.darkGreen,
-                      padding: const EdgeInsets.symmetric(horizontal: 20)),
+                    primary: AppTheme.darkGreen,
+                    backgroundColor: AppTheme.darkGreen,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                  ),
                   onPressed: () async {
                     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
                     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -158,17 +159,14 @@ class _LoginState extends State<LoginPage> {
                     } else {
                       final prefs = await SharedPreferences.getInstance();
                       final key = AppConfig.profile;
-                      Profile profile = (prefs.getString(key) != null)
-                          ? Profile.fromJson(jsonDecode(prefs.getString(key)))
-                          : new Profile();
+                      Profile profile = (prefs.getString(key) != null) ? Profile.fromJson(jsonDecode(prefs.getString(key))) : new Profile();
                       final _isLoggedIn = AppConfig.isLoggedIn;
                       // bool isLoggedIn = prefs.getBool(_isLoggedIn) ?? false;
                       print(profile);
 
                       if (profile.email == null) {
                         setState(() {
-                          errorMessage =
-                              'There is no profile found. Please register to use this app.';
+                          errorMessage = 'There is no profile found. Please register to use this app.';
                         });
                       } else if (profile.email == _usernameController.text) {
                         prefs.setBool(_isLoggedIn, true);
@@ -184,28 +182,31 @@ class _LoginState extends State<LoginPage> {
                 SizedBox(height: 10.0),
                 Divider(),
                 TextButton(
-                    child: Text(
-                      'Don\'t have an account?',
-                      style: TextStyle(
-                        color: AppTheme.darkGreen,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  child: Text(
+                    'Don\'t have an account?',
+                    style: TextStyle(
+                      color: AppTheme.darkGreen,
+                      fontWeight: FontWeight.w600,
                     ),
-                    onPressed: () {
-                      Navigator.popAndPushNamed(context, '/register');
-                    },
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.all(0),
-                    )),
+                  ),
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, '/register');
+                  },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.all(0),
+                  ),
+                ),
               ],
             ),
             Container(
               padding: const EdgeInsets.only(top: 20),
               alignment: Alignment.center,
-              child: Text(errorMessage ?? '',
-                  style: TextStyle(
-                    color: AppTheme.redText,
-                  )),
+              child: Text(
+                errorMessage ?? '',
+                style: TextStyle(
+                  color: AppTheme.redText,
+                ),
+              ),
             ),
             SizedBox(height: 120.0),
           ],
