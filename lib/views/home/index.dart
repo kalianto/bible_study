@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
   Home({Key key, this.title, this.startDate}) : super(key: key);
 
   final String title;
-  DateTime startDate;
+  final DateTime startDate;
 
   @override
   _HomeState createState() => _HomeState();

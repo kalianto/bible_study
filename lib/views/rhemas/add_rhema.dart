@@ -4,7 +4,7 @@ import '../../app_theme.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 import '../../models/add_rhema_arguments.dart';
 import '../../modules/rhema.dart';
-import '../../views/common/simpleDialog.dart';
+// import '../../views/common/simpleDialog.dart';
 
 class AddRhemaPage extends StatefulWidget {
   AddRhemaPage({Key key, this.arguments}) : super(key: key);

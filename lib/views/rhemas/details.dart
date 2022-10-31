@@ -172,65 +172,65 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
     );
   }
 
-  Widget _buildRhemaSummary(BuildContext context, RhemaSummary data, int idx) {
-    if (data.rhemas.length > 0) {
-      return ExpansionPanelList(
-        expansionCallback: (int index, bool isExpanded) {
-          setState(() {
-            data.rhemas[index].isExpanded = !isExpanded;
-          });
-        },
-        children: data.rhemas.map<ExpansionPanel>((rhema) {
-          return ExpansionPanel(
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return ListTile(
-                title: Text(rhema.bibleVersesHeader,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.15,
-                      color: AppTheme.nearlyBlack,
-                    )),
-              );
-            },
-            body: Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 0),
-              child: Column(children: <Widget>[
-                Text(rhema.bibleVerses),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: AppTheme.borderRadius,
-                    color: AppTheme.mandarin.withOpacity(0.5),
-                  ),
-                  child: rhema.rhemaText != ''
-                      ? Column(children: <Widget>[
-                          Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'RHEMA',
-                                style: AppTheme.headline7,
-                              )),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText)),
-                        ])
-                      : Container(),
-                )
-              ]),
-            ),
-            isExpanded: rhema.isExpanded,
-          );
-        }).toList(),
-      );
-    } else {
-      return Container();
-    }
-  }
+  // Widget _buildRhemaSummary(BuildContext context, RhemaSummary data, int idx) {
+  //   if (data.rhemas.length > 0) {
+  //     return ExpansionPanelList(
+  //       expansionCallback: (int index, bool isExpanded) {
+  //         setState(() {
+  //           data.rhemas[index].isExpanded = !isExpanded;
+  //         });
+  //       },
+  //       children: data.rhemas.map<ExpansionPanel>((rhema) {
+  //         return ExpansionPanel(
+  //           headerBuilder: (BuildContext context, bool isExpanded) {
+  //             return ListTile(
+  //               title: Text(rhema.bibleVersesHeader,
+  //                   style: TextStyle(
+  //                     fontSize: 16.0,
+  //                     fontWeight: FontWeight.w600,
+  //                     letterSpacing: 0.15,
+  //                     color: AppTheme.nearlyBlack,
+  //                   )),
+  //             );
+  //           },
+  //           body: Container(
+  //             padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 0),
+  //             child: Column(children: <Widget>[
+  //               Text(rhema.bibleVerses),
+  //               SizedBox(
+  //                 height: 10,
+  //               ),
+  //               Container(
+  //                 padding: const EdgeInsets.all(10),
+  //                 decoration: BoxDecoration(
+  //                   borderRadius: AppTheme.borderRadius,
+  //                   color: AppTheme.mandarin.withOpacity(0.5),
+  //                 ),
+  //                 child: rhema.rhemaText != ''
+  //                     ? Column(children: <Widget>[
+  //                         Align(
+  //                             alignment: Alignment.centerLeft,
+  //                             child: Text(
+  //                               'RHEMA',
+  //                               style: AppTheme.headline7,
+  //                             )),
+  //                         SizedBox(
+  //                           height: 10,
+  //                         ),
+  //                         Align(alignment: Alignment.centerLeft, child: Text(rhema.rhemaText)),
+  //                       ])
+  //                     : Container(),
+  //               )
+  //             ]),
+  //           ),
+  //           isExpanded: rhema.isExpanded,
+  //         );
+  //       }).toList(),
+  //     );
+  //   } else {
+  //     return Container();
+  //   }
+  // }
 
   Future<bool> showDeleteConfirmation(BuildContext context) async {
     return showDialog<bool>(

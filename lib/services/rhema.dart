@@ -88,7 +88,7 @@ class RhemaService {
   }
 
   Future<List<Rhema>> getRhemaSummary(int limit) async {
-    List<RhemaSummary> summaryList = [];
+    // List<RhemaSummary> summaryList = [];
     List<Rhema> rhemaList = await getAllRhemaList(limit: limit);
     List<Rhema> rhemaVerseList = await getAllRhemaVerseList(rhemaList);
     return rhemaVerseList;
@@ -122,7 +122,7 @@ class RhemaService {
     var dbClient = await dbService.db;
     await dbClient.transaction((txn) async {
       rhema.id = await txn.insert('rhema', rhema.toMap());
-      List<RhemaVerse> rhemaVerses = [];
+      // List<RhemaVerse> rhemaVerses = [];
       final batch = txn.batch();
       for (var x = 0; x < bibleViewList.length; x++) {
         RhemaVerse rhemaVerse = new RhemaVerse(
