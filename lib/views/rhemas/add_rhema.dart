@@ -4,7 +4,7 @@ import '../../app_theme.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 import '../../models/add_rhema_arguments.dart';
 import '../../modules/rhema.dart';
-import '../../views/common/simpleDialog.dart';
+// import '../../views/common/simpleDialog.dart';
 
 class AddRhemaPage extends StatefulWidget {
   AddRhemaPage({Key key, this.arguments}) : super(key: key);
@@ -142,11 +142,12 @@ class _AddRhemaPageState extends State<AddRhemaPage> {
             alignment: Alignment.centerLeft,
             child: ElevatedButton(
               onPressed: () {
-                showSimpleDialog(context, 'Adding Rhema', 'Please wait....');
+                // showSimpleDialog(context, 'Adding Rhema', 'Please wait....');
 
                 addRhema(date, _rhemaController.text, widget.arguments.rhemaVerses).then((rhema) {
                   if (rhema.id != null) {
-                    Navigator.of(context).pop();
+                    SnackBar snackBar = SnackBar(content: Text('Rhema added.'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                   Navigator.of(context).pop();
                 });

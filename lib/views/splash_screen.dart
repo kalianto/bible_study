@@ -119,17 +119,17 @@ class _SplashScreenState extends State<SplashScreen> {
             // ),
             ElevatedButton(
               onPressed: () {
-                _loadProfile();
-                // print(profile);
-                if (profile.email == null) {
-                  Navigator.pushNamed(context, '/register');
-                } else if (!isLoggedIn) {
-                  Navigator.pushNamed(context, '/login');
-                  // } else if (profile.email == null) {
-                  //   Navigator.pushNamed(context, '/register');
-                } else {
+                // _loadProfile();
+                // // print(profile);
+                // if (profile.email == null) {
+                //   Navigator.pushNamed(context, '/register');
+                // } else if (!isLoggedIn) {
+                //   Navigator.pushNamed(context, '/login');
+                //   // } else if (profile.email == null) {
+                //   //   Navigator.pushNamed(context, '/register');
+                // } else {
                   Navigator.pushNamed(context, '/home');
-                }
+                // }
               },
               child: Padding(
                 padding: const EdgeInsets.all(20),

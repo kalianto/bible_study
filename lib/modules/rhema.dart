@@ -8,8 +8,8 @@ import '../services/rhema.dart';
 /// getTodayRhema
 Future<List<RhemaSummary>> getTodayRhema() async {
   DateTime date = new DateTime.now();
-  DateTime yesterday = date.subtract(const Duration(days: 10));
-  var todayDate = DateHelper.formatDate(yesterday, 'y-MM-dd');
+  // DateTime yesterday = date.subtract(const Duration(days: 10));
+  // var todayDate = DateHelper.formatDate(yesterday, 'y-MM-dd');
   List<RhemaSummary> rhemaList = await getRhemaByDate(date);
   return rhemaList;
 }

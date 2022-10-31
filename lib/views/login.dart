@@ -162,7 +162,7 @@ class _LoginState extends State<LoginPage> {
                           ? Profile.fromJson(jsonDecode(prefs.getString(key)))
                           : new Profile();
                       final _isLoggedIn = AppConfig.isLoggedIn;
-                      bool isLoggedIn = prefs.getBool(_isLoggedIn) ?? false;
+                      // bool isLoggedIn = prefs.getBool(_isLoggedIn) ?? false;
                       print(profile);
 
                       if (profile.email == null) {

@@ -229,7 +229,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
                   prevBookChapter = staticBookChapterList.elementAt((prevChapter - 1));
                 }
               }
-              int nextChapter = chapterIndex + 1;
+              // int nextChapter = chapterIndex + 1;
               // myBible.updateBookChapterText(selectedBookChapter.bookName + ' ' + (index + 1).toString());
               Navigator.of(context).pop();
             },
