@@ -31,13 +31,33 @@ class BibleVersionDialog extends StatelessWidget {
       onTap: () {
         _showBibleVersionDialog(context, data, myBible);
       },
-      child: Chip(
-        backgroundColor: AppTheme.blueText.withOpacity(0.8),
-        label: Text(
+      child: Container(
+        padding: const EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+          left: 10,
+          right: 10,
+        ),
+        decoration: BoxDecoration(
+          color: AppTheme.darkGrey.withOpacity(0.5),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(0.0),
+            bottomLeft: Radius.circular(0.0),
+            bottomRight: Radius.circular(15.0),
+            topRight: Radius.circular(15.0),
+          ),
+          // border: Border.all(
+          //   color: AppTheme.lightGrey,
+          // ),
+        ),
+        child: Text(
           data.firstWhere((item) => item.id == myBible.version)?.abbreviation,
           style: TextStyle(
+            fontFamily: AppTheme.fontName,
+            fontWeight: FontWeight.w400,
+            fontSize: 16,
+            // letterSpacing: 1.2,
             color: AppTheme.nearlyWhite,
-            fontWeight: FontWeight.w600,
           ),
         ),
       ),

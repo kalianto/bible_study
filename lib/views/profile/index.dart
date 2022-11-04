@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,7 +32,8 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
+    animationController =
+        AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
     _editing = false;
     _loadProfile();
   }
@@ -45,15 +47,18 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   void _loadProfile() async {
     final prefs = await SharedPreferences.getInstance();
     final key = AppConfig.profile;
-    Profile profile = (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
-    _setProfile(profile);
+    final _profile = prefs.getString(key);
+    if (_profile != null) {
+      Profile profile = (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
+      _setProfile(profile);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        //body: buildColumn(context),
+        // body: buildColumn(context),
         body: buildStack(context),
       ),
     );
@@ -66,7 +71,11 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
           height: 205,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(topLeft: Radius.zero, topRight: Radius.zero, bottomLeft: Radius.elliptical(650, 350), bottomRight: Radius.zero),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.zero,
+                topRight: Radius.zero,
+                bottomLeft: Radius.elliptical(650, 350),
+                bottomRight: Radius.zero),
             color: AppTheme.darkGreen,
           ),
         ),
@@ -365,7 +374,9 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('Full Name', style: TextStyle(color: AppTheme.darkGreen)),
-                      Text('${_firstNameController.text} ${_lastNameController.text}', overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w400)),
+                      Text('${_firstNameController.text} ${_lastNameController.text}',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontWeight: FontWeight.w400)),
                     ],
                   ),
                 )
@@ -425,7 +436,8 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('Mobile Number', style: TextStyle(color: AppTheme.darkGreen)),
-                      Text(_mobileController.text ?? '', style: TextStyle(fontWeight: FontWeight.w400)),
+                      Text(_mobileController.text ?? '',
+                          style: TextStyle(fontWeight: FontWeight.w400)),
                     ],
                   ),
                 )
@@ -469,7 +481,9 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(_addressController.text, style: TextStyle(color: AppTheme.darkGreen)),
-                      Text('${_suburbController.text}${_stateController.text == '' ? "" : ","}  ${_stateController.text} ${_postcodeController.text}', style: TextStyle(fontWeight: FontWeight.w400)),
+                      Text(
+                          '${_suburbController.text}${_stateController.text == '' ? "" : ","}  ${_stateController.text} ${_postcodeController.text}',
+                          style: TextStyle(fontWeight: FontWeight.w400)),
                     ],
                   ),
                 )

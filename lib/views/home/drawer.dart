@@ -26,11 +26,16 @@ class HomeDrawer extends StatelessWidget {
   HomeDrawer({Key key}) : super(key: key);
 
   final List<DrawerList> drawerList = <DrawerList>[
-    DrawerList(Icon(FontAwesomeIcons.userCircle, color: AppTheme.lightPurple), 'Profile', 'Edit personal details', '/profile'),
-    DrawerList(Icon(FontAwesomeIcons.bible, color: AppTheme.darkGrey), 'Bible', 'Bible in different languages', '/bible'),
-    DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL', 'COOL group details', '/cool-group'),
-    DrawerList(Icon(FontAwesomeIcons.comments, color: AppTheme.blueText), 'Feedback', 'Send us feedback or questions', '/feedback'),
-    DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.mandarin), 'Settings', 'Personal settings, App settings', '/settings'),
+    DrawerList(Icon(FontAwesomeIcons.userCircle, color: AppTheme.lightPurple), 'Profile',
+        'Edit personal details', '/profile'),
+    DrawerList(Icon(FontAwesomeIcons.bible, color: AppTheme.darkGrey), 'Bible',
+        'Bible in different languages', '/bible'),
+    DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL',
+        'COOL group details', '/cool-group'),
+    DrawerList(Icon(FontAwesomeIcons.comments, color: AppTheme.blueText), 'Feedback',
+        'Send us feedback or questions', '/feedback'),
+    DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.mandarin), 'Settings',
+        'Personal settings, App settings', '/settings'),
     // DrawerList(Icon(FontAwesomeIcons.fileAlt, color: AppTheme.blueText), 'Sample Pages',
     //     'Other pages template', '/pages'),
   ];
@@ -43,15 +48,100 @@ class HomeDrawer extends StatelessWidget {
 
   Widget _buildDrawer(BuildContext context) {
     return Drawer(
-      child: Container(
-        color: AppTheme.darkGreen,
-        child: Stack(
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
-          //mainAxisAlignment: MainAxisAlignment.start,
+      child: checkProfile(context),
+    );
+  }
+
+  Widget checkProfile(BuildContext context) {
+    return false ? buildProfilePage(context) : buildSignUpPage(context);
+  }
+
+  Widget buildProfilePage(BuildContext context) {
+    return Container(
+      color: AppTheme.darkGreen,
+      child: Stack(
+        children: <Widget>[
+          buildProfileMenu(context),
+          buildProfilePicture(context),
+        ],
+      ),
+    );
+  }
+
+  Widget buildSignUpPage(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            buildProfileMenu(context),
-            buildProfilePicture(context),
-            // buildSignOutMenu(context),
+            Text(
+              'GEMA',
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                color: AppTheme.nearlyBlack,
+                fontSize: 40.0,
+                letterSpacing: 14.0,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              'Gerakan Membaca Alkitab Setahun',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                fontSize: 14.0,
+                color: AppTheme.nearlyBlack,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 30),
+            FloatingActionButton.extended(
+              label: Text(
+                'Sign up with Email',
+                style: TextStyle(
+                  color: AppTheme.nearlyBlack,
+                ),
+              ),
+              backgroundColor: AppTheme.white,
+              icon: Icon(
+                FontAwesomeIcons.envelope,
+                size: 20.0,
+                color: AppTheme.nearlyBlack,
+              ),
+              onPressed: () {},
+            ),
+            SizedBox(height: 20),
+            FloatingActionButton.extended(
+              label: Text(
+                'Sign up with Google',
+                style: TextStyle(
+                  color: AppTheme.nearlyWhite,
+                ),
+              ),
+              // backgroundColor: AppTheme.white,
+              icon: Icon(
+                FontAwesomeIcons.google,
+                size: 20.0,
+                color: AppTheme.nearlyWhite,
+              ),
+              onPressed: () {},
+            ),
+            SizedBox(height: 20),
+            FloatingActionButton.extended(
+              label: Text(
+                'Sign up with Apple',
+                style: TextStyle(
+                  color: AppTheme.nearlyBlack,
+                ),
+              ),
+              backgroundColor: AppTheme.lightGrey,
+              icon: Icon(
+                FontAwesomeIcons.apple,
+                size: 20.0,
+                color: AppTheme.nearlyBlack,
+              ),
+              onPressed: () {},
+            ),
           ],
         ),
       ),
@@ -61,22 +151,25 @@ class HomeDrawer extends StatelessWidget {
   Future<Profile> _loadProfile() async {
     final prefs = await SharedPreferences.getInstance();
     final key = '_profile';
-    return (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
+    final _profile = prefs.getString(key);
+    return _profile != null ? Profile.fromJson(jsonDecode(_profile)) : null;
   }
 
   Widget buildProfilePicture(BuildContext context) {
     return FutureBuilder(
       future: _loadProfile(),
       builder: (context, snapshot) {
-        if (ConnectionState.active != null && !snapshot.hasData) {
-          return Center(
-              child: Column(children: <Widget>[
-            SizedBox(height: 20),
-            CircularProgressIndicator(),
-            SizedBox(height: 40),
-            Text('Loading ...'),
-          ]));
-        }
+        String fullName = !snapshot.hasData ? 'No Name' : snapshot.data.fullName();
+        String profileIcon = !snapshot.hasData ? 'userImage.png' : snapshot.data.profileIcon;
+        // if (ConnectionState.active != null && !snapshot.hasData) {
+        //   return Center(
+        //       child: Column(children: <Widget>[
+        //     SizedBox(height: 20),
+        //     CircularProgressIndicator(),
+        //     SizedBox(height: 40),
+        //     Text('Loading ...'),
+        //   ]));
+        // }
         return Container(
           width: double.infinity,
           height: 200,
@@ -90,25 +183,25 @@ class HomeDrawer extends StatelessWidget {
                 Container(
                   height: 80,
                   width: 80,
-                  // decoration: BoxDecoration(
-                  //   shape: BoxShape.circle,
-                  //   boxShadow: <BoxShadow>[
-                  //     BoxShadow(
-                  //       color: AppTheme.grey.withOpacity(0.6),
-                  //       offset: const Offset(2.0, 4.0),
-                  //       blurRadius: 8,
-                  //     ),
-                  //   ],
-                  // ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: AppTheme.grey.withOpacity(0.6),
+                        offset: const Offset(2.0, 4.0),
+                        blurRadius: 8,
+                      ),
+                    ],
+                  ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(60.0)),
-                    child: Image.asset('assets/images/${snapshot.data.profileIcon}'),
+                    child: Image.asset('assets/images/' + profileIcon),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8, left: 4),
                   child: Text(
-                    snapshot.data.fullName(),
+                    fullName,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -146,7 +239,12 @@ class HomeDrawer extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     leading: drawerList[index].icon,
-                    title: Text(drawerList[index].title, style: TextStyle(fontSize: 16, color: AppTheme.grey, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+                    title: Text(drawerList[index].title,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: AppTheme.grey,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.5)),
                     onTap: () {
                       Navigator.of(context).popAndPushNamed(drawerList[index].link);
                     },

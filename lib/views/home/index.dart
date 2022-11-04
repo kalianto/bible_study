@@ -81,22 +81,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-      return SafeArea(
-        child: Scaffold(
-          key: _scaffoldKey,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(60),
-            child: HomeAppBar(date: date, myBible: myBible),
-          ),
-          body: buildHomeContent(context, myBible),
-          drawer: HomeDrawer(),
-          bottomNavigationBar: HomeBottomNavigationBar(),
-          // floatingActionButton: const FloatingActionButton(onPressed: null),
-          // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+    MyBibleProvider myBible = Provider.of<MyBibleProvider>(context);
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: HomeAppBar(date: date, myBible: myBible),
         ),
-      );
-    });
+        body: buildHomeContent(context, myBible),
+        drawer: HomeDrawer(),
+        bottomNavigationBar: HomeBottomNavigationBar(),
+        // floatingActionButton: const FloatingActionButton(onPressed: null),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      ),
+    );
   }
 
   Widget buildHomeContent(BuildContext context, MyBibleProvider myBible) {

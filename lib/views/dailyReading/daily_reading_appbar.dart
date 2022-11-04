@@ -15,6 +15,7 @@ class DailyReadingAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MyBibleProvider myBible = Provider.of<MyBibleProvider>(context);
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.darkGrey.withOpacity(0.4),
@@ -32,8 +33,7 @@ class DailyReadingAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-                  return IconButton(
+                  IconButton(
                     icon: const Icon(FontAwesomeIcons.arrowLeft),
                     iconSize: 22,
                     // onPressed: () => Navigator.pop(context, myBible.version),
@@ -41,21 +41,17 @@ class DailyReadingAppBar extends StatelessWidget {
                     // arguments: DateHelper.getDateFromDateId(item.dateId)),
                     tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
                     color: AppTheme.darkGrey,
-                  );
-                }),
-                Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-                  return Expanded(
+                  ),
+                  Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         _buildTitle(item, myBible.version),
-                        Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-                          return BibleVersionDialog(myBible: myBible);
-                        }),
+                        SizedBox(width: 1),
+                        BibleVersionDialog(myBible: myBible),
                       ],
                     ),
-                  );
-                }),
+                  ),
               ],
             ),
           )
@@ -75,15 +71,40 @@ class DailyReadingAppBar extends StatelessWidget {
           // padding: const EdgeInsets.all(8.0),
           child: FittedBox(
             fit: BoxFit.fitWidth,
-            child: Text(
-              snapshot.data.shortSummary(),
-              //textAlign: TextAlign.right,
-              style: TextStyle(
-                fontFamily: AppTheme.fontName,
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-                letterSpacing: 1.2,
-                color: AppTheme.darkGrey,
+            child: InkWell(
+              onTap: () {
+                print(item);
+              },
+              child: Container(
+                padding: const EdgeInsets.only(
+                  top: 5,
+                  bottom: 5,
+                  left: 15,
+                  right: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.darkGrey.withOpacity(0.5),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    bottomLeft: Radius.circular(15.0),
+                    bottomRight: Radius.circular(0.0),
+                    topRight: Radius.circular(0.0),
+                  ),
+                  // border: Border.all(
+                  //   color: AppTheme.lightGrey,
+                  // ),
+                ),
+                child: Text(
+                  snapshot.data.shortSummary(),
+                  //textAlign: TextAlign.right,
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontName,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    // letterSpacing: 1.2,
+                    color: AppTheme.nearlyWhite,
+                  ),
+                ),
               ),
             ),
           ),

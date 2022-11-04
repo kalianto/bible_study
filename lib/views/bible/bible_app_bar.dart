@@ -41,14 +41,17 @@ class BibleAppBar extends StatelessWidget {
                 ),
                 Expanded(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Flexible(
                         // padding: const EdgeInsets.all(8.0),
                         child: FittedBox(
                           fit: BoxFit.fitWidth,
-                          child: BibleAppBarTitle(myBible: myBible, action: action),
+                          child: BibleAppBarTitle(myBible: myBible, action: action,),
                         ),
+                      ),
+                      SizedBox(
+                        width: 1,
                       ),
                       BibleVersionDialog(myBible: myBible),
                     ],
