@@ -1,16 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/helper.dart' as Helper;
-import '../app_config.dart';
 // import 'package:firebase_auth/firebase_auth.dart' as Auth;
 // import 'package:http/http.dart' as http;
 
 import '../app_theme.dart';
+import '../helpers/secure_storage.dart';
 import '../models/profile.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,6 +20,7 @@ class _LoginState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   String errorMessage;
+  final secureStorage = SecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -157,19 +156,19 @@ class _LoginState extends State<LoginPage> {
                       // Helper.showAlertDialog(
                       //     'Invalid Email Address', 'Please enter a valid email address.', context);
                     } else {
-                      final prefs = await SharedPreferences.getInstance();
-                      final key = AppConfig.profile;
-                      Profile profile = (prefs.getString(key) != null) ? Profile.fromJson(jsonDecode(prefs.getString(key))) : new Profile();
-                      final _isLoggedIn = AppConfig.isLoggedIn;
-                      // bool isLoggedIn = prefs.getBool(_isLoggedIn) ?? false;
-                      print(profile);
+                      bool isLoggedIn = await secureStorage.getIsLoggedIn();
+                      if (isLoggedIn) {
+                        Navigator.of(context).popAndPushNamed('/home');
+                      }
 
+                      Profile profile = await secureStorage.getProfile();
                       if (profile.email == null) {
                         setState(() {
-                          errorMessage = 'There is no profile found. Please register to use this app.';
+                          errorMessage =
+                              'There is no profile found. Please register to use this app.';
                         });
                       } else if (profile.email == _usernameController.text) {
-                        prefs.setBool(_isLoggedIn, true);
+                        await secureStorage.setIsLoggedIn(true);
                         Navigator.of(context).popAndPushNamed('/home');
                       } else {
                         setState(() {

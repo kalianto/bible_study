@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart' as Auth;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_config.dart';
 import '../../app_theme.dart';
 import '../../helpers/helper.dart' as Helper;
+import '../../helpers/secure_storage.dart';
+import '../../models/profile.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -16,6 +14,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterState extends State<RegisterPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final secureStorage = SecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class _RegisterState extends State<RegisterPage> {
               children: <Widget>[
                 SizedBox(height: 16.0),
                 Text(
-                  'BibleStudy',
+                  AppConfig.appName,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppTheme.blueText,
@@ -37,7 +36,7 @@ class _RegisterState extends State<RegisterPage> {
                   ),
                 ),
                 Text(
-                  'version 1.0',
+                  AppConfig.appDescription,
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                     color: AppTheme.blueText,
@@ -133,10 +132,14 @@ class _RegisterState extends State<RegisterPage> {
                       Helper.showAlertDialog(
                           'Invalid Email Address', 'Please enter a valid email address.', context);
                     } else {
-                      final prefs = await SharedPreferences.getInstance();
-                      final key = AppConfig.profile;
-                      prefs.setString(key, jsonEncode({'email': emailAddress}));
-                      prefs.setBool(AppConfig.isLoggedIn, true);
+                      // final prefs = await SharedPreferences.getInstance();
+                      // final key = AppConfig.profile;
+                      // prefs.setString(key, jsonEncode({'email': emailAddress}));
+                      // prefs.setBool(AppConfig.isLoggedIn, true);
+
+                      /// secure storage implementation
+                      Profile profile = new Profile(email: emailAddress);
+                      await secureStorage.setProfile(profile);
                       Navigator.popAndPushNamed(context, '/home');
                     }
                   },
