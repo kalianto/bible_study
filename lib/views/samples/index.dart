@@ -13,31 +13,37 @@ class _SamplePagesState extends State<SamplePages> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            body: Stack(
-      children: <Widget>[
-        Container(
-          height: 245,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: AppTheme.purple,
-          ),
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            Container(
+              height: 245,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: AppTheme.purple,
+              ),
+            ),
+            ChildPageAppBar(
+              title: 'Sample Pages',
+              textColor: AppTheme.white,
+            ),
+            buildPageContent(context),
+          ],
         ),
-        ChildPageAppBar(title: 'Sample Pages', textColor: AppTheme.white),
-        buildPageContent(context),
-      ],
-    )));
+      ),
+    );
   }
 
   Widget buildPageContent(BuildContext context) {
     return Container(
-        child: Column(
-      children: <Widget>[
-        buildCategoriesList(context),
-        SizedBox(height: 10),
-        buildInfoBox(context),
-      ],
-    ));
+      child: Column(
+        children: <Widget>[
+          buildCategoriesList(context),
+          SizedBox(height: 10),
+          buildInfoBox(context),
+        ],
+      ),
+    );
   }
 
   Widget buildInfoBox(BuildContext context) {
@@ -63,13 +69,11 @@ class _SamplePagesState extends State<SamplePages> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Keep it up!',
-                      style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.notWhite)),
+                  Text('Keep it up!', style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.notWhite)),
                   SizedBox(height: 6),
                   Text(
                     'You have completed 6 readings this week',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400, color: AppTheme.lightGrey, fontSize: 12),
+                    style: TextStyle(fontWeight: FontWeight.w400, color: AppTheme.lightGrey, fontSize: 12),
                   )
                 ],
               ),
@@ -100,15 +104,11 @@ class _SamplePagesState extends State<SamplePages> {
         ]),
         SizedBox(height: 30),
         Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-          Text('Categories',
-              style:
-                  TextStyle(color: AppTheme.notWhite, fontSize: 18, fontWeight: FontWeight.w600)),
+          Text('Categories', style: TextStyle(color: AppTheme.notWhite, fontSize: 18, fontWeight: FontWeight.w600)),
         ]),
         Container(
           padding: const EdgeInsets.only(top: 16),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: buildCategoriesWidget(context)),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: buildCategoriesWidget(context)),
         )
       ]),
     );
@@ -139,9 +139,10 @@ class _SamplePagesState extends State<SamplePages> {
         ),
         Container(
           padding: const EdgeInsets.all(8),
-          child: Text(element['text'],
-              style:
-                  TextStyle(fontSize: 12, color: AppTheme.lightGrey, fontWeight: FontWeight.w400)),
+          child: Text(
+            element['text'],
+            style: TextStyle(fontSize: 12, color: AppTheme.lightGrey, fontWeight: FontWeight.w400),
+          ),
         )
       ]));
     }

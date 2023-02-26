@@ -13,15 +13,16 @@ class BibleAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: MyBibleModule.getBookChapter(myBible),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (ConnectionState.active != null && !snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return buildAppBarTitle(context, snapshot.data);
-        });
+      future: MyBibleModule.getBookChapter(myBible),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (ConnectionState.active != null && !snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return buildAppBarTitle(context, snapshot.data);
+      },
+    );
   }
 
   Widget buildAppBarTitle(BuildContext context, data) {
@@ -29,16 +30,36 @@ class BibleAppBarTitle extends StatelessWidget {
       onTap: () {
         action();
       },
-      child: Chip(
-          backgroundColor: AppTheme.blueText.withOpacity(0.8),
-          label: Text(data,
-              style: TextStyle(
-                fontFamily: AppTheme.fontName,
-                fontWeight: FontWeight.w400,
-                fontSize: 18,
-                letterSpacing: 1.2,
-                color: AppTheme.nearlyWhite,
-              ))),
+      child: Container(
+        padding: const EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+          left: 15,
+          right: 10,
+        ),
+        decoration: BoxDecoration(
+          color: AppTheme.darkGrey.withOpacity(0.5),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15.0),
+            bottomLeft: Radius.circular(15.0),
+            bottomRight: Radius.circular(0.0),
+            topRight: Radius.circular(0.0),
+          ),
+          // border: Border.all(
+          //   color: AppTheme.lightGrey,
+          // ),
+        ),
+        child: Text(
+          data,
+          style: TextStyle(
+            fontFamily: AppTheme.fontName,
+            fontWeight: FontWeight.w400,
+            fontSize: 16,
+            letterSpacing: 1.2,
+            color: AppTheme.nearlyWhite,
+          ),
+        ),
+      ),
     );
   }
 }

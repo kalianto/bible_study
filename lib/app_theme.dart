@@ -219,7 +219,7 @@ class AppTheme {
         color: AppTheme.deactivatedText.withOpacity(0.3),
         offset: Offset(2, 2),
         blurRadius: 10.0,
-      )
+      ),
     ],
   );
 
@@ -231,7 +231,9 @@ class AppTheme {
       bottomRight: Radius.circular(4.0),
       topRight: Radius.circular(4.0),
     ),
-    border: Border.all(color: AppTheme.lightGrey),
+    border: Border.all(
+      color: AppTheme.lightGrey,
+    ),
   );
 
   static final BoxDecoration boxBorderless = BoxDecoration(
@@ -252,7 +254,9 @@ class AppTheme {
       bottomRight: Radius.circular(4.0),
       topRight: Radius.circular(4.0),
     ),
-    border: Border.all(color: AppTheme.redText),
+    border: Border.all(
+      color: AppTheme.redText,
+    ),
   );
 
   static final borderRadius = BorderRadius.only(

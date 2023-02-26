@@ -81,22 +81,21 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MyBibleProvider>(builder: (context, myBible, child) {
-      return SafeArea(
-        child: Scaffold(
-          key: _scaffoldKey,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(60),
-            child: HomeAppBar(date: date, myBible: myBible),
-          ),
-          body: buildHomeContent(context, myBible),
-          drawer: HomeDrawer(),
-          bottomNavigationBar: HomeBottomNavigationBar(),
-          // floatingActionButton: const FloatingActionButton(onPressed: null),
-          // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+    MyBibleProvider myBible = Provider.of<MyBibleProvider>(context);
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: HomeAppBar(date: date, myBible: myBible),
         ),
-      );
-    });
+        body: buildHomeContent(context, myBible),
+        drawer: HomeDrawer(),
+        bottomNavigationBar: HomeBottomNavigationBar(),
+        // floatingActionButton: const FloatingActionButton(onPressed: null),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
+      ),
+    );
   }
 
   Widget buildHomeContent(BuildContext context, MyBibleProvider myBible) {
@@ -124,8 +123,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     // const NotificationDetails platformChannelSpecifics =
     //     NotificationDetails(android: androidPlatformChannelSpecifics);
     return Container(
-        padding: const EdgeInsets.only(top: 16, bottom: 0),
-        child: Column(children: <Widget>[
+      padding: const EdgeInsets.only(top: 16, bottom: 0),
+      child: Column(
+        children: <Widget>[
           DateSelector(date: date, setDate: setDate),
           DailyReadingItem(date: date, myBible: myBible),
           SizedBox(height: 20),
@@ -160,7 +160,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           //   child: Text('Scheduled Notification after 10s'),
           // ))
           // Rhema(),
-        ]));
+        ],
+      ),
+    );
   }
 
 // Future<String> _downloadAndSaveFile(String url, String fileName) async {

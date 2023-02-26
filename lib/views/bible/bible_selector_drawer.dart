@@ -27,9 +27,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
   void initState() {
     super.initState();
     setIsBookSelection(true);
-    scrollController = AutoScrollController(
-        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-        axis: Axis.vertical);
+    scrollController = AutoScrollController(viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom), axis: Axis.vertical);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadSelectionDrawers(context));
   }
@@ -94,83 +92,86 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
     List selectedBibleVerse = BibleHelper.splitVerse(myBible.lastBibleVerse);
 
     Widget searchBar = Container(
-        height: 60,
-        // padding: const EdgeInsets.only(top: 20),
-        child: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            enabledBorder: AppTheme.inputBorderless,
-            focusedBorder: AppTheme.inputBorderless,
-            border: AppTheme.inputBorderless,
-            filled: true,
-            fillColor: AppTheme.notWhite,
-            hintText: 'Search',
-            // labelText: 'Search',
-          ),
-          onChanged: (value) {
-            var searchBookChapter = staticBookChapterList;
-            if (value == '') {
-              setState(() {
-                bookChapterList = searchBookChapter;
-              });
-            } else {
-              setState(() {
-                bookChapterList = searchBookChapter
-                    .where((f) => f.bookName.toLowerCase().contains(value.toLowerCase()))
-                    .toList();
-              });
-            }
-          },
-        ));
+      height: 60,
+      // padding: const EdgeInsets.only(top: 20),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          enabledBorder: AppTheme.inputBorderless,
+          focusedBorder: AppTheme.inputBorderless,
+          border: AppTheme.inputBorderless,
+          filled: true,
+          fillColor: AppTheme.notWhite,
+          hintText: 'Search',
+          // labelText: 'Search',
+        ),
+        onChanged: (value) {
+          var searchBookChapter = staticBookChapterList;
+          if (value == '') {
+            setState(() {
+              bookChapterList = searchBookChapter;
+            });
+          } else {
+            setState(() {
+              bookChapterList = searchBookChapter.where((f) => f.bookName.toLowerCase().contains(value.toLowerCase())).toList();
+            });
+          }
+        },
+      ),
+    );
 
     ListView bookSelectionList = ListView.builder(
-        padding: const EdgeInsets.all(0),
-        scrollDirection: Axis.vertical,
-        controller: scrollController,
-        shrinkWrap: true,
-        itemCount: bookChapterList.length,
-        itemBuilder: (context, bookIndex) {
-          bool isSelected = bookChapterList[bookIndex].bookId == selectedBibleVerse[2];
-          return _wrapScrollTag(
-              index: bookIndex,
-              child: Column(children: <Widget>[
-                Container(
-                    color: isSelected
-                        ? AppTheme.deactivatedText.withOpacity(0.2)
-                        : AppTheme.white.withOpacity(0),
-                    child: ListTile(
-                      leading: bookChapterList[bookIndex].bookId < 40
-                          ? FaIcon(FontAwesomeIcons.bible)
-                          : FaIcon(FontAwesomeIcons.cross),
-                      title: Text(
-                        bookChapterList[bookIndex].bookName,
-                        style: TextStyle(
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
-                          fontSize: 18,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                      // dense: true,
-                      onTap: () {
-                        setBookChapter(bookChapterList[bookIndex]);
-                        setIsBookSelection(false);
-                      },
-                    )),
-                // Divider(),
-              ]));
-        });
+      padding: const EdgeInsets.all(0),
+      scrollDirection: Axis.vertical,
+      controller: scrollController,
+      shrinkWrap: true,
+      itemCount: bookChapterList.length,
+      itemBuilder: (context, bookIndex) {
+        bool isSelected = bookChapterList[bookIndex].bookId == selectedBibleVerse[2];
+        return _wrapScrollTag(
+          index: bookIndex,
+          child: Column(
+            children: <Widget>[
+              Container(
+                color: isSelected ? AppTheme.deactivatedText.withOpacity(0.2) : AppTheme.white.withOpacity(0),
+                child: ListTile(
+                  leading: bookChapterList[bookIndex].bookId < 40 ? FaIcon(FontAwesomeIcons.bible) : FaIcon(FontAwesomeIcons.cross),
+                  title: Text(
+                    bookChapterList[bookIndex].bookName,
+                    style: TextStyle(
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
+                      fontSize: 18,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  // dense: true,
+                  onTap: () {
+                    setBookChapter(bookChapterList[bookIndex]);
+                    setIsBookSelection(false);
+                  },
+                ),
+              ),
+              // Divider(),
+            ],
+          ),
+        );
+      },
+    );
 
-    return Stack(children: [
-      searchBar,
-      Container(padding: const EdgeInsets.only(top: 60), child: bookSelectionList),
-    ]);
+    return Stack(
+      children: [
+        searchBar,
+        Container(padding: const EdgeInsets.only(top: 60), child: bookSelectionList),
+      ],
+    );
   }
 
   Widget buildChapterList(BuildContext context, MyBibleProvider myBible) {
     Widget emptyContainer = Container(
-        child: Center(
-      child: Text('Please select a book first'),
-    ));
+      child: Center(
+        child: Text('Please select a book first'),
+      ),
+    );
 
     // Widget returnBar = Container(
     //     height: 60,
@@ -217,13 +218,11 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
             ),
             onTap: () {
               BookChapter prevBookChapter;
-              int selectedChapter =
-                  BibleHelper.formatBibleId(selectedBookChapter.bookId, chapterIndex + 1, 1);
+              int selectedChapter = BibleHelper.formatBibleId(selectedBookChapter.bookId, chapterIndex + 1, 1);
               myBible.saveMyBibleLastVerse(selectedChapter);
               int prevChapter = chapterIndex - 1;
               if (prevChapter < 0) {
-                prevChapter =
-                    staticBookChapterList.indexWhere((f) => f.bookId == selectedBookChapter.bookId);
+                prevChapter = staticBookChapterList.indexWhere((f) => f.bookId == selectedBookChapter.bookId);
                 // the first book,
                 if (prevChapter > 0) {
                   prevBookChapter = staticBookChapterList.elementAt((prevChapter - 1));
@@ -239,15 +238,20 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
     );
 
     return selectedBookChapter != null
-        ? Stack(children: [
-            returnBar,
-            Container(
-              padding: const EdgeInsets.only(top: 40),
-              child: Center(child: Text(selectedBookChapter.bookName, style: AppTheme.headline6)),
-              height: 140,
-            ),
-            Container(padding: const EdgeInsets.only(top: 120), child: chapterSelection),
-          ])
+        ? Stack(
+            children: [
+              returnBar,
+              Container(
+                padding: const EdgeInsets.only(top: 40),
+                child: Center(child: Text(selectedBookChapter.bookName, style: AppTheme.headline6)),
+                height: 140,
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 120),
+                child: chapterSelection,
+              ),
+            ],
+          )
         : emptyContainer;
   }
 }

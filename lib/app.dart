@@ -23,20 +23,21 @@ class BibleStudy extends StatelessWidget {
         }
 
         return ChangeNotifierProvider<MyBibleProvider>.value(
-            value: snapshot.data,
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: GlobalConfiguration().getValue('appName'),
-              theme: ThemeData(
-                primarySwatch: AppTheme.primarySwatch,
-                primaryColor: AppTheme.primaryColor,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-                fontFamily: AppTheme.fontName,
-                textTheme: AppTheme.textTheme,
-              ),
-              initialRoute: '/',
-              onGenerateRoute: BaseRouter.route,
-            ));
+          value: snapshot.data,
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: GlobalConfiguration().getValue('appName'),
+            theme: ThemeData(
+              primarySwatch: AppTheme.primarySwatch,
+              primaryColor: AppTheme.primaryColor,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              fontFamily: AppTheme.fontName,
+              textTheme: AppTheme.textTheme,
+            ),
+            initialRoute: '/',
+            onGenerateRoute: BaseRouter.route,
+          ),
+        );
       },
     );
   }

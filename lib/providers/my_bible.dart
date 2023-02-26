@@ -1,16 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../app_config.dart';
 import '../helpers/bible_helper.dart' as BibleHelper;
+import '../helpers/secure_storage.dart';
 import '../services/my_bible.dart';
-
-const int DEFAULT_BIBLE_VERSION = 8; // TB
 
 class MyBibleProvider with ChangeNotifier {
   MyBibleProvider({this.version, this.lastBibleVerse});
+
+  final secureStorage = SecureStorage();
 
   int version;
   int lastBibleVerse;
@@ -19,34 +18,26 @@ class MyBibleProvider with ChangeNotifier {
   List<int> allBibleChapters;
 
   Future<void> getMyBibleVersion() async {
-    final prefs = await SharedPreferences.getInstance();
-    final bibleVersion = AppConfig.bibleVersion;
-    version = prefs.getInt(bibleVersion) ?? DEFAULT_BIBLE_VERSION;
+    version = await secureStorage.getBibleVersion();
     notifyListeners();
   }
 
   Future<void> saveMyBibleVersion(int bibleVersion) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = AppConfig.bibleVersion;
-    prefs.setInt(key, bibleVersion);
     version = bibleVersion;
+    await secureStorage.setBibleVersion(bibleVersion);
     await loadAllChapters();
     notifyListeners();
   }
 
   Future<void> getMyBibleLastVerse() async {
-    final prefs = await SharedPreferences.getInstance();
-    final lastBibleVerseKey = AppConfig.lastBibleVerse;
-    lastBibleVerse = prefs.getInt(lastBibleVerseKey) ?? 1001001;
+    lastBibleVerse = await secureStorage.getLastBibleVerse();
     updateLastBibleVerseArray(lastBibleVerse);
     notifyListeners();
   }
 
   Future<void> saveMyBibleLastVerse(int lastVerse) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = AppConfig.lastBibleVerse;
-    prefs.setInt(key, lastVerse);
     lastBibleVerse = lastVerse;
+    await secureStorage.setLastBibleVerse(lastBibleVerse);
     updateLastBibleVerseArray(lastBibleVerse);
     notifyListeners();
   }

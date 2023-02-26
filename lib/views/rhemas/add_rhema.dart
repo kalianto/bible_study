@@ -53,92 +53,101 @@ class _AddRhemaPageState extends State<AddRhemaPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Add Rhema'),
-              backgroundColor: AppTheme.blueText,
-            ),
-            body: SingleChildScrollView(
-              child: _buildForm(context),
-            )));
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Rhema'),
+          backgroundColor: AppTheme.blueText,
+        ),
+        body: SingleChildScrollView(
+          child: _buildForm(context),
+        ),
+      ),
+    );
   }
 
   Widget _buildForm(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      child: Column(children: <Widget>[
-        Align(
-          child: Text(
-            'Click on the date to change it.\n'
-            'Enter your Rhema below. '
-            'Verses are not editable',
-            style: AppTheme.body1,
-          ),
-          alignment: Alignment.centerLeft,
-        ),
-        SizedBox(height: 20),
-        Container(
-            child: Row(
-          children: <Widget>[
-            Expanded(
-                child: Align(
-              child: Text('Date', style: AppTheme.headline6),
-              alignment: Alignment.centerLeft,
-            )),
-            Container(width: 10),
-            Expanded(
-              child: TextButton(
-                child: Text(DateHelper.formatDate(date),
-                    style: TextStyle(
-                        color: AppTheme.darkGrey, fontSize: 20, fontWeight: FontWeight.w600)),
-                onPressed: () => pickDate(context),
-                style: TextButton.styleFrom(
-                  enableFeedback: true,
-                  primary: AppTheme.lightGreen,
-                  shadowColor: AppTheme.lightGreen,
-                  onSurface: AppTheme.lightGreen,
-                ),
-              ),
+      child: Column(
+        children: <Widget>[
+          Align(
+            child: Text(
+              'Click on the date to change it.\n'
+              'Enter your Rhema below. '
+              'Verses are not editable',
+              style: AppTheme.body1,
             ),
-          ],
-        )),
-        SizedBox(height: 20),
-        Align(
-          child: Text('Verses', style: AppTheme.headline6),
-          alignment: Alignment.centerLeft,
-        ),
-        SizedBox(height: 10),
-        TextField(
-          controller: _messageController,
-          decoration: InputDecoration(
-            enabledBorder: AppTheme.inputBorderless,
-            focusedBorder: AppTheme.inputBorderless,
-            filled: true,
-            fillColor: AppTheme.notWhite,
-            // icon: Icon(Icons.person),
+            alignment: Alignment.centerLeft,
           ),
-          maxLines: 5,
-          readOnly: true,
-        ),
-        SizedBox(height: 20),
-        Align(
-          child: Text('Rhema', style: AppTheme.headline6),
-          alignment: Alignment.centerLeft,
-        ),
-        SizedBox(height: 10),
-        TextField(
-          controller: _rhemaController,
-          decoration: InputDecoration(
-            enabledBorder: AppTheme.inputBorderless,
-            focusedBorder: AppTheme.inputBorderless,
-            filled: true,
-            fillColor: AppTheme.notWhite,
-            // icon: Icon(Icons.person),
+          SizedBox(height: 20),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                    child: Align(
+                  child: Text('Date', style: AppTheme.headline6),
+                  alignment: Alignment.centerLeft,
+                )),
+                Container(width: 10),
+                Expanded(
+                  child: TextButton(
+                    child: Text(
+                      DateHelper.formatDate(date),
+                      style: TextStyle(
+                        color: AppTheme.darkGrey,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    onPressed: () => pickDate(context),
+                    style: TextButton.styleFrom(
+                      enableFeedback: true,
+                      primary: AppTheme.lightGreen,
+                      shadowColor: AppTheme.lightGreen,
+                      onSurface: AppTheme.lightGreen,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          maxLines: 8,
-        ),
-        SizedBox(height: 20),
-        Align(
+          SizedBox(height: 20),
+          Align(
+            child: Text('Verses', style: AppTheme.headline6),
+            alignment: Alignment.centerLeft,
+          ),
+          SizedBox(height: 10),
+          TextField(
+            controller: _messageController,
+            decoration: InputDecoration(
+              enabledBorder: AppTheme.inputBorderless,
+              focusedBorder: AppTheme.inputBorderless,
+              filled: true,
+              fillColor: AppTheme.notWhite,
+              // icon: Icon(Icons.person),
+            ),
+            maxLines: 5,
+            readOnly: true,
+          ),
+          SizedBox(height: 20),
+          Align(
+            child: Text('Rhema', style: AppTheme.headline6),
+            alignment: Alignment.centerLeft,
+          ),
+          SizedBox(height: 10),
+          TextField(
+            controller: _rhemaController,
+            decoration: InputDecoration(
+              enabledBorder: AppTheme.inputBorderless,
+              focusedBorder: AppTheme.inputBorderless,
+              filled: true,
+              fillColor: AppTheme.notWhite,
+              // icon: Icon(Icons.person),
+            ),
+            maxLines: 8,
+          ),
+          SizedBox(height: 20),
+          Align(
             alignment: Alignment.centerLeft,
             child: ElevatedButton(
               onPressed: () {
@@ -146,15 +155,19 @@ class _AddRhemaPageState extends State<AddRhemaPage> {
 
                 addRhema(date, _rhemaController.text, widget.arguments.rhemaVerses).then((rhema) {
                   if (rhema.id != null) {
-                    SnackBar snackBar = SnackBar(content: Text('Rhema added.'));
+                    SnackBar snackBar = SnackBar(
+                      content: Text('Rhema added.'),
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                   Navigator.of(context).pop();
                 });
               },
               child: Text('Add'),
-            ))
-      ]),
+            ),
+          )
+        ],
+      ),
     );
   }
 

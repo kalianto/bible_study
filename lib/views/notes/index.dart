@@ -35,32 +35,35 @@ class _NotesPageState extends State<NotesPage> {
   }*/
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            body: Stack(
-      children: <Widget>[
-        Container(
-          height: 245,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: AppTheme.purple,
-          ),
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            Container(
+              height: 245,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: AppTheme.purple,
+              ),
+            ),
+            ChildPageAppBar(title: 'Sample Pages', textColor: AppTheme.white),
+            buildPageContent(context),
+          ],
         ),
-        ChildPageAppBar(title: 'Sample Pages', textColor: AppTheme.white),
-        buildPageContent(context),
-      ],
-    )));
+      ),
+    );
   }
 
   Widget buildPageContent(BuildContext context) {
     return Container(
-        child: Column(
-      children: <Widget>[
-        buildCategoriesList(context),
-        SizedBox(height: 10),
-        buildInfoBox(context),
-        buildPlainInfoBox(context),
-      ],
-    ));
+      child: Column(
+        children: <Widget>[
+          buildCategoriesList(context),
+          SizedBox(height: 10),
+          buildInfoBox(context),
+          buildPlainInfoBox(context),
+        ],
+      ),
+    );
   }
 
   Widget buildInfoBox(BuildContext context) {
@@ -87,12 +90,18 @@ class _NotesPageState extends State<NotesPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text('Keep it up!',
-                      style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.notWhite)),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.notWhite,
+                      )),
                   SizedBox(height: 6),
                   Text(
                     'You have completed 6 readings this week',
                     style: TextStyle(
-                        fontWeight: FontWeight.w400, color: AppTheme.lightGrey, fontSize: 12),
+                      fontWeight: FontWeight.w400,
+                      color: AppTheme.lightGrey,
+                      fontSize: 12,
+                    ),
                   )
                 ],
               ),
@@ -138,12 +147,18 @@ class _NotesPageState extends State<NotesPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text('Mazmur 23:1 - 24:15',
-                      style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.darkGrey)),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.darkGrey,
+                      )),
                   SizedBox(height: 6),
                   Text(
                     'You have completed 6 readings this week',
                     style: TextStyle(
-                        fontWeight: FontWeight.w400, color: AppTheme.deactivatedText, fontSize: 12),
+                      fontWeight: FontWeight.w400,
+                      color: AppTheme.deactivatedText,
+                      fontSize: 12,
+                    ),
                   )
                 ],
               ),
@@ -168,23 +183,39 @@ class _NotesPageState extends State<NotesPage> {
   Widget buildCategoriesList(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 60, left: 24, right: 24),
-      child: Column(children: <Widget>[
-        Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-          Text('List of pages for quick view', style: TextStyle(color: AppTheme.notWhite)),
-        ]),
-        SizedBox(height: 30),
-        Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-          Text('Categories',
-              style:
-                  TextStyle(color: AppTheme.notWhite, fontSize: 18, fontWeight: FontWeight.w600)),
-        ]),
-        Container(
-          padding: const EdgeInsets.only(top: 16),
-          child: Row(
+      child: Column(
+        children: <Widget>[
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+            Text(
+              'List of pages for quick view',
+              style: TextStyle(
+                color: AppTheme.notWhite,
+              ),
+            ),
+          ]),
+          SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Categories',
+                style: TextStyle(
+                  color: AppTheme.notWhite,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 16),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: buildCategoriesWidget(context)),
-        )
-      ]),
+              children: buildCategoriesWidget(context),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -197,27 +228,38 @@ class _NotesPageState extends State<NotesPage> {
     ];
     List<Widget> widgets = <Widget>[];
     for (var element in listItems) {
-      widgets.add(new Column(children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(6),
-          // margin: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-            color: AppTheme.blueText.withOpacity(0.8),
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-          ),
-          child: IconButton(
-            icon: element['icon'],
-            onPressed: null,
-            iconSize: 28,
-          ),
+      widgets.add(
+        new Column(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(6),
+              // margin: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: AppTheme.blueText.withOpacity(0.8),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
+                ),
+              ),
+              child: IconButton(
+                icon: element['icon'],
+                onPressed: null,
+                iconSize: 28,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                element['text'],
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppTheme.lightGrey,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ],
         ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: Text(element['text'],
-              style:
-                  TextStyle(fontSize: 12, color: AppTheme.lightGrey, fontWeight: FontWeight.w400)),
-        )
-      ]));
+      );
     }
     return widgets;
   }

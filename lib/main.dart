@@ -21,7 +21,5 @@ void main() async {
   // ));
 
   // lock portrait orientation
-  await SystemChrome.setPreferredOrientations(
-          <DeviceOrientation>[DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-      .then((_) => runApp(BibleStudy()));
+  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) => runApp(BibleStudy()));
 }

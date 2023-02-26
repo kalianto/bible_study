@@ -20,24 +20,25 @@ class _SettingsState extends State<SettingsPage> {
   Widget _buildPage(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: Container(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  ChildPageAppBar(title: 'Settings'),
-                  Container(
-                    padding: const EdgeInsets.only(top: 50),
-                    child: SingleChildScrollView(
-                        child: Container(
-                          padding: const EdgeInsets.all(40),
-                          child: Text('The content of this page is being constructed'),
-                        )
+        body: Container(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                ChildPageAppBar(title: 'Settings'),
+                Container(
+                  padding: const EdgeInsets.only(top: 50),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: const EdgeInsets.all(40),
+                      child: Text('The content of this page is being constructed'),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

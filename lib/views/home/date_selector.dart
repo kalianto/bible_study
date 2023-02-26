@@ -26,31 +26,32 @@ class _DateSelectorState extends State<DateSelector> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 12, right: 12),
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-        IconButton(
-          icon: FaIcon(FontAwesomeIcons.angleLeft),
-          onPressed: previousDay,
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: TextButton(
-            child: Text(DateHelper.formatDate(today),
-                style:
-                    TextStyle(color: AppTheme.darkGrey, fontSize: 20, fontWeight: FontWeight.w600)),
-            onPressed: () => pickDate(context),
-            style: TextButton.styleFrom(
-              enableFeedback: true,
-              primary: AppTheme.lightGreen,
-              shadowColor: AppTheme.lightGreen,
-              onSurface: AppTheme.lightGreen,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: FaIcon(FontAwesomeIcons.angleLeft),
+            onPressed: previousDay,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextButton(
+              child: Text(DateHelper.formatDate(today), style: TextStyle(color: AppTheme.darkGrey, fontSize: 20, fontWeight: FontWeight.w600)),
+              onPressed: () => pickDate(context),
+              style: TextButton.styleFrom(
+                enableFeedback: true,
+                primary: AppTheme.lightGreen,
+                shadowColor: AppTheme.lightGreen,
+                onSurface: AppTheme.lightGreen,
+              ),
             ),
           ),
-        ),
-        IconButton(
-          icon: FaIcon(FontAwesomeIcons.angleRight),
-          onPressed: nextDay,
-        ),
-      ]),
+          IconButton(
+            icon: FaIcon(FontAwesomeIcons.angleRight),
+            onPressed: nextDay,
+          ),
+        ],
+      ),
     );
   }
 

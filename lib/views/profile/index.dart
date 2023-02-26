@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,16 +47,21 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   void _loadProfile() async {
     final prefs = await SharedPreferences.getInstance();
     final key = AppConfig.profile;
-    Profile profile = (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
-    _setProfile(profile);
+    final _profile = prefs.getString(key);
+    if (_profile != null) {
+      Profile profile = (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
+      _setProfile(profile);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            //body: buildColumn(context),
-            body: buildStack(context)));
+      child: Scaffold(
+        // body: buildColumn(context),
+        body: buildStack(context),
+      ),
+    );
   }
 
   Widget buildStack(BuildContext context) {
@@ -77,10 +83,13 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         Container(
           padding: const EdgeInsets.only(top: 50),
           child: SingleChildScrollView(
-              child: Column(children: <Widget>[
-            profileHeader(context),
-            loadProfile(context),
-          ])),
+            child: Column(
+              children: <Widget>[
+                profileHeader(context),
+                loadProfile(context),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -131,122 +140,123 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
     return Container(
       padding: const EdgeInsets.only(top: 10, left: 24, right: 24, bottom: 20),
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(0),
-              child: Text(
-                'Personal',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                  letterSpacing: 0.27,
-                  color: AppTheme.darkerText,
-                ),
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(0),
+            child: Text(
+              'Personal',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 22,
+                letterSpacing: 0.27,
+                color: AppTheme.darkerText,
               ),
             ),
-            SizedBox(height: 16),
-            TextField(
-              controller: _firstNameController,
-              decoration: InputDecoration(
-                enabledBorder: AppTheme.inputBorderless,
-                focusedBorder: AppTheme.inputBorderless,
-                labelText: 'First Name',
-                filled: true,
-                fillColor: AppTheme.notWhite,
-                enabled: _editing,
-                // icon: Icon(Icons.person),
+          ),
+          SizedBox(height: 16),
+          TextField(
+            controller: _firstNameController,
+            decoration: InputDecoration(
+              enabledBorder: AppTheme.inputBorderless,
+              focusedBorder: AppTheme.inputBorderless,
+              labelText: 'First Name',
+              filled: true,
+              fillColor: AppTheme.notWhite,
+              enabled: _editing,
+              // icon: Icon(Icons.person),
+            ),
+          ),
+          SizedBox(height: 20.0),
+          TextField(
+            controller: _lastNameController,
+            decoration: InputDecoration(
+              enabledBorder: AppTheme.inputBorderless,
+              focusedBorder: AppTheme.inputBorderless,
+              labelText: 'Last Name',
+              filled: true,
+              fillColor: AppTheme.notWhite,
+              enabled: _editing,
+              // icon: Icon(Icons.person),
+            ),
+          ),
+          SizedBox(height: 20.0),
+          TextField(
+            controller: _emailController,
+            decoration: InputDecoration(
+              enabledBorder: AppTheme.inputBorderless,
+              focusedBorder: AppTheme.inputBorderless,
+              border: AppTheme.inputBorderless,
+              filled: true,
+              fillColor: AppTheme.notWhite,
+              labelText: 'Email',
+              enabled: _editing,
+              // icon: Icon(Icons.lock),
+            ),
+          ),
+          SizedBox(height: 20.0),
+          TextField(
+            controller: _mobileController,
+            decoration: InputDecoration(
+              enabledBorder: AppTheme.inputBorderless,
+              focusedBorder: AppTheme.inputBorderless,
+              border: AppTheme.inputBorderless,
+              filled: true,
+              fillColor: AppTheme.notWhite,
+              labelText: 'Mobile',
+              enabled: _editing,
+              // icon: Icon(Icons.lock),
+            ),
+          ),
+          SizedBox(height: 30.0),
+          Padding(
+            padding: const EdgeInsets.all(0),
+            child: Text(
+              'Address',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 22,
+                letterSpacing: 0.27,
+                color: AppTheme.darkerText,
               ),
             ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _lastNameController,
-              decoration: InputDecoration(
-                enabledBorder: AppTheme.inputBorderless,
-                focusedBorder: AppTheme.inputBorderless,
-                labelText: 'Last Name',
-                filled: true,
-                fillColor: AppTheme.notWhite,
-                enabled: _editing,
-                // icon: Icon(Icons.person),
-              ),
+          ),
+          SizedBox(height: 20.0),
+          TextField(
+            controller: _addressController,
+            maxLines: 3,
+            decoration: InputDecoration(
+              enabledBorder: AppTheme.inputBorderless,
+              focusedBorder: AppTheme.inputBorderless,
+              border: AppTheme.inputBorderless,
+              filled: true,
+              fillColor: AppTheme.notWhite,
+              labelText: 'Address',
+              enabled: _editing,
+              // icon: Icon(Icons.lock),
             ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                enabledBorder: AppTheme.inputBorderless,
-                focusedBorder: AppTheme.inputBorderless,
-                border: AppTheme.inputBorderless,
-                filled: true,
-                fillColor: AppTheme.notWhite,
-                labelText: 'Email',
-                enabled: _editing,
-                // icon: Icon(Icons.lock),
-              ),
+          ),
+          SizedBox(height: 20.0),
+          TextField(
+            controller: _suburbController,
+            decoration: InputDecoration(
+              enabledBorder: AppTheme.inputBorderless,
+              focusedBorder: AppTheme.inputBorderless,
+              border: AppTheme.inputBorderless,
+              filled: true,
+              fillColor: AppTheme.notWhite,
+              labelText: 'Suburb/Region/Town',
+              enabled: _editing,
+              // icon: Icon(Icons.lock),
             ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _mobileController,
-              decoration: InputDecoration(
-                enabledBorder: AppTheme.inputBorderless,
-                focusedBorder: AppTheme.inputBorderless,
-                border: AppTheme.inputBorderless,
-                filled: true,
-                fillColor: AppTheme.notWhite,
-                labelText: 'Mobile',
-                enabled: _editing,
-                // icon: Icon(Icons.lock),
-              ),
-            ),
-            SizedBox(height: 30.0),
-            Padding(
-              padding: const EdgeInsets.all(0),
-              child: Text(
-                'Address',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                  letterSpacing: 0.27,
-                  color: AppTheme.darkerText,
-                ),
-              ),
-            ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _addressController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                enabledBorder: AppTheme.inputBorderless,
-                focusedBorder: AppTheme.inputBorderless,
-                border: AppTheme.inputBorderless,
-                filled: true,
-                fillColor: AppTheme.notWhite,
-                labelText: 'Address',
-                enabled: _editing,
-                // icon: Icon(Icons.lock),
-              ),
-            ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _suburbController,
-              decoration: InputDecoration(
-                enabledBorder: AppTheme.inputBorderless,
-                focusedBorder: AppTheme.inputBorderless,
-                border: AppTheme.inputBorderless,
-                filled: true,
-                fillColor: AppTheme.notWhite,
-                labelText: 'Suburb/Region/Town',
-                enabled: _editing,
-                // icon: Icon(Icons.lock),
-              ),
-            ),
-            SizedBox(height: 20.0),
-            Container(
-              child: Row(children: <Widget>[
+          ),
+          SizedBox(height: 20.0),
+          Container(
+            child: Row(
+              children: <Widget>[
                 Expanded(
                     child: TextField(
                   controller: _stateController,
@@ -263,226 +273,241 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                 )),
                 Container(width: 10),
                 Expanded(
-                    child: TextField(
-                  controller: _postcodeController,
-                  decoration: InputDecoration(
-                    enabledBorder: AppTheme.inputBorderless,
-                    focusedBorder: AppTheme.inputBorderless,
-                    border: AppTheme.inputBorderless,
-                    filled: true,
-                    fillColor: AppTheme.notWhite,
-                    labelText: 'Postcode',
-                    enabled: _editing,
-                    icon: Icon(Icons.lock),
+                  child: TextField(
+                    controller: _postcodeController,
+                    decoration: InputDecoration(
+                      enabledBorder: AppTheme.inputBorderless,
+                      focusedBorder: AppTheme.inputBorderless,
+                      border: AppTheme.inputBorderless,
+                      filled: true,
+                      fillColor: AppTheme.notWhite,
+                      labelText: 'Postcode',
+                      enabled: _editing,
+                      icon: Icon(Icons.lock),
+                    ),
                   ),
-                )),
-              ]),
+                ),
+              ],
             ),
-            SizedBox(height: 20.0),
-            Center(
-              child: ElevatedButton(
-                  onPressed: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    final key = AppConfig.profile;
-                    Profile updatedProfile = new Profile(
-                      email: _emailController.text,
-                      firstName: _firstNameController.text,
-                      lastName: _lastNameController.text,
-                      mobile: _mobileController.text,
-                      address: _addressController.text,
-                      suburb: _suburbController.text,
-                      state: _stateController.text,
-                      postcode: _postcodeController.text,
-                      profileIcon: profileIcon,
-                    );
+          ),
+          SizedBox(height: 20.0),
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final key = AppConfig.profile;
+                Profile updatedProfile = new Profile(
+                  email: _emailController.text,
+                  firstName: _firstNameController.text,
+                  lastName: _lastNameController.text,
+                  mobile: _mobileController.text,
+                  address: _addressController.text,
+                  suburb: _suburbController.text,
+                  state: _stateController.text,
+                  postcode: _postcodeController.text,
+                  profileIcon: profileIcon,
+                );
 
-                    /// save profile to SharedPreferences
-                    prefs.setString(key, jsonEncode(updatedProfile.toJson()));
+                /// save profile to SharedPreferences
+                prefs.setString(key, jsonEncode(updatedProfile.toJson()));
 
-                    /// Update State for the form controller
-                    _setProfile(updatedProfile);
+                /// Update State for the form controller
+                _setProfile(updatedProfile);
 
-                    setState(() {
-                      _editing = !_editing;
-                    });
-                  },
-                  child: Text('SAVE', style: TextStyle(fontSize: 20)),
-                  style: ButtonStyle(
-                    // textColor: Colors.white,
-                    // padding: const EdgeInsets.all(0.0),
-                    backgroundColor: MaterialStateProperty.all<Color>(AppTheme.primarySwatch),
-                  )),
+                setState(() {
+                  _editing = !_editing;
+                });
+              },
+              child: Text('SAVE', style: TextStyle(fontSize: 20)),
+              style: ButtonStyle(
+                // textColor: Colors.white,
+                // padding: const EdgeInsets.all(0.0),
+                backgroundColor: MaterialStateProperty.all<Color>(AppTheme.primarySwatch),
+              ),
             ),
-          ]),
+          ),
+        ],
+      ),
     );
   }
 
   Widget viewProfile(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.only(top: 10, left: 24, right: 24, bottom: 20),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: Text(
-                  'Personal Details',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                    letterSpacing: 0.27,
-                    color: AppTheme.darkerText,
+      padding: const EdgeInsets.only(top: 10, left: 24, right: 24, bottom: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(0),
+            child: Text(
+              'Personal Details',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+                letterSpacing: 0.27,
+                color: AppTheme.darkerText,
+              ),
+            ),
+          ),
+          SizedBox(height: 16),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  child: FaIcon(
+                    FontAwesomeIcons.user,
+                    color: AppTheme.darkGreen,
+                    size: 18,
                   ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(width: 2, color: AppTheme.darkGreen),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
                 ),
-              ),
-              SizedBox(height: 16),
-              Container(
-                child: Row(children: <Widget>[
-                  Container(
-                    child: FaIcon(
-                      FontAwesomeIcons.user,
-                      color: AppTheme.darkGreen,
-                      size: 18,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(width: 2, color: AppTheme.darkGreen),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                Container(width: 10),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Full Name', style: TextStyle(color: AppTheme.darkGreen)),
+                      Text('${_firstNameController.text} ${_lastNameController.text}',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontWeight: FontWeight.w400)),
+                    ],
                   ),
-                  Container(width: 10),
-                  Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('Full Name', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text('${_firstNameController.text} ${_lastNameController.text}',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontWeight: FontWeight.w400)),
-                        ]),
-                  )
-                ]),
-              ),
-              SizedBox(height: 20),
-              Container(
-                child: Row(children: <Widget>[
-                  Container(
-                    child: FaIcon(
-                      FontAwesomeIcons.envelope,
-                      color: AppTheme.darkGreen,
-                      size: 18,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(width: 2, color: AppTheme.darkGreen),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  child: FaIcon(
+                    FontAwesomeIcons.envelope,
+                    color: AppTheme.darkGreen,
+                    size: 18,
                   ),
-                  Container(width: 10),
-                  Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('Email Address', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text(_emailController.text,
-                              style: TextStyle(fontWeight: FontWeight.w400)),
-                        ]),
-                  )
-                ]),
-              ),
-              SizedBox(height: 20),
-              Container(
-                child: Row(children: <Widget>[
-                  Container(
-                    child: FaIcon(
-                      FontAwesomeIcons.phone,
-                      color: AppTheme.darkGreen,
-                      size: 18,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(width: 2, color: AppTheme.darkGreen),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(width: 2, color: AppTheme.darkGreen),
                   ),
-                  Container(width: 10),
-                  Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('Mobile Number', style: TextStyle(color: AppTheme.darkGreen)),
-                          Text(_mobileController.text ?? '',
-                              style: TextStyle(fontWeight: FontWeight.w400)),
-                        ]),
-                  )
-                ]),
-              ),
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: Text(
-                  'Address',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                    letterSpacing: 0.27,
-                    color: AppTheme.darkerText,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
                 ),
-              ),
-              SizedBox(height: 16),
-              Container(
-                child: Row(children: <Widget>[
-                  Container(
-                    child: FaIcon(
-                      FontAwesomeIcons.building,
-                      color: AppTheme.darkGreen,
-                      size: 18,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(width: 2, color: AppTheme.darkGreen),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                Container(width: 10),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Email Address', style: TextStyle(color: AppTheme.darkGreen)),
+                      Text(_emailController.text, style: TextStyle(fontWeight: FontWeight.w400)),
+                    ],
                   ),
-                  Container(width: 10),
-                  Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(_addressController.text,
-                              style: TextStyle(color: AppTheme.darkGreen)),
-                          Text(
-                              '${_suburbController.text}${_stateController.text == '' ? "" : ","}  ${_stateController.text} ${_postcodeController.text}',
-                              style: TextStyle(fontWeight: FontWeight.w400)),
-                        ]),
-                  )
-                ]),
-              ),
-              SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: Text(
-                  'COOL Group',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                    letterSpacing: 0.27,
-                    color: AppTheme.darkerText,
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  child: FaIcon(
+                    FontAwesomeIcons.phone,
+                    color: AppTheme.darkGreen,
+                    size: 18,
                   ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(width: 2, color: AppTheme.darkGreen),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
                 ),
+                Container(width: 10),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Mobile Number', style: TextStyle(color: AppTheme.darkGreen)),
+                      Text(_mobileController.text ?? '',
+                          style: TextStyle(fontWeight: FontWeight.w400)),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.all(0),
+            child: Text(
+              'Address',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+                letterSpacing: 0.27,
+                color: AppTheme.darkerText,
               ),
-              SizedBox(height: 16),
-              Container(
-                  child: Row(children: <Widget>[
+            ),
+          ),
+          SizedBox(height: 16),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  child: FaIcon(
+                    FontAwesomeIcons.building,
+                    color: AppTheme.darkGreen,
+                    size: 18,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(width: 2, color: AppTheme.darkGreen),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                ),
+                Container(width: 10),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(_addressController.text, style: TextStyle(color: AppTheme.darkGreen)),
+                      Text(
+                          '${_suburbController.text}${_stateController.text == '' ? "" : ","}  ${_stateController.text} ${_postcodeController.text}',
+                          style: TextStyle(fontWeight: FontWeight.w400)),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.all(0),
+            child: Text(
+              'COOL Group',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
+                letterSpacing: 0.27,
+                color: AppTheme.darkerText,
+              ),
+            ),
+          ),
+          SizedBox(height: 16),
+          Container(
+            child: Row(
+              children: <Widget>[
                 Container(
                   child: FaIcon(
                     FontAwesomeIcons.grinHearts,
@@ -498,39 +523,45 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                 Container(width: 10),
                 Expanded(
                   child: RichText(
-                      text: TextSpan(
-                    style: TextStyle(color: AppTheme.darkGreen, fontFamily: AppTheme.fontName),
-                    children: <TextSpan>[
-                      TextSpan(text: 'You haven\'t joined any group. '),
-                      TextSpan(
+                    text: TextSpan(
+                      style: TextStyle(color: AppTheme.darkGreen, fontFamily: AppTheme.fontName),
+                      children: <TextSpan>[
+                        TextSpan(text: 'You haven\'t joined any group. '),
+                        TextSpan(
                           text: 'Find a COOL group',
                           style: TextStyle(color: AppTheme.blueText, fontWeight: FontWeight.w600),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.of(context).pushNamed('/cool-group');
-                            })
-                    ],
-                  )),
+                            },
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ]))
-            ]));
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Widget profileHeader(BuildContext context) {
     return Container(
-        child: Wrap(
-      children: <Widget>[
-        Container(
-          child: new Container(
-            child: Container(
-              padding: const EdgeInsets.all(24),
+      child: Wrap(
+        children: <Widget>[
+          Container(
+            child: new Container(
               child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: AppTheme.boxDecoration,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    InkWell(
+                padding: const EdgeInsets.all(24),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: AppTheme.boxDecoration,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      InkWell(
                         onTap: () {
                           if (_editing) {
                             _showProfileIconDialog(context);
@@ -545,90 +576,98 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                               'assets/images/$profileIcon',
                             ),
                           ),
-                        )),
-                    Container(width: 15.0),
-                    Expanded(
+                        ),
+                      ),
+                      Container(width: 15.0),
+                      Expanded(
                         child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          '${_firstNameController.text} ${_lastNameController.text}',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.nearlyBlack,
-                            fontSize: 24,
-                          ),
-                        ),
-                        Text(
-                          _emailController.text,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: AppTheme.darkerText,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    )),
-                    _editing
-                        ? CloseButton(
-                            onPressed: () {
-                              setState(() {
-                                _editing = !_editing;
-                              });
-                            },
-                            color: AppTheme.redText,
-                            // padding: const EdgeInsets.all(0),
-                          )
-                        : IconButton(
-                            icon: FaIcon(
-                              FontAwesomeIcons.pen,
-                              size: 18,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '${_firstNameController.text} ${_lastNameController.text}',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.nearlyBlack,
+                                fontSize: 24,
+                              ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _editing = !_editing;
-                              });
-                            },
-                            // color: AppTheme.primarySwatch,
-                          ),
-                  ],
+                            Text(
+                              _emailController.text,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: AppTheme.darkerText,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      _editing
+                          ? CloseButton(
+                              onPressed: () {
+                                setState(() {
+                                  _editing = !_editing;
+                                });
+                              },
+                              color: AppTheme.redText,
+                              // padding: const EdgeInsets.all(0),
+                            )
+                          : IconButton(
+                              icon: FaIcon(
+                                FontAwesomeIcons.pen,
+                                size: 18,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _editing = !_editing;
+                                });
+                              },
+                              // color: AppTheme.primarySwatch,
+                            ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
-    ));
+        ],
+      ),
+    );
   }
 
   List<SimpleDialogOption> _generateProfileIconList(BuildContext context) {
     return List.generate(
-        8,
-        (i) => SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context, 'userImage-${i + 1}.png');
-              },
-              child: Row(children: <Widget>[
-                Container(
-                    height: 32,
-                    width: 32,
-                    color: AppTheme.darkGrey.withOpacity(0.1),
-                    child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-                          child: Image.asset(
-                            'assets/images/userImage-${i + 1}.png',
-                          ),
-                        ))),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Text('Profile ${i + 1}'),
-                )
-              ]),
-            ));
+      8,
+      (i) => SimpleDialogOption(
+        onPressed: () {
+          Navigator.pop(context, 'userImage-${i + 1}.png');
+        },
+        child: Row(
+          children: <Widget>[
+            Container(
+              height: 32,
+              width: 32,
+              color: AppTheme.darkGrey.withOpacity(0.1),
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                  child: Image.asset(
+                    'assets/images/userImage-${i + 1}.png',
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text('Profile ${i + 1}'),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   _showProfileIconDialog(BuildContext context) {

@@ -40,16 +40,18 @@ class Profile {
       suburb: json['suburb'] as String,
       state: json['state'] as String,
       postcode: json['postcode'] as String,
-      profileIcon: json['profileIcon'] as String ?? 'userImage.png',
+      profileIcon: json['profileIcon'] as String,
     );
   }
 
-  // Profile.fromJson(Map<String, dynamic> json)
-  //   : firstName = json['firstName'],
-  //   lastName = json['lastName'],
-  //   nickname = json['nickname'],
-  //   email = json['email'],
-  //   mobile = json['mobile'];
+  bool isEmpty() {
+    Map<String, dynamic> _profile = this.toJson();
+    return _profile.values.map((v) => v).toList().every((val) => val == null);
+  }
+
+  String getProfileIcon() {
+    return this.profileIcon ?? 'userImage.png';
+  }
 
   Map<String, dynamic> toJson() => {
         'firstName': firstName,

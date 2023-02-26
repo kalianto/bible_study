@@ -13,12 +13,13 @@ class HomeBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        // color: AppTheme.nearlyBlack.withOpacity(0.8),
-        child: IconTheme(
-          data: IconThemeData(color: AppTheme.darkGreen),
-          child: bottomBarNavigation(context),
-        ));
+      shape: const CircularNotchedRectangle(),
+      // color: AppTheme.nearlyBlack.withOpacity(0.8),
+      child: IconTheme(
+        data: IconThemeData(color: AppTheme.darkGreen),
+        child: bottomBarNavigation(context),
+      ),
+    );
   }
 
   Widget bottomBarNavigation(BuildContext context) {
@@ -34,16 +35,17 @@ class HomeBottomNavigationBar extends StatelessWidget {
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.prayingHands,
-                    size: 22, color: AppTheme.greenText),
+                icon: const FaIcon(FontAwesomeIcons.prayingHands, size: 22, color: AppTheme.greenText),
                 onPressed: () {
                   Navigator.of(context).popAndPushNamed('/home');
                 },
               ),
-              Text('GEMA',
-                  style: TextStyle(
-                    fontSize: iconFontSize,
-                  )),
+              Text(
+                'GEMA',
+                style: TextStyle(
+                  fontSize: iconFontSize,
+                ),
+              ),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,16 +53,17 @@ class HomeBottomNavigationBar extends StatelessWidget {
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.flagCheckered,
-                    size: 22, color: AppTheme.mandarin),
+                icon: const FaIcon(FontAwesomeIcons.flagCheckered, size: 22, color: AppTheme.mandarin),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/rhema');
                 },
               ),
-              Text('RHEMA',
-                  style: TextStyle(
-                    fontSize: iconFontSize,
-                  )),
+              Text(
+                'RHEMA',
+                style: TextStyle(
+                  fontSize: iconFontSize,
+                ),
+              ),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,10 +76,12 @@ class HomeBottomNavigationBar extends StatelessWidget {
                   Navigator.of(context).pushNamed('/news');
                 },
               ),
-              Text('NEWS',
-                  style: TextStyle(
-                    fontSize: iconFontSize,
-                  )),
+              Text(
+                'NEWS',
+                style: TextStyle(
+                  fontSize: iconFontSize,
+                ),
+              ),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,10 +115,12 @@ class HomeBottomNavigationBar extends StatelessWidget {
                   Navigator.of(context).pushNamed('/bible');
                 },
               ),
-              Text('BIBLE',
-                  style: TextStyle(
-                    fontSize: iconFontSize,
-                  )),
+              Text(
+                'BIBLE',
+                style: TextStyle(
+                  fontSize: iconFontSize,
+                ),
+              ),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
