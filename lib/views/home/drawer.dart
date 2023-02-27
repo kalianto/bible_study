@@ -372,7 +372,10 @@ class HomeDrawer extends StatelessWidget {
                   if (isLoggedIn) {
                     await secureStorage.setIsLoggedIn(false);
                   }
-                  Navigator.of(context).popAndPushNamed('/');
+                  // remove all history from the navigation stack and go to home
+                  // tapping back button will not replay history, this is what we want
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
                   return true;
                 },
                 style: TextButton.styleFrom(

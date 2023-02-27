@@ -158,7 +158,7 @@ class _LoginState extends State<LoginPage> {
                     } else {
                       bool isLoggedIn = await secureStorage.getIsLoggedIn();
                       if (isLoggedIn) {
-                        Navigator.of(context).popAndPushNamed('/home');
+                        Navigator.of(context).pop();
                       }
 
                       Profile profile = await secureStorage.getProfile();
@@ -169,7 +169,7 @@ class _LoginState extends State<LoginPage> {
                         });
                       } else if (profile.email == _usernameController.text) {
                         await secureStorage.setIsLoggedIn(true);
-                        Navigator.of(context).popAndPushNamed('/home');
+                        Navigator.of(context).pop();
                       } else {
                         setState(() {
                           errorMessage = 'Username or email address is incorrect';

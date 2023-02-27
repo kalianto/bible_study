@@ -33,7 +33,7 @@ class SecureStorage {
   }
 
   Future setIsLoggedIn(bool isLoggedIn) async {
-    String boolValue = isLoggedIn ? 'true' : false;
+    String boolValue = isLoggedIn ? 'true' : 'false';
     await storage.write(key: _isLoggedInKey, value: boolValue);
   }
 
