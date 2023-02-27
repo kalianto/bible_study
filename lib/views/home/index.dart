@@ -28,6 +28,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   double topBarOpacity = 1.0;
 
   DateTime date;
+
   // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
 
@@ -89,7 +90,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           preferredSize: const Size.fromHeight(60),
           child: HomeAppBar(date: date, myBible: myBible),
         ),
-        body: buildHomeContent(context, myBible),
+        body: SingleChildScrollView(
+          child: buildHomeContent(context, myBible),
+        ),
         drawer: HomeDrawer(),
         bottomNavigationBar: HomeBottomNavigationBar(),
         // floatingActionButton: const FloatingActionButton(onPressed: null),
