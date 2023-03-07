@@ -4,6 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 import '../../helpers/secure_storage.dart';
 import '../../models/profile.dart';
+import '../common/loadProfile.dart';
+import '../common/signInWidget.dart';
+import '../common/signUpWidget.dart';
 
 class DrawerList {
   DrawerList(
@@ -48,7 +51,7 @@ class HomeDrawer extends StatelessWidget {
 
   Widget checkProfile(BuildContext context) {
     return FutureBuilder(
-      future: _loadProfile(),
+      future: loadProfile(),
       builder: (context, snapshot) {
         if (ConnectionState.active != null && !snapshot.hasData) {
           return buildSignUpPage(context);
@@ -82,162 +85,6 @@ class HomeDrawer extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget buildSignInPage(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.only(left: 20, right: 20),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'GEMA',
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                color: AppTheme.nearlyBlack,
-                fontSize: 40.0,
-                letterSpacing: 14.0,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              'Gerakan Membaca Alkitab Setahun',
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
-                fontSize: 14.0,
-                color: AppTheme.nearlyBlack,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 50),
-            Text(
-              'We detected a profile on this device.\nChoose from one of below options to sign in.',
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
-                fontSize: 14.0,
-                color: AppTheme.nearlyBlack,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 40),
-            FloatingActionButton.extended(
-              heroTag: 'signup_email',
-              label: Text(
-                'Sign In with Email',
-                style: TextStyle(
-                  color: AppTheme.nearlyBlack,
-                ),
-              ),
-              backgroundColor: AppTheme.white,
-              icon: Icon(
-                FontAwesomeIcons.envelope,
-                size: 20.0,
-                color: AppTheme.nearlyBlack,
-              ),
-              onPressed: () {
-                Navigator.of(context).popAndPushNamed('/login');
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildSignUpPage(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'GEMA',
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                color: AppTheme.nearlyBlack,
-                fontSize: 40.0,
-                letterSpacing: 14.0,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              'Gerakan Membaca Alkitab Setahun',
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
-                fontSize: 14.0,
-                color: AppTheme.nearlyBlack,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 30),
-            FloatingActionButton.extended(
-              heroTag: 'signup_email',
-              label: Text(
-                'Sign up with Email',
-                style: TextStyle(
-                  color: AppTheme.nearlyBlack,
-                ),
-              ),
-              backgroundColor: AppTheme.white,
-              icon: Icon(
-                FontAwesomeIcons.envelope,
-                size: 20.0,
-                color: AppTheme.nearlyBlack,
-              ),
-              onPressed: () {
-                Navigator.of(context).popAndPushNamed('/register');
-              },
-            ),
-            SizedBox(height: 20),
-            FloatingActionButton.extended(
-              heroTag: 'signup_google',
-              label: Text(
-                'Sign up with Google',
-                style: TextStyle(
-                  color: AppTheme.nearlyWhite,
-                ),
-              ),
-              // backgroundColor: AppTheme.white,
-              icon: Icon(
-                FontAwesomeIcons.google,
-                size: 20.0,
-                color: AppTheme.nearlyWhite,
-              ),
-              onPressed: () {},
-            ),
-            SizedBox(height: 20),
-            FloatingActionButton.extended(
-              heroTag: 'signup_apple',
-              label: Text(
-                'Sign up with Apple',
-                style: TextStyle(
-                  color: AppTheme.nearlyBlack,
-                ),
-              ),
-              backgroundColor: AppTheme.lightGrey,
-              icon: Icon(
-                FontAwesomeIcons.apple,
-                size: 20.0,
-                color: AppTheme.nearlyBlack,
-              ),
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<Map<String, dynamic>> _loadProfile() async {
-    Profile profile = await secureStorage.getProfile();
-    bool isLoggedIn = await secureStorage.getIsLoggedIn();
-    Map<String, dynamic> map = new Map<String, dynamic>();
-    map['profile'] = profile;
-    map['isLoggedIn'] = isLoggedIn;
-    return map;
   }
 
   Widget buildProfilePicture(BuildContext context, Profile profile) {
