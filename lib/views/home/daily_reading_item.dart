@@ -242,13 +242,18 @@ class DailyReadingItem extends StatelessWidget {
                   ),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      items[index].gridSummary(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: AppTheme.darkGrey,
-                        fontSize: 22,
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        items[index].gridSummary(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: AppTheme.darkGrey,
+                          fontSize: 22,
+                        ),
                       ),
                     ),
                     SizedBox(height: 6),

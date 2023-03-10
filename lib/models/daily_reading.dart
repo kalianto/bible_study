@@ -65,18 +65,18 @@ class DailyReading {
 
     // cross book
     if (this.eBookNum != this.sBookNum) {
-      summary = '${this.sBookName} \n ${this.sChapter.toString()}';
-      summary += '\n\n ${this.eBookName} \n ${this.eChapter.toString()}';
+      summary = '${this.sBookName} \n${this.sChapter.toString()}';
+      summary += '\n\n${this.eBookName} \n${this.eChapter.toString()}';
     } else {
       // same book same chapter
       if (this.eChapter == this.sChapter) {
-        summary = '\n ${this.sBookName} \n\n';
-        summary += '${this.sChapter.toString()} : ${this.sVerse.toString()}';
+        summary = '${this.sBookName} \n\n';
+        summary += '${this.sChapter.toString()}:${this.sVerse.toString()}';
         summary += ' - ${this.eVerse.toString()}';
       } else {
-        summary = '\n ${this.sBookName} \n\n';
-        summary += '${this.sChapter.toString()} : ${this.sVerse.toString()}';
-        summary += ' - ${this.eChapter.toString()} : ${this.eVerse.toString()}';
+        summary = '${this.sBookName} \n\n';
+        summary += '${this.sChapter.toString()}:${this.sVerse.toString()}';
+        summary += ' - ${this.eChapter.toString()}:${this.eVerse.toString()}';
       }
     }
 
