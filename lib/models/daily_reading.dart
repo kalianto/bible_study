@@ -43,9 +43,11 @@ class DailyReading {
     String startTitle =
         this.sBookName + ' ' + this.sChapter.toString() + ':' + this.sVerse.toString();
     String endTitle = ' - ';
+    // cross book
     if (this.eBookNum != this.sBookNum) {
       endTitle += this.eBookName + ' ' + this.eChapter.toString() + ':' + this.eVerse.toString();
     } else {
+      // same book same chapter
       if (this.eChapter == this.sChapter) {
         endTitle += this.eVerse.toString();
       } else {
@@ -54,6 +56,30 @@ class DailyReading {
     }
 
     return startTitle + endTitle;
+  }
+
+  String gridSummary() {
+    String summary = '';
+
+    // cross book
+    if (this.eBookNum != this.sBookNum) {
+      summary = this.sBookName + '\n' + this.sChapter.toString() + ':' + this.sVerse.toString();
+      summary +=
+          '\n\n' + this.eBookName + '\n' + this.eChapter.toString() + ':' + this.eVerse.toString();
+    } else {
+      // same book same chapter
+      if (this.eChapter == this.sChapter) {
+        summary = '\n' + this.sBookName + '\n\n';
+        summary += this.sChapter.toString() + ':' + this.sVerse.toString();
+        summary += ' - ' + this.eVerse.toString();
+      } else {
+        summary = '\n' + this.sBookName + '\n\n';
+        summary += this.sChapter.toString() + ':' + this.sVerse.toString();
+        summary += ' - ' + this.eChapter.toString() + ':' + this.eVerse.toString();
+      }
+    }
+
+    return summary;
   }
 
   String firstVerse() {

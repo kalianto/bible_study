@@ -29,6 +29,7 @@ class DailyReadingService {
       'where a.date = ?',
       [dateId],
     );
+    print(result.length);
     if (result.length > 0) {
       dailyReadingList = List.generate(
         result.length,
@@ -54,7 +55,6 @@ class DailyReadingService {
         ),
       );
     }
-
     return dailyReadingList;
   }
 
