@@ -17,6 +17,7 @@ class DailyReadingService {
 
     List<DailyReading> dailyReadingList = [];
     List<Map<String, dynamic>> result = await dbClient.rawQuery(
+      'SELECT MAX(bb.v) as sVerseEnd, aaa.* FROM ('
       'select a.id, a.start as sId, a.end as eId, '
       'd.n as sBookName, b.b as sBookNum, b.c as sChapter , b.v as sVerse, '
       'b.t as sVerseSummary, e.n as eBookName, c.b as eBookNum, c.c as eChapter, '
@@ -26,7 +27,11 @@ class DailyReadingService {
       'join ${bibleVersion.table} c on a.end = c.id '
       'join ${bibleVersion.keyTable} d on b.b = d.b '
       'join ${bibleVersion.keyTable} e on c.b = e.b '
-      'where a.date = ?',
+      'where a.date = ? ) AS aaa '
+      'JOIN ${bibleVersion.table} bb ON aaa.sBookNum = bb.b '
+      'AND aaa.sChapter = bb.c '
+      'GROUP BY aaa.sBookNum, aaa.sChapter '
+      'ORDER BY aaa.orderBy ',
       [dateId],
     );
     print(result.length);
@@ -50,6 +55,7 @@ class DailyReadingService {
           orderBy: result[i]["orderBy"],
           bibleVersion: bibleVersion.table,
           bibleCode: bibleVersion.abbreviation,
+          sVerseEnd: result[i]["sVerseEnd"],
           id: result[i]["id"],
           fullDate: date,
         ),

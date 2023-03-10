@@ -17,6 +17,7 @@ class DailyReading {
   final String bibleCode;
   final int id;
   final DateTime fullDate;
+  final int sVerseEnd;
 
   DailyReading({
     this.dateId,
@@ -37,6 +38,7 @@ class DailyReading {
     this.bibleCode,
     this.id,
     this.fullDate,
+    this.sVerseEnd,
   });
 
   String shortSummary() {
@@ -63,9 +65,9 @@ class DailyReading {
 
     // cross book
     if (this.eBookNum != this.sBookNum) {
-      summary = this.sBookName + '\n' + this.sChapter.toString() + ':' + this.sVerse.toString();
-      summary +=
-          '\n\n' + this.eBookName + '\n' + this.eChapter.toString() + ':' + this.eVerse.toString();
+      summary = this.sBookName + '\n' + this.sChapter.toString();
+      // summary += this.sVerse.toString() + '-' + this.sVerseEnd.toString();
+      summary += '\n\n ${this.eBookName} \n ${this.eChapter.toString()};
     } else {
       // same book same chapter
       if (this.eChapter == this.sChapter) {
