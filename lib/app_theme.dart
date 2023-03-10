@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppColorTheme {
@@ -285,6 +286,40 @@ class AppTheme {
     {'darkColor': AppTheme.darkGrey, 'lightColor': AppTheme.lightGrey},
     {'darkColor': AppTheme.blueText, 'lightColor': AppTheme.cyan},
     {'darkColor': AppTheme.darkGrey, 'lightColor': AppTheme.lightGrey},
-    {'darkColor': AppTheme.darkGrey, 'lightColor': AppTheme.lightGrey},
   ];
+
+  static final gradientSet1 = [
+    boxGradient1,
+    boxGradient2,
+    boxGradient3,
+    boxGradient4,
+  ];
+
+  static final boxGradient1 = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment(0.8, 1),
+    colors: <Color>[cyan, blueText],
+    tileMode: TileMode.mirror,
+  );
+
+  static final boxGradient2 = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment(0.8, 1),
+    colors: <Color>[yellowText, mandarin],
+    tileMode: TileMode.mirror,
+  );
+
+  static final boxGradient3 = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment(0.8, 1),
+    colors: <Color>[green, darkGreen],
+    tileMode: TileMode.mirror,
+  );
+
+  static final boxGradient4 = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment(0.8, 1),
+    colors: <Color>[lightPurple, Colors.purpleAccent],
+    tileMode: TileMode.mirror,
+  );
 }

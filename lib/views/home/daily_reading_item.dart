@@ -210,6 +210,7 @@ class DailyReadingItem extends StatelessWidget {
           darkColor: AppTheme.colorSet1[index]['darkColor'],
           lightColor: AppTheme.colorSet1[index]['lightColor'],
         );
+        LinearGradient gradientSet = AppTheme.gradientSet1[index];
         return Container(
           child: InkWell(
             onTap: () async {
@@ -232,7 +233,7 @@ class DailyReadingItem extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: colorTheme.lightColor,
+                  gradient: gradientSet,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(14.0),
                     bottomLeft: Radius.circular(14.0),
