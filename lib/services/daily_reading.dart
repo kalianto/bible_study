@@ -34,7 +34,7 @@ class DailyReadingService {
       'ORDER BY aaa.orderBy ',
       [dateId],
     );
-    print(result.length);
+
     if (result.length > 0) {
       dailyReadingList = List.generate(
         result.length,

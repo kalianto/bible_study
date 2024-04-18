@@ -154,7 +154,7 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
                             child: InkWell(
                               onTap: () async {
                                 showDeleteConfirmation(context).then((answer) {
-                                  print(answer);
+
                                   if (answer) {
                                     RhemaModule.deleteRhemaItem(rhema).then((_) {
                                       setState(() {

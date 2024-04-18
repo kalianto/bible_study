@@ -8,7 +8,6 @@ import 'app_config.dart';
 
 class DatabaseService {
   static final DatabaseService _instance = new DatabaseService.internal();
-
   factory DatabaseService() => _instance;
   static Database _db;
 
@@ -37,8 +36,30 @@ class DatabaseService {
         await File(path).writeAsBytes(bytes, flush: true);
       } catch (_) {}
     }
-    var taskDb = await openDatabase(path, version: 1);
+
     // var taskDb = await openReadOnlyDatabase(path);
+    // var taskDb = await openDatabase(path, version: 1);
+    var taskDb = await openDatabase(
+      path,
+      version: AppConfig.dbVersion,
+      onUpgrade: _onUpgrade,
+    );
+    print('Database init');
+    print(await taskDb.getVersion());
+    taskDb.setVersion(1);
     return taskDb;
+  }
+
+  _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    // check version
+    print(db);
+    print(oldVersion);
+    print(newVersion);
+
+    // get the file from migrations folder
+    if (oldVersion < newVersion) {
+      print('upgrade');
+    }
+    // execute the file
   }
 }

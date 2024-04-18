@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
         isLoggedIn = prefs.getBool(AppConfig.isLoggedIn) ?? false;
       });
     } catch (e) {
-      print(e.toString());
+
       setState(() {
         errorMessage = 'Click Start to continue';
       });

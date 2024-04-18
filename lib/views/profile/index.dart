@@ -10,6 +10,8 @@ import '../../app_config.dart';
 import '../../app_theme.dart';
 import '../../common/child_page_appbar.dart';
 import '../../models/profile.dart';
+import '../common/loadProfile.dart';
+import '../../helpers/secure_storage.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -28,12 +30,12 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   final _stateController = TextEditingController();
   final _postcodeController = TextEditingController();
   String profileIcon = 'userImage.png';
+  final secureStorage = SecureStorage();
 
   @override
   void initState() {
     super.initState();
-    animationController =
-        AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
+    animationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
     _editing = false;
     _loadProfile();
   }
@@ -45,11 +47,18 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   }
 
   void _loadProfile() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = AppConfig.profile;
-    final _profile = prefs.getString(key);
-    if (_profile != null) {
-      Profile profile = (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
+    /// TODO: Use SecureStorage instead of SharedPreference
+    // final prefs = await SharedPreferences.getInstance();
+    // final key = AppConfig.profile;
+    // final _profile = prefs.getString(key);
+    // if (_profile != null) {
+    //   Profile profile = (Profile.fromJson(jsonDecode(prefs.getString(key))) ?? null);
+    //   _setProfile(profile);
+    // }
+
+    Map<String, dynamic> profileData = await loadProfile();
+    Profile profile = profileData['profile'];
+    if (!profile.isEmpty()) {
       _setProfile(profile);
     }
   }
@@ -71,11 +80,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
           height: 205,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.zero,
-                topRight: Radius.zero,
-                bottomLeft: Radius.elliptical(650, 350),
-                bottomRight: Radius.zero),
+            borderRadius: BorderRadius.only(topLeft: Radius.zero, topRight: Radius.zero, bottomLeft: Radius.elliptical(650, 350), bottomRight: Radius.zero),
             color: AppTheme.darkGreen,
           ),
         ),
@@ -86,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
             child: Column(
               children: <Widget>[
                 profileHeader(context),
-                loadProfile(context),
+                loadProfileWidget(context),
               ],
             ),
           ),
@@ -102,14 +107,14 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
           children: <Widget>[
             ChildPageAppBar(title: 'Profile'),
             profileHeader(context),
-            loadProfile(context),
+            loadProfileWidget(context),
           ],
         ),
       ),
     );
   }
 
-  Widget loadProfile(BuildContext context) {
+  Widget loadProfileWidget(BuildContext context) {
     print('Selected Page: $_editing');
     return Container(
       child: AnimatedCrossFade(
@@ -132,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
       _addressController.text = profile.address ?? null;
       _stateController.text = profile.state ?? null;
       _postcodeController.text = profile.postcode ?? null;
-      profileIcon = profile.profileIcon ?? 'userImage.png';
+      profileIcon = profile.getProfileIcon();
     });
   }
 
@@ -309,7 +314,10 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                 );
 
                 /// save profile to SharedPreferences
-                prefs.setString(key, jsonEncode(updatedProfile.toJson()));
+                // prefs.setString(key, jsonEncode(updatedProfile.toJson()));
+
+                // save profile to SecureStorage
+                secureStorage.setProfile(updatedProfile);
 
                 /// Update State for the form controller
                 _setProfile(updatedProfile);
@@ -374,9 +382,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('Full Name', style: TextStyle(color: AppTheme.darkGreen)),
-                      Text('${_firstNameController.text} ${_lastNameController.text}',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.w400)),
+                      Text('${_firstNameController.text} ${_lastNameController.text}', overflow: TextOverflow.ellipsis, style: TextStyle(fontWeight: FontWeight.w400)),
                     ],
                   ),
                 )
@@ -436,8 +442,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text('Mobile Number', style: TextStyle(color: AppTheme.darkGreen)),
-                      Text(_mobileController.text ?? '',
-                          style: TextStyle(fontWeight: FontWeight.w400)),
+                      Text(_mobileController.text ?? '', style: TextStyle(fontWeight: FontWeight.w400)),
                     ],
                   ),
                 )
@@ -481,9 +486,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(_addressController.text, style: TextStyle(color: AppTheme.darkGreen)),
-                      Text(
-                          '${_suburbController.text}${_stateController.text == '' ? "" : ","}  ${_stateController.text} ${_postcodeController.text}',
-                          style: TextStyle(fontWeight: FontWeight.w400)),
+                      Text('${_suburbController.text}${_stateController.text == '' ? "" : ","}  ${_stateController.text} ${_postcodeController.text}', style: TextStyle(fontWeight: FontWeight.w400)),
                     ],
                   ),
                 )

@@ -10,4 +10,6 @@ class AppConfig {
   static const String dbFile = 'gema.db';
   static const String bibleVersion = 'bible_version';
   static const String lastBibleVerse = 'lastBibleVerse';
+
+  static const int dbVersion = 2;
 }

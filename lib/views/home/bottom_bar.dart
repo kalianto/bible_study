@@ -26,8 +26,8 @@ class HomeBottomNavigationBar extends StatelessWidget {
     double iconFontSize = 10.0;
 
     return Container(
-      padding: const EdgeInsets.only(bottom: 15),
-      height: 80,
+      padding: const EdgeInsets.all(0),
+      height: 70,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,7 +35,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.prayingHands, size: 22, color: AppTheme.greenText),
+                icon: const FaIcon(FontAwesomeIcons.prayingHands, size: 18, color: AppTheme.greenText),
                 onPressed: () {
                   Navigator.of(context).popAndPushNamed('/home');
                 },
@@ -47,13 +47,13 @@ class HomeBottomNavigationBar extends StatelessWidget {
                 ),
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.flagCheckered, size: 22, color: AppTheme.mandarin),
+                icon: const FaIcon(FontAwesomeIcons.flagCheckered, size: 18, color: AppTheme.mandarin),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/rhema');
                 },
@@ -65,13 +65,13 @@ class HomeBottomNavigationBar extends StatelessWidget {
                 ),
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
           Column(
             children: <Widget>[
               IconButton(
-                icon: const FaIcon(FontAwesomeIcons.newspaper, size: 22, color: AppTheme.redText),
+                icon: const FaIcon(FontAwesomeIcons.newspaper, size: 18, color: AppTheme.redText),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/news');
                 },
@@ -83,7 +83,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
                 ),
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
           // Column(
@@ -108,7 +108,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
               IconButton(
                 icon: const FaIcon(
                   FontAwesomeIcons.bible,
-                  size: 22,
+                  size: 18,
                   color: AppTheme.darkGrey,
                 ),
                 onPressed: () {
@@ -122,7 +122,7 @@ class HomeBottomNavigationBar extends StatelessWidget {
                 ),
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
 
