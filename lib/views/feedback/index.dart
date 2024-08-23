@@ -75,7 +75,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   alignment: Alignment.centerLeft,
                   child: ElevatedButton(
                     onPressed: () async {
-                      final mailer = Mailer('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');
+                      final mailer = Mailer('API_KEY');
                       final toAddress = Address('kalianto@gmail.com');
                       final fromAddress = Address('kalianto@outlook.com');
                       final content = Content('text/plain', _messageController.text);
