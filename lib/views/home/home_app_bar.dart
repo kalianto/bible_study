@@ -9,7 +9,7 @@ import '../../providers/my_bible.dart';
 import '../../providers/my_reading_item.dart';
 
 class HomeAppBar extends StatelessWidget {
-  HomeAppBar({this.date, this.myBible}) : super();
+  HomeAppBar({required this.date, required this.myBible}) : super();
   final DateTime date;
   final MyBibleProvider myBible;
 
@@ -52,7 +52,7 @@ class HomeAppBar extends StatelessWidget {
               ),
             ],
             onSelected: (value) async {
-              String readingSummary;
+              String readingSummary = '';
               if (value == 'copyTB') {
                 MyReadingItemProvider readingItem = await MyReadingItemModule.loadDailyReadingItem(date, 8);
                 readingSummary = readingItem.generateSummary();

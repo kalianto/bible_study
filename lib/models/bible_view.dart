@@ -10,14 +10,28 @@ class BibleView {
   final int bibleVersionId;
 
   BibleView({
-    this.id,
-    this.bookName,
-    this.bookNum,
-    this.bookChapter,
-    this.bookVerse,
-    this.bibleVersion,
-    this.bibleCode,
-    this.bookText,
-    this.bibleVersionId,
+    required this.id,
+    required this.bookName,
+    required this.bookNum,
+    required this.bookChapter,
+    required this.bookVerse,
+    required this.bibleVersion,
+    required this.bibleCode,
+    required this.bookText,
+    required this.bibleVersionId,
   });
+
+  factory BibleView.fromMapEntry(Map<String, dynamic> map) {
+    return BibleView(
+      id: map['id'],
+      bookName: map['bookName'],
+      bookNum: map['bookNum'],
+      bookChapter: map['bookChapter'],
+      bookVerse: map['bookVerse'],
+      bibleVersion: map['bibleVersion'],
+      bibleCode: map['bibleCode'],
+      bookText: map['bookText'],
+      bibleVersionId: map['bibleVersionId'],
+    );
+  }
 }

@@ -16,7 +16,7 @@ class BibleStudy extends StatelessWidget {
     return FutureBuilder(
       future: MyBibleModule.loadMyBible(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (ConnectionState.active != null && !snapshot.hasData) {
+        if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -28,7 +28,7 @@ class BibleStudy extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: GlobalConfiguration().getValue('appName'),
             theme: ThemeData(
-              primarySwatch: AppTheme.primarySwatch,
+              primarySwatch: AppTheme.primarySwatch as MaterialColor,
               primaryColor: AppTheme.primaryColor,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               fontFamily: AppTheme.fontName,

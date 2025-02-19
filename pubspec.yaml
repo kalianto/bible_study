@@ -19,7 +19,7 @@ version: 1.2.16+1
 db_version: 2
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -27,22 +27,22 @@ dependencies:
   # firebase_core: "^0.5.0"
   # cloud_firestore: ^0.14.0+2
   # firebase_auth: ^0.18.0+1
-#  http: ^0.12.2
+  #  http: ^0.12.2
   http: ^0.13.0
   device_info: ^2.0.0
   global_configuration: ^2.0.0-nullsafety.1
-  google_nav_bar: ^3.1.0
+  google_nav_bar: ^5.0.7
   font_awesome_flutter: ^9.0.0
   provider: ^5.0.0
   shared_preferences: ^2.0.5
   intl: ^0.17.0
   sqflite: ^2.0.0+3
   # path_provider: ^2.0.7
-  scroll_to_index: ^2.0.0
+  scroll_to_index: ^3.0.1
   share: ^2.0.1
-#  flutter_local_notifications: ^9.1.5
-  flutter_secure_storage: ^6.0.0
-  sendgrid_mailer: ^0.1.2
+  #  flutter_local_notifications: ^9.1.5
+  flutter_secure_storage: ^9.2.2
+  sendgrid_mailer: ^0.1.3
   graphql_flutter: ^5.0.0
   yaml: ^3.1.1
 
@@ -51,20 +51,19 @@ dependencies:
 #  cupertino_icons: ^0.1.3
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.9.0
+  flutter_launcher_icons: ^0.14.2
   flutter_test:
     sdk: flutter
 
 flutter_icons:
-  android: "launcher_icon"
+  android: 'launcher_icon'
   ios: true
-  image_path: "assets/images/icon_launcher-3.png"
+  image_path: 'assets/images/icon_launcher-3.png'
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -93,14 +92,14 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-#    - family: FiraSansCondensed
-#      fonts:
-#        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Regular.ttf
-#        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Bold.ttf
-#          weight: 600
-#        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-BoldItalic.ttf
-#          weight: 600
-#        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Italic.ttf
+    #    - family: FiraSansCondensed
+    #      fonts:
+    #        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Regular.ttf
+    #        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Bold.ttf
+    #          weight: 600
+    #        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-BoldItalic.ttf
+    #          weight: 600
+    #        - asset: assets/fonts/FiraSansCondensed/FiraSansCondensed-Italic.ttf
     - family: FiraSans
       fonts:
         - asset: assets/fonts/FiraSans/FiraSans-Thin.ttf
@@ -140,7 +139,6 @@ flutter:
         - asset: assets/fonts/FiraSans/FiraSans-BlackItalic.ttf
           weight: 900
 
-    
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

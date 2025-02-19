@@ -8,7 +8,7 @@ import 'bible_app_bar_title.dart';
 import 'bible_version_dialog.dart';
 
 class BibleAppBar extends StatelessWidget {
-  BibleAppBar({Key key, this.action}) : super(key: key);
+  BibleAppBar({required Key key, required this.action}) : super(key: key);
 
   final Function action;
 
@@ -17,7 +17,7 @@ class BibleAppBar extends StatelessWidget {
     MyBibleProvider myBible = Provider.of<MyBibleProvider>(context, listen: true);
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.darkGrey.withOpacity(0.4),
+        color: AppTheme.darkGrey.withAlpha((0.4 * 255).toInt()),
       ),
       height: 60,
       child: Column(
@@ -47,13 +47,20 @@ class BibleAppBar extends StatelessWidget {
                         // padding: const EdgeInsets.all(8.0),
                         child: FittedBox(
                           fit: BoxFit.fitWidth,
-                          child: BibleAppBarTitle(myBible: myBible, action: action,),
+                          child: BibleAppBarTitle(
+                            key: Key('BibleAppBarTitle'),
+                            myBible: myBible,
+                            action: action,
+                          ),
                         ),
                       ),
                       SizedBox(
                         width: 1,
                       ),
-                      BibleVersionDialog(myBible: myBible),
+                      BibleVersionDialog(
+                        key: Key('BibleVersionDialog'),
+                        myBible: myBible,
+                      ),
                     ],
                   ),
                 ),

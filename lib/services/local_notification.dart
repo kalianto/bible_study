@@ -1,17 +1,15 @@
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LocalNofitication {
-  static LocalNofitication _localNotification;
+  static LocalNofitication _localNotification = LocalNofitication._createInstance();
   // final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
 
   LocalNofitication._createInstance();
 
   factory LocalNofitication() {
-    if (_localNotification == null) {
-      _localNotification = LocalNofitication._createInstance();
-      //_localNotification._initialize();
-    }
+    // _localNotification is already initialized, so no need to check for null
+    //_localNotification._initialize();
     return _localNotification;
   }
 }

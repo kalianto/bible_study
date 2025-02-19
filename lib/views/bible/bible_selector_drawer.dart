@@ -18,8 +18,8 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
   bool isBookSelection = true;
   List<BookChapter> bookChapterList = [];
   List<BookChapter> staticBookChapterList = [];
-  BookChapter selectedBookChapter;
-  AutoScrollController scrollController;
+  late BookChapter selectedBookChapter;
+  late AutoScrollController scrollController;
 
   TextEditingController controller = new TextEditingController();
 
@@ -55,7 +55,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
 
   Future _scrollToIndex(context) async {
     MyBibleProvider myBible = Provider.of<MyBibleProvider>(context, listen: false);
-    int index = myBible.lastBibleVerseArray['book'] - 1;
+    int index = (myBible.lastBibleVerseArray['book'] ?? 1) - 1;
     await scrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
     scrollController.highlight(index);
   }
@@ -65,12 +65,12 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
     _scrollToIndex(context);
   }
 
-  Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
+  Widget _wrapScrollTag({required int index, required Widget child}) => AutoScrollTag(
         key: ValueKey(index),
         controller: scrollController,
         index: index,
         child: child,
-        highlightColor: AppTheme.darkGrey.withOpacity(0.5),
+        highlightColor: AppTheme.darkGrey.withAlpha((0.5 * 255).toInt()),
       );
 
   @override
@@ -133,7 +133,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
           child: Column(
             children: <Widget>[
               Container(
-                color: isSelected ? AppTheme.deactivatedText.withOpacity(0.2) : AppTheme.white.withOpacity(0),
+                color: isSelected ? AppTheme.deactivatedText.withAlpha((0.2 * 255).toInt()) : AppTheme.white.withAlpha((0).toInt()),
                 child: ListTile(
                   leading: bookChapterList[bookIndex].bookId < 40 ? FaIcon(FontAwesomeIcons.bible) : FaIcon(FontAwesomeIcons.cross),
                   title: Text(
@@ -206,7 +206,7 @@ class _BibleSelectorDrawerState extends State<BibleSelectorDrawer> {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
       ),
-      itemCount: selectedBookChapter?.chapters?.length,
+      itemCount: selectedBookChapter.chapters.length,
       itemBuilder: (BuildContext context, int chapterIndex) {
         return Container(
           padding: const EdgeInsets.all(6),

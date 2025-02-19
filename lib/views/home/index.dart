@@ -14,7 +14,7 @@ import 'drawer.dart';
 import 'home_app_bar.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title, this.startDate}) : super(key: key);
+  Home({required Key key, required this.title, required this.startDate}) : super(key: key);
 
   final String title;
   final DateTime startDate;
@@ -27,7 +27,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   double topBarOpacity = 1.0;
 
-  DateTime date;
+  late DateTime date;
 
   // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
@@ -35,7 +35,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    date = widget.startDate == null ? new DateTime.now() : widget.startDate;
+    date = widget.startDate == '' ? new DateTime.now() : widget.startDate;
     requestPermissions();
 
     // var androidSettings = AndroidInitializationSettings('app_icon');
@@ -93,8 +93,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         body: SingleChildScrollView(
           child: buildHomeContent(context, myBible),
         ),
-        drawer: HomeDrawer(),
-        bottomNavigationBar: HomeBottomNavigationBar(),
+        drawer: HomeDrawer(key: GlobalKey()),
+        bottomNavigationBar: HomeBottomNavigationBar(key: GlobalKey()),
         // floatingActionButton: const FloatingActionButton(onPressed: null),
         // floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
       ),
@@ -129,8 +129,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       padding: const EdgeInsets.only(top: 16, bottom: 0),
       child: Column(
         children: <Widget>[
-          DateSelector(date: date, setDate: setDate),
-          DailyReadingItem(date: date, myBible: myBible),
+          DateSelector(key: GlobalKey(), date: date, setDate: setDate),
+          DailyReadingItem(key: GlobalKey(), date: date, myBible: myBible),
           SizedBox(height: 20),
           // Container(
           //     child: ElevatedButton(

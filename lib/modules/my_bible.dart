@@ -4,7 +4,7 @@ import '../providers/my_bible.dart';
 import '../services/book_chapter.dart';
 
 Future<MyBibleProvider> loadMyBible() async {
-  MyBibleProvider myBibleVersion = new MyBibleProvider();
+  MyBibleProvider myBibleVersion = new MyBibleProvider(version: 1, lastBibleVerse: 0);
   await myBibleVersion.getMyBibleVersion();
   await myBibleVersion.getMyBibleLastVerse();
   await myBibleVersion.loadAllChapters();

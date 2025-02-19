@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../app_theme.dart';
 
 class ChildPageAppBar extends StatefulWidget {
-  ChildPageAppBar({Key key, this.title, this.textColor}) : super(key: key);
+  ChildPageAppBar({required Key key, required this.title, required this.textColor}) : super(key: key);
 
   final String title;
   final Color textColor;
@@ -15,15 +15,15 @@ class ChildPageAppBar extends StatefulWidget {
 
 class _ChildPageAppBarState extends State<ChildPageAppBar> with TickerProviderStateMixin {
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  AnimationController animationController;
-  Animation<double> topBarAnimation;
+  late AnimationController animationController;
+  late Animation<double> topBarAnimation;
   double topBarOpacity = 1.0;
   final ScrollController scrollController = ScrollController();
-  Color _titleColor;
+  late Color _titleColor;
 
   @override
   void initState() {
-    _titleColor = widget.textColor ?? AppTheme.darkerText;
+    _titleColor = widget.textColor;
     animationController = AnimationController(
       duration: const Duration(milliseconds: 200),
       vsync: this,

@@ -9,7 +9,7 @@ import '../../providers/my_bible.dart';
 import '../bible/bible_version_dialog.dart';
 
 class DailyReadingAppBar extends StatelessWidget {
-  DailyReadingAppBar({Key key, this.item}) : super(key: key);
+  DailyReadingAppBar({required Key key, required this.item}) : super(key: key);
 
   final DailyReading item;
 
@@ -18,7 +18,7 @@ class DailyReadingAppBar extends StatelessWidget {
     MyBibleProvider myBible = Provider.of<MyBibleProvider>(context);
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.darkGrey.withOpacity(0.4),
+        color: AppTheme.darkGrey.withAlpha((0.4 * 255).toInt()),
       ),
       height: 60,
       child: Column(
@@ -33,25 +33,25 @@ class DailyReadingAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                  IconButton(
-                    icon: const Icon(FontAwesomeIcons.arrowLeft),
-                    iconSize: 22,
-                    // onPressed: () => Navigator.pop(context, myBible.version),
-                    onPressed: () => Navigator.of(context).pop(), // Navigator.popAndPushNamed(context, '/home',
-                    // arguments: DateHelper.getDateFromDateId(item.dateId)),
-                    tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-                    color: AppTheme.darkGrey,
+                IconButton(
+                  icon: const Icon(FontAwesomeIcons.arrowLeft),
+                  iconSize: 22,
+                  // onPressed: () => Navigator.pop(context, myBible.version),
+                  onPressed: () => Navigator.of(context).pop(), // Navigator.popAndPushNamed(context, '/home',
+                  // arguments: DateHelper.getDateFromDateId(item.dateId)),
+                  tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  color: AppTheme.darkGrey,
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      _buildTitle(item, myBible.version),
+                      SizedBox(width: 1),
+                      BibleVersionDialog(key: Key('bibleVersionDialog'), myBible: myBible),
+                    ],
                   ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        _buildTitle(item, myBible.version),
-                        SizedBox(width: 1),
-                        BibleVersionDialog(myBible: myBible),
-                      ],
-                    ),
-                  ),
+                ),
               ],
             ),
           )
@@ -64,7 +64,7 @@ class DailyReadingAppBar extends StatelessWidget {
     return FutureBuilder(
       future: DailyReadingModule.getDailyReadingItemById(item.id, bibleVersion),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (ConnectionState.active != null && !snapshot.hasData) {
+        if (!snapshot.hasData) {
           return Text('loading');
         }
         return Flexible(
@@ -83,7 +83,7 @@ class DailyReadingAppBar extends StatelessWidget {
                   right: 10,
                 ),
                 decoration: BoxDecoration(
-                  color: AppTheme.darkGrey.withOpacity(0.5),
+                  color: AppTheme.darkGrey.withAlpha((0.5 * 255).toInt()),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15.0),
                     bottomLeft: Radius.circular(15.0),

@@ -6,7 +6,7 @@ import '../../modules/bible_version.dart' as BibleVersionModule;
 import '../../providers/my_bible.dart';
 
 class BibleVersionDialog extends StatelessWidget {
-  BibleVersionDialog({Key key, this.myBible}) : super(key: key);
+  BibleVersionDialog({required Key key, required this.myBible}) : super(key: key);
 
   final MyBibleProvider myBible;
 
@@ -39,7 +39,7 @@ class BibleVersionDialog extends StatelessWidget {
           right: 10,
         ),
         decoration: BoxDecoration(
-          color: AppTheme.darkGrey.withOpacity(0.5),
+          color: AppTheme.darkGrey.withAlpha((0.5 * 255).toInt()),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(0.0),
             bottomLeft: Radius.circular(0.0),

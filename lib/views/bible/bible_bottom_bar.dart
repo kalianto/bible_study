@@ -9,7 +9,7 @@ import '../../models/bible_view.dart';
 import '../../providers/bible_verse_list.dart';
 
 class BibleBottomBar extends StatelessWidget {
-  BibleBottomBar({Key key, this.bibleVerseList, this.date}) : super(key: key);
+  BibleBottomBar({required Key key, required this.bibleVerseList, required this.date}) : super(key: key);
 
   final BibleVerseListProvider bibleVerseList;
   final DateTime date;
@@ -97,7 +97,7 @@ class BibleBottomBar extends StatelessWidget {
             ),
           ],
         ),
-        color: AppTheme.darkGreen.withOpacity(0.8),
+        color: AppTheme.darkGreen.withAlpha((0.8 * 255).toInt()),
       ),
     );
   }

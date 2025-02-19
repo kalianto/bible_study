@@ -5,7 +5,7 @@ import '../../models/rhema.dart';
 import '../../modules/rhema.dart' as RhemaModule;
 
 class RhemaDetailsPage extends StatefulWidget {
-  const RhemaDetailsPage({Key key, this.data, this.dataIndex}) : super(key: key);
+  const RhemaDetailsPage({required Key key, required this.data, required this.dataIndex}) : super(key: key);
 
   final RhemaSummary data;
   final int dataIndex;
@@ -60,7 +60,7 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
                       bottomRight: Radius.circular(10.0),
                       topRight: Radius.circular(10.0),
                     ),
-                    color: selectedIndex == index ? AppTheme.mandarin : AppTheme.mandarin.withOpacity(0.1),
+                    color: selectedIndex == index ? AppTheme.mandarin : AppTheme.mandarin.withAlpha((0.1 * 255).toInt()),
                   ),
                   child: Column(
                     children: <Widget>[
@@ -154,7 +154,6 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
                             child: InkWell(
                               onTap: () async {
                                 showDeleteConfirmation(context).then((answer) {
-
                                   if (answer) {
                                     RhemaModule.deleteRhemaItem(rhema).then((_) {
                                       setState(() {
@@ -242,7 +241,7 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
   // }
 
   Future<bool> showDeleteConfirmation(BuildContext context) async {
-    return showDialog<bool>(
+    final result = await showDialog<bool?>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -284,5 +283,6 @@ class _RhemaSummaryPageState extends State<RhemaDetailsPage> {
         );
       },
     );
+    return result ?? false;
   }
 }

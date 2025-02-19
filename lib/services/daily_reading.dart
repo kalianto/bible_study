@@ -82,7 +82,7 @@ class DailyReadingService {
       [id],
     );
 
-    DailyReading dailyReading;
+    DailyReading? dailyReading;
 
     if (res.length > 0) {
       dailyReading = DailyReading(
@@ -102,11 +102,12 @@ class DailyReadingService {
         orderBy: res[0]["orderBy"],
         bibleVersion: bibleVersion.table,
         bibleCode: bibleVersion.abbreviation,
+        sVerseEnd: res[0]["sVerseEnd"], // Add this line
         id: res[0]["id"],
         fullDate: DateHelper.getDateFromDateId(res[0]["dateId"]),
       );
     }
 
-    return dailyReading;
+    return dailyReading!;
   }
 }

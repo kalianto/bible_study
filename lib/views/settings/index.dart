@@ -24,7 +24,11 @@ class _SettingsState extends State<SettingsPage> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                ChildPageAppBar(title: 'Settings'),
+                ChildPageAppBar(
+                  key: Key('settings_app_bar'),
+                  title: 'Settings',
+                  textColor: Colors.black,
+                ),
                 Container(
                   padding: const EdgeInsets.only(top: 50),
                   child: SingleChildScrollView(

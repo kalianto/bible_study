@@ -8,14 +8,7 @@ class BibleEntry {
   final int eBookNum;
   final int eChapter;
 
-  BibleEntry({
-    this.sBookName,
-    this.sBookNum,
-    this.sChapter,
-    this.eBookName,
-    this.eBookNum,
-    this.eChapter
-  });
+  BibleEntry({required this.sBookName, required this.sBookNum, required this.sChapter, required this.eBookName, required this.eBookNum, required this.eChapter});
 
   factory BibleEntry.fromReadingItem(DailyReading item) {
     return BibleEntry(

@@ -13,18 +13,18 @@ class BibleVersion {
   final int enabled;
 
   BibleVersion({
-    this.id,
-    this.table,
-    this.abbreviation,
-    this.language,
-    this.version,
-    this.infoText,
-    this.infoUrl,
-    this.publisher,
-    this.copyright,
-    this.copyrightInfo,
-    this.keyTable,
-    this.enabled,
+    required this.id,
+    required this.table,
+    required this.abbreviation,
+    required this.language,
+    required this.version,
+    required this.infoText,
+    required this.infoUrl,
+    required this.publisher,
+    required this.copyright,
+    required this.copyrightInfo,
+    required this.keyTable,
+    required this.enabled,
   });
 
   factory BibleVersion.fromMapEntry(Map item) {

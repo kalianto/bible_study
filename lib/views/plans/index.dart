@@ -17,7 +17,11 @@ class _ReadingPlansState extends State<ReadingPlans> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                ChildPageAppBar(title: 'Reading Plans'),
+                ChildPageAppBar(
+                  key: Key('readingPlansAppBar'),
+                  title: 'Reading Plans',
+                  textColor: Colors.black,
+                ),
                 Container(
                   padding: const EdgeInsets.only(top: 50),
                   child: SingleChildScrollView(

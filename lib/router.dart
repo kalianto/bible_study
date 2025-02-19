@@ -5,6 +5,9 @@ import 'package:global_configuration/global_configuration.dart';
 import 'views/bible/page.dart';
 import 'views/coolGroup/index.dart';
 import 'views/dailyReading/index.dart';
+import 'models/daily_reading_arguments.dart'; // Ensure this is the correct path to the DailyReadingArguments type
+import 'models/home_arguments.dart'; // Ensure this is the correct path to the HomeArguments type
+import 'models/add_rhema_arguments.dart';
 import 'views/error_loading.dart';
 import 'views/feedback/index.dart';
 import 'views/home/index.dart';
@@ -26,60 +29,43 @@ class BaseRouter {
       case '/settings':
         //return ScaleRoute(page: SettingPage());
         return SlideFromRoute(widget: SettingsPage(), direction: 'right');
-        break;
       case '/profile':
         return SlideFromRoute(widget: ProfilePage(), direction: 'right');
-        break;
       case '/cool-group':
         return SlideFromRoute(widget: CoolGroup(), direction: 'right');
-        break;
       case '/notes':
         return SlideFromRoute(widget: NotesPage(), direction: 'right');
-        break;
       case '/plans':
         return SlideFromRoute(widget: ReadingPlans(), direction: 'right');
-        break;
       case '/rhema':
         return SlideFromRoute(widget: RhemaPage(), direction: 'right');
-        break;
       case '/pages':
         return SlideFromRoute(widget: SamplePages(), direction: 'right');
-        break;
       case '/register':
         return ScaleRoute(widget: RegisterPage());
-        break;
       case '/error':
-        return ScaleRoute(widget: ErrorLoading(title: 'Loading Error'));
-        break;
+        return ScaleRoute(widget: ErrorLoading(key: UniqueKey(), title: 'Loading Error'));
       case '/login':
         return ScaleRoute(widget: LoginPage());
-        break;
       // case '/bible-view':
       //   return SlideFromRoute(
       //       widget: BibleViewPage(readingItem: settings.arguments), direction: 'right');
-      //   break;
       case '/daily-reading':
-        return SlideFromRoute(widget: DailyReadingPage(arguments: settings.arguments), direction: 'right');
-        break;
+        return SlideFromRoute(widget: DailyReadingPage(key: UniqueKey(), arguments: settings.arguments as DailyReadingArguments), direction: 'right');
       case '/bible':
-        return SlideFromRoute(widget: BiblePage(), direction: 'right');
-        break;
+        return SlideFromRoute(widget: BiblePage(key: UniqueKey()), direction: 'right');
       case '/home':
-        return ScaleRoute(widget: Home(title: 'Home', startDate: settings.arguments));
-        break;
+        final args = settings.arguments as HomeArguments;
+        return ScaleRoute(widget: Home(key: UniqueKey(), title: 'Home', startDate: args.startDate));
       case '/news':
         return ScaleRoute(widget: NewsPage());
-        break;
       case '/feedback':
         return SlideFromRoute(widget: FeedbackPage(), direction: 'right');
-        break;
       case '/add-rhema':
-        return SlideFromRoute(widget: AddRhemaPage(arguments: settings.arguments), direction: 'right');
-        break;
+        return SlideFromRoute(widget: AddRhemaPage(key: UniqueKey(), arguments: settings.arguments as AddRhemaArguments), direction: 'right');
       case '/':
       default:
-        return SlideFromRoute(widget: SplashScreen(title: GlobalConfiguration().getValue('appName')), direction: 'left');
-        break;
+        return SlideFromRoute(widget: SplashScreen(key: UniqueKey(), title: GlobalConfiguration().getValue('appName')), direction: 'left');
     }
   }
 }
@@ -87,9 +73,9 @@ class BaseRouter {
 class SlideFromRoute extends PageRouteBuilder {
   final Widget widget;
   final String direction;
-  static Offset begin;
+  static Offset begin = Offset.zero;
 
-  SlideFromRoute({this.widget, this.direction})
+  SlideFromRoute({required this.widget, required this.direction})
       : super(
           pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) => widget,
           transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
@@ -123,7 +109,7 @@ class SlideFromRoute extends PageRouteBuilder {
 class ScaleRoute extends PageRouteBuilder {
   final Widget widget;
 
-  ScaleRoute({this.widget})
+  ScaleRoute({required this.widget})
       : super(
           pageBuilder: (
             BuildContext context,

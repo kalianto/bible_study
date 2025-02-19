@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ErrorLoading extends StatelessWidget {
-  ErrorLoading({Key key, this.title}) : super(key: key);
+  ErrorLoading({required Key key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -9,11 +9,10 @@ class ErrorLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(this.title),
-        ),
-        body: _buildHome(context)
-      ),
+          appBar: AppBar(
+            title: Text(this.title),
+          ),
+          body: _buildHome(context)),
     );
   }
 }

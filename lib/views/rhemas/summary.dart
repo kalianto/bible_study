@@ -4,7 +4,7 @@ import 'package:gema/app_theme.dart';
 import '../../models/rhema.dart';
 
 class RhemaSummaryPage extends StatefulWidget {
-  const RhemaSummaryPage({Key key, this.data, this.dataIndex}) : super(key: key);
+  const RhemaSummaryPage({Key? key, required this.data, required this.dataIndex}) : super(key: key);
 
   final RhemaSummary data;
   final int dataIndex;

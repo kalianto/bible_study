@@ -17,7 +17,11 @@ class _NewsPageState extends State<NewsPage> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                ChildPageAppBar(title: 'News'),
+                ChildPageAppBar(
+                  key: Key('news_page_appbar'),
+                  title: 'News',
+                  textColor: Colors.black,
+                ),
                 Container(
                   padding: const EdgeInsets.only(top: 50),
                   child: SingleChildScrollView(

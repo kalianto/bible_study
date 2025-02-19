@@ -20,30 +20,29 @@ class DailyReading {
   final int sVerseEnd;
 
   DailyReading({
-    this.dateId,
-    this.sId,
-    this.sBookName,
-    this.sBookNum,
-    this.sChapter,
-    this.sVerse,
-    this.sVerseSummary,
-    this.eId,
-    this.eBookName,
-    this.eBookNum,
-    this.eChapter,
-    this.eVerse,
-    this.groupId,
-    this.orderBy,
-    this.bibleVersion,
-    this.bibleCode,
-    this.id,
-    this.fullDate,
-    this.sVerseEnd,
+    required this.dateId,
+    required this.sId,
+    required this.sBookName,
+    required this.sBookNum,
+    required this.sChapter,
+    required this.sVerse,
+    required this.sVerseSummary,
+    required this.eId,
+    required this.eBookName,
+    required this.eBookNum,
+    required this.eChapter,
+    required this.eVerse,
+    required this.groupId,
+    required this.orderBy,
+    required this.bibleVersion,
+    required this.bibleCode,
+    required this.id,
+    required this.fullDate,
+    required this.sVerseEnd,
   });
 
   String shortSummary() {
-    String startTitle =
-        this.sBookName + ' ' + this.sChapter.toString() + ':' + this.sVerse.toString();
+    String startTitle = this.sBookName + ' ' + this.sChapter.toString() + ':' + this.sVerse.toString();
     String endTitle = ' - ';
     // cross book
     if (this.eBookNum != this.sBookNum) {

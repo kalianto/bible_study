@@ -9,7 +9,7 @@ import '../app_theme.dart';
 import '../models/profile.dart';
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key key, this.title}) : super(key: key);
+  SplashScreen({required Key key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -18,9 +18,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  Profile profile;
-  String errorMessage;
-  bool isLoggedIn;
+  late Profile profile;
+  late String errorMessage;
+  bool isLoggedIn = false;
 
   @override
   void initState() {
@@ -46,13 +46,14 @@ class _SplashScreenState extends State<SplashScreen> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final key = AppConfig.profile;
-      Profile _profile = (prefs.getString(key) != null) ? Profile.fromJson(jsonDecode(prefs.getString(key))) : new Profile();
+      Profile _profile = (prefs.getString(key) != null)
+          ? Profile.fromJson(jsonDecode(prefs.getString(key)!))
+          : new Profile(firstName: '', lastName: '', nickname: '', email: '', mobile: '', address: '', suburb: '', state: '', postcode: '', profileIcon: '');
       setState(() {
         profile = _profile;
         isLoggedIn = prefs.getBool(AppConfig.isLoggedIn) ?? false;
       });
     } catch (e) {
-
       setState(() {
         errorMessage = 'Click Start to continue';
       });
@@ -142,7 +143,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 shape: new CircleBorder(
                   side: BorderSide(
                     width: 5.0,
-                    color: AppTheme.white.withOpacity(0.4),
+                    color: AppTheme.white.withAlpha((0.4 * 255).toInt()),
                     style: BorderStyle.solid,
                   ),
                 ),

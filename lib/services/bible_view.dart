@@ -105,7 +105,7 @@ class BibleViewService {
     return bibleViewList;
   }
 
-  Future<List<BibleView>> getBibleContent({int bibleVersionId = 8, int verseStart}) async {
+  Future<List<BibleView>> getBibleContent({int bibleVersionId = 8, required int verseStart}) async {
     var dbClient = await dbService.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     List<BibleView> bibleViewList = [];
@@ -168,7 +168,7 @@ class BibleViewService {
 
   Future<BibleView> getBibleViewById(int bibleVersionId, int bibleViewId) async {
     var dbClient = await dbService.db;
-    BibleView bibleView;
+    BibleView? bibleView;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
       'SELECT a.id, a.b as bookNum, a.c as bookChapter, a.v as bookVerse, '
@@ -193,6 +193,6 @@ class BibleViewService {
       );
     }
 
-    return bibleView;
+    return bibleView!;
   }
 }

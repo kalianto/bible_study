@@ -5,7 +5,7 @@ import '../../modules/my_bible.dart' as MyBibleModule;
 import '../../providers/my_bible.dart';
 
 class BibleAppBarTitle extends StatelessWidget {
-  BibleAppBarTitle({Key key, this.myBible, this.action}) : super(key: key);
+  BibleAppBarTitle({required Key key, required this.myBible, required this.action}) : super(key: key);
 
   final MyBibleProvider myBible;
   final Function action;
@@ -15,7 +15,7 @@ class BibleAppBarTitle extends StatelessWidget {
     return FutureBuilder(
       future: MyBibleModule.getBookChapter(myBible),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (ConnectionState.active != null && !snapshot.hasData) {
+        if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -38,7 +38,7 @@ class BibleAppBarTitle extends StatelessWidget {
           right: 10,
         ),
         decoration: BoxDecoration(
-          color: AppTheme.darkGrey.withOpacity(0.5),
+          color: AppTheme.darkGrey.withAlpha((0.5 * 255).toInt()),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15.0),
             bottomLeft: Radius.circular(15.0),

@@ -7,7 +7,10 @@ import '../helpers/secure_storage.dart';
 import '../services/my_bible.dart';
 
 class MyBibleProvider with ChangeNotifier {
-  MyBibleProvider({this.version, this.lastBibleVerse});
+  MyBibleProvider({required this.version, required this.lastBibleVerse})
+      : bookChapter = '',
+        lastBibleVerseArray = {},
+        allBibleChapters = [];
 
   final secureStorage = SecureStorage();
 

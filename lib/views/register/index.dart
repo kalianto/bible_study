@@ -59,7 +59,7 @@ class _RegisterState extends State<RegisterPage> {
                     focusedBorder: AppTheme.inputBorderBlue,
                     labelText: 'Email Address',
                     filled: true,
-                    fillColor: AppTheme.blueText.withOpacity(0.3),
+                    fillColor: AppTheme.blueText.withAlpha((0.3 * 255).toInt()),
                     // icon: Icon(Icons.person),
                   ),
                 ),
@@ -71,7 +71,7 @@ class _RegisterState extends State<RegisterPage> {
                     focusedBorder: AppTheme.inputBorderBlue,
                     border: AppTheme.inputBorderBlue,
                     filled: true,
-                    fillColor: AppTheme.blueText.withOpacity(0.3),
+                    fillColor: AppTheme.blueText.withAlpha((0.3 * 255).toInt()),
                     labelText: 'Password',
                     // icon: Icon(Icons.lock),
                   ),
@@ -96,10 +96,7 @@ class _RegisterState extends State<RegisterPage> {
                       // fontWeight: FontWeight.bold,
                     ),
                   ),
-                  style: TextButton.styleFrom(
-                      primary: AppTheme.blueText,
-                      backgroundColor: AppTheme.blueText,
-                      padding: const EdgeInsets.symmetric(horizontal: 20)),
+                  style: TextButton.styleFrom(foregroundColor: AppTheme.blueText, backgroundColor: AppTheme.blueText, padding: const EdgeInsets.symmetric(horizontal: 20)),
                   onPressed: () async {
                     //Navigator.pushNamed(context, '/home');
                     // try {
@@ -129,8 +126,7 @@ class _RegisterState extends State<RegisterPage> {
                     String emailAddress = _usernameController.text;
                     bool emailValid = Helper.isValidEmail(emailAddress);
                     if (!emailValid) {
-                      Helper.showAlertDialog(
-                          'Invalid Email Address', 'Please enter a valid email address.', context);
+                      Helper.showAlertDialog('Invalid Email Address', 'Please enter a valid email address.', context);
                     } else {
                       // final prefs = await SharedPreferences.getInstance();
                       // final key = AppConfig.profile;
@@ -138,7 +134,18 @@ class _RegisterState extends State<RegisterPage> {
                       // prefs.setBool(AppConfig.isLoggedIn, true);
 
                       /// secure storage implementation
-                      Profile profile = new Profile(email: emailAddress);
+                      Profile profile = new Profile(
+                        email: emailAddress,
+                        firstName: 'First Name',
+                        lastName: 'Last Name',
+                        nickname: 'Nickname',
+                        mobile: 'Mobile Number',
+                        address: 'Address',
+                        suburb: 'Suburb',
+                        state: 'State',
+                        postcode: 'Postcode',
+                        profileIcon: 'Profile Icon',
+                      );
                       await secureStorage.setProfile(profile);
                       Navigator.popAndPushNamed(context, '/home');
                     }

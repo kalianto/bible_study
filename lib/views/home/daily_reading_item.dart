@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../app_theme.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
@@ -10,13 +11,15 @@ import '../../providers/my_bible.dart';
 
 class DailyReadingItem extends StatelessWidget {
   DailyReadingItem({
-    Key key,
-    this.date,
-    this.myBible,
+    required Key key,
+    required this.date,
+    required this.myBible,
   }) : super(key: key);
 
   final DateTime date;
   final MyBibleProvider myBible;
+  late AsyncSnapshot<dynamic> snapshot;
+  late BuildContext context;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class DailyReadingItem extends StatelessWidget {
     return FutureBuilder(
       future: DailyReadingModule.getDailyReadingSummary(date, bibleVersionIndex),
       builder: (context, snapshot) {
-        if (ConnectionState.active != null && !snapshot.hasData) {
+        if (!snapshot.hasData) {
           return Center(
             child: Column(
               children: <Widget>[
@@ -48,18 +51,20 @@ class DailyReadingItem extends StatelessWidget {
           );
         }
 
-        if (ConnectionState.done != null && snapshot.hasError) {
-          return Center(child: Text(snapshot.error));
+        if (snapshot.hasError) {
+          return Center(child: Text(snapshot.error.toString()));
         }
 
-        if (ConnectionState.done != null && snapshot.data.length == 0) {
+        final snapshotData = snapshot.data as List<DailyReading>;
+
+        if (snapshotData.length == 0) {
           return Row(
             children: <Widget>[
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: AppTheme.redText.withOpacity(0.2),
+                    color: AppTheme.redText.withAlpha((0.2 * 255).toInt()),
                     borderRadius: AppTheme.borderRadius,
                   ),
                   child: Column(
@@ -90,16 +95,16 @@ class DailyReadingItem extends StatelessWidget {
 
   Widget _buildItemList(
     BuildContext context,
-    AsyncSnapshot snapshot,
+    AsyncSnapshot<dynamic> asyncSnapshot,
   ) {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: snapshot.data.length,
       itemBuilder: (context, index) {
-        AppColorTheme colorTheme = new AppColorTheme(
-          darkColor: AppTheme.colorSet2[index]['darkColor'],
-          lightColor: AppTheme.colorSet2[index]['lightColor'],
+        AppColorTheme colorTheme = AppColorTheme(
+          darkColor: AppTheme.colorSet2[index]['darkColor']!,
+          lightColor: AppTheme.colorSet2[index]['lightColor']!,
         );
         List<DailyReading> items = snapshot.data;
 
@@ -111,14 +116,12 @@ class DailyReadingItem extends StatelessWidget {
               /// File: bible_reading_bar.dart
               /// However, after implementing Provider in bible_reading_bar, this never gets called
               /// anymore. i am wondering why????
-              DailyReadingArguments arguments = new DailyReadingArguments(
-                  index: index, item: items[index], date: date, itemList: items);
-              final result =
-                  await Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
+              DailyReadingArguments arguments = new DailyReadingArguments(index: index, item: items[index], date: date, itemList: items);
+              final result = await Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
 
               /// result is not null when user changes bible version
               if (result != null) {
-                myBible.saveMyBibleVersion(result);
+                myBible.saveMyBibleVersion(result as int);
               }
             },
             child: Container(
@@ -126,7 +129,7 @@ class DailyReadingItem extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.only(top: 15, left: 20, right: 5, bottom: 15),
                 decoration: BoxDecoration(
-                  color: AppTheme.lightGrey.withOpacity(0.3),
+                  color: AppTheme.lightGrey.withAlpha((0.3 * 255).toInt()),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(4.0),
                     bottomLeft: Radius.circular(4.0),
@@ -207,8 +210,8 @@ class DailyReadingItem extends StatelessWidget {
       ),
       itemBuilder: (BuildContext context, int index) {
         AppColorTheme colorTheme = new AppColorTheme(
-          darkColor: AppTheme.colorSet1[index]['darkColor'],
-          lightColor: AppTheme.colorSet1[index]['lightColor'],
+          darkColor: AppTheme.colorSet1[index]['darkColor']!,
+          lightColor: AppTheme.colorSet1[index]['lightColor']!,
         );
         LinearGradient gradientSet = AppTheme.gradientSet1[index];
         return Container(
@@ -218,14 +221,12 @@ class DailyReadingItem extends StatelessWidget {
               /// File: bible_reading_bar.dart
               /// However, after implementing Provider in bible_reading_bar, this never gets called
               /// anymore. i am wondering why????
-              DailyReadingArguments arguments = new DailyReadingArguments(
-                  index: index, item: items[index], date: date, itemList: items);
-              final result =
-                  await Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
+              DailyReadingArguments arguments = new DailyReadingArguments(index: index, item: items[index], date: date, itemList: items);
+              final result = await Navigator.of(context).pushNamed('/daily-reading', arguments: arguments);
 
               /// result is not null when user changes bible version
               if (result != null) {
-                myBible.saveMyBibleVersion(result);
+                myBible.saveMyBibleVersion(result as int);
               }
             },
             child: GridTile(

@@ -1,7 +1,7 @@
 import '../models/bible_view.dart';
 
 class AddRhemaArguments {
-  AddRhemaArguments({this.date, this.summary, this.rhemaVerses});
+  AddRhemaArguments({required this.date, required this.summary, required this.rhemaVerses});
 
   final DateTime date;
   final String summary;

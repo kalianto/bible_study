@@ -101,7 +101,7 @@ class RhemaService {
   /// getRhemaByID
   Future<Rhema> getRhemaById(int id) async {
     var dbClient = await dbService.db;
-    Rhema rhema;
+    Rhema? rhema;
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
       'SELECT a.id, a.rhemaDate, a.rhemaText, a.bibleVersionId '
       'fROM rhema a '
@@ -116,10 +116,16 @@ class RhemaService {
         rhemaDate: res[0]["rhemaDate"],
         rhemaText: res[0]["rhemaText"],
         bibleVersionId: res[0]["bibleVersionId"],
+        dateKey: res[0]["dateKey"],
+        bibleTable: res[0]["bibleTable"],
+        bibleLang: res[0]["bibleLang"],
+        bibleAbbreviation: res[0]["bibleAbbreviation"],
+        rhemaVerses: [],
+        bibleVerses: '', // Provide an empty string to match the expected type
       );
     }
 
-    return rhema;
+    return rhema!;
   }
 
   /// insertRhema
@@ -134,6 +140,8 @@ class RhemaService {
           rhemaId: rhema.id,
           verseId: bibleViewList[x].id,
           verseOrder: x + 1,
+          verse: bibleViewList[x].bookText, // Assuming 'verse' is the book text
+          bibleView: bibleViewList[x],
         );
         batch.insert('rhema_verses', rhemaVerse.toMap());
         // rhema.rhemaVerses.add(rhemaVerse);

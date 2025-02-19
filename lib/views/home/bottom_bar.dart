@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../app_theme.dart';
 
 class HomeBottomNavigationBar extends StatelessWidget {
-  HomeBottomNavigationBar({Key key}) : super(key: key);
+  HomeBottomNavigationBar({required Key key}) : super(key: key);
 
   // final BibleVerseList bibleVerseList;
 

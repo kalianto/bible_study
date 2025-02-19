@@ -11,22 +11,20 @@ class Profile {
   final String profileIcon;
 
   Profile({
-    this.firstName,
-    this.lastName,
-    this.nickname,
-    this.email,
-    this.mobile,
-    this.address,
-    this.suburb,
-    this.state,
-    this.postcode,
-    this.profileIcon,
+    required this.firstName,
+    required this.lastName,
+    required this.nickname,
+    required this.email,
+    required this.mobile,
+    required this.address,
+    required this.suburb,
+    required this.state,
+    required this.postcode,
+    required this.profileIcon,
   });
 
   String fullName() {
-    return this.firstName != null && this.lastName != null
-        ? this.firstName + ' ' + this.lastName
-        : 'Your Name';
+    return this.firstName != null && this.lastName != null ? this.firstName + ' ' + this.lastName : 'Your Name';
   }
 
   factory Profile.fromJson(Map<String, dynamic> json) {
@@ -50,7 +48,7 @@ class Profile {
   }
 
   String getProfileIcon() {
-    return this.profileIcon ?? 'userImage.png';
+    return this.profileIcon;
   }
 
   Map<String, dynamic> toJson() => {

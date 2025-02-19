@@ -8,11 +8,11 @@ class BookChapter {
 
   BookChapter({
     //this.id,
-    this.bookId,
-    this.chapterStart,
-    this.chapterEnd,
-    this.bookName,
-    this.chapters,
+    required this.bookId,
+    required this.chapterStart,
+    required this.chapterEnd,
+    required this.bookName,
+    required this.chapters,
   });
 
   factory BookChapter.fromMapEntry(Map item) {

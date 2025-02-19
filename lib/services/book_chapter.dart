@@ -31,7 +31,7 @@ class BookChapterService {
   Future<BookChapter> getBookChapter(int bibleVersionId, int bookId) async {
     var dbClient = await dbService.db;
     BibleVersion bibleVersion = await bibleVersionProvider.getBibleVersion(bibleVersionId);
-    BookChapter bookChapter;
+    BookChapter? bookChapter;
     List<Map<String, dynamic>> res = await dbClient.rawQuery(
       'SELECT a.b as bookId, MIN(a.c) as chapterStart, '
       'MAX(a.c) as chapterEnd,  b.n as bookName '
@@ -46,6 +46,6 @@ class BookChapterService {
       bookChapter = BookChapter.fromMapEntry(res[0]);
     }
 
-    return bookChapter;
+    return bookChapter!;
   }
 }

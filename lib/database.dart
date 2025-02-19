@@ -9,14 +9,14 @@ import 'app_config.dart';
 class DatabaseService {
   static final DatabaseService _instance = new DatabaseService.internal();
   factory DatabaseService() => _instance;
-  static Database _db;
+  static Database? _db;
 
   Future<Database> get db async {
     if (_db != null) {
-      return _db;
+      return _db!;
     }
     _db = await initDb();
-    return _db;
+    return _db!;
   }
 
   DatabaseService.internal();

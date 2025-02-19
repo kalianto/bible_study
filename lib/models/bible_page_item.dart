@@ -5,10 +5,10 @@ class BiblePageItemEntry {
   final int verseEnd;
 
   BiblePageItemEntry({
-    this.book,
-    this.chapter,
-    this.verseStart,
-    this.verseEnd,
+    required this.book,
+    required this.chapter,
+    required this.verseStart,
+    required this.verseEnd,
   });
 }
 
@@ -18,8 +18,8 @@ class BiblePageItem {
   final BiblePageItemEntry next;
 
   BiblePageItem({
-    this.current,
-    this.previous,
-    this.next,
+    required this.current,
+    required this.previous,
+    required this.next,
   });
 }

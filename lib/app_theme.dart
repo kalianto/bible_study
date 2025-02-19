@@ -6,8 +6,8 @@ class AppColorTheme {
   final Color darkColor;
 
   AppColorTheme({
-    this.darkColor,
-    this.lightColor,
+    required this.darkColor,
+    required this.lightColor,
   });
 }
 
@@ -65,18 +65,18 @@ class AppTheme {
 
   /// Text Theme
   static const TextTheme textTheme = TextTheme(
-    headline1: headline1,
-    headline2: headline2,
-    headline3: headline3,
-    headline4: headline4,
-    headline5: headline5,
-    headline6: headline6,
-    subtitle1: subtitle1,
-    subtitle2: subtitle2,
-    bodyText2: body2,
-    bodyText1: body1,
-    caption: caption,
-    button: button,
+    displayLarge: headline1,
+    displayMedium: headline2,
+    displaySmall: headline3,
+    headlineMedium: headline4,
+    headlineSmall: headline5,
+    titleLarge: headline6,
+    titleMedium: subtitle1,
+    titleSmall: subtitle2,
+    bodyLarge: body1,
+    bodyMedium: body2,
+    bodySmall: caption,
+    labelLarge: button,
   );
 
   static const TextStyle subtitle1 = TextStyle(
@@ -217,7 +217,7 @@ class AppTheme {
     ),
     boxShadow: <BoxShadow>[
       BoxShadow(
-        color: AppTheme.deactivatedText.withOpacity(0.3),
+        color: AppTheme.deactivatedText.withAlpha((0.3 * 255).toInt()),
         offset: Offset(2, 2),
         blurRadius: 10.0,
       ),
@@ -248,7 +248,7 @@ class AppTheme {
   );
 
   static final BoxDecoration errorBox = BoxDecoration(
-    color: AppTheme.redText.withOpacity(0.3),
+    color: AppTheme.redText.withAlpha((0.3 * 255).toInt()),
     borderRadius: BorderRadius.only(
       topLeft: Radius.circular(4.0),
       bottomLeft: Radius.circular(4.0),

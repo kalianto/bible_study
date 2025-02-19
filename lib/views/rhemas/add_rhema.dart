@@ -7,7 +7,7 @@ import '../../modules/rhema.dart';
 // import '../../views/common/simpleDialog.dart';
 
 class AddRhemaPage extends StatefulWidget {
-  AddRhemaPage({Key key, this.arguments}) : super(key: key);
+  AddRhemaPage({required Key key, required this.arguments}) : super(key: key);
 
   final AddRhemaArguments arguments;
 
@@ -21,7 +21,7 @@ class _AddRhemaPageState extends State<AddRhemaPage> {
   final _rhemaController = TextEditingController();
 
   bool selected = false;
-  DateTime date;
+  late DateTime date;
 
   @override
   void initState() {
@@ -102,9 +102,9 @@ class _AddRhemaPageState extends State<AddRhemaPage> {
                     onPressed: () => pickDate(context),
                     style: TextButton.styleFrom(
                       enableFeedback: true,
-                      primary: AppTheme.lightGreen,
+                      foregroundColor: AppTheme.lightGreen,
                       shadowColor: AppTheme.lightGreen,
-                      onSurface: AppTheme.lightGreen,
+                      backgroundColor: AppTheme.lightGreen,
                     ),
                   ),
                 ),
@@ -172,7 +172,7 @@ class _AddRhemaPageState extends State<AddRhemaPage> {
   }
 
   void pickDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: date,
       firstDate: date.subtract(const Duration(days: 365)),

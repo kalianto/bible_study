@@ -14,7 +14,7 @@ class BibleContent extends StatefulWidget {
 }
 
 class _BibleContentState extends State<BibleContent> {
-  AutoScrollController scrollController;
+  late AutoScrollController scrollController;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _BibleContentState extends State<BibleContent> {
         return FutureBuilder(
           future: BibleViewModule.getBookContent(myBible),
           builder: (context, snapshot) {
-            if (ConnectionState.active != null && !snapshot.hasData) {
+            if (!snapshot.hasData) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -52,8 +52,8 @@ class _BibleContentState extends State<BibleContent> {
               );
             }
 
-            if (ConnectionState.done != null && snapshot.hasError) {
-              return Center(child: Text(snapshot.error));
+            if (snapshot.hasError) {
+              return Center(child: Text(snapshot.error.toString()));
             }
 
             return ListView.builder(
@@ -61,18 +61,19 @@ class _BibleContentState extends State<BibleContent> {
               scrollDirection: Axis.vertical,
               controller: scrollController,
               shrinkWrap: true,
-              itemCount: snapshot.data.length,
+              itemCount: (snapshot.data as List).length,
               itemBuilder: (context, index) {
-                if (snapshot.data[index].bookVerse == 1) {
+                final snapshotData = snapshot.data as List;
+                if (snapshotData[index].bookVerse == 1) {
                   return _wrapScrollTag(
                     index: index,
-                    child: _getRowWithHeading(index, snapshot.data[index]),
+                    child: _getRowWithHeading(index, snapshotData[index]),
                   );
                 }
 
                 return _wrapScrollTag(
                   index: index,
-                  child: _getRowOnly(index, snapshot.data[index]),
+                  child: _getRowOnly(index, snapshotData[index]),
                 );
                 // return _getRow(index, snapshot.data);
               },
@@ -89,12 +90,12 @@ class _BibleContentState extends State<BibleContent> {
     scrollController.highlight(index);
   }
 
-  Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
+  Widget _wrapScrollTag({required int index, required Widget child}) => AutoScrollTag(
         key: ValueKey(index),
         controller: scrollController,
         index: index,
         child: child,
-        highlightColor: AppTheme.darkGrey.withOpacity(0.5),
+        highlightColor: AppTheme.darkGrey.withAlpha((0.5 * 255).toInt()),
       );
 
   Widget _getRowOnly(int index, BibleView data) {
@@ -108,7 +109,7 @@ class _BibleContentState extends State<BibleContent> {
             padding: const EdgeInsets.all(8),
             decoration: bibleVerseList.isSelected(data.id)
                 ? BoxDecoration(
-                    color: AppTheme.darkGrey.withOpacity(0.5),
+                    color: AppTheme.darkGrey.withAlpha((0.5 * 255).toInt()),
                   )
                 : BoxDecoration(),
             child: Row(
@@ -150,7 +151,9 @@ class _BibleContentState extends State<BibleContent> {
       String text = data.bookText.replaceAllMapped(
         new RegExp(r'({.*?})'),
         (match) {
-          matchedText.add(match.group(0));
+          if (match.group(0) != null) {
+            matchedText.add(match.group(0)!);
+          }
           return '*';
         },
       );

@@ -23,21 +23,16 @@ class DrawerList {
 }
 
 class HomeDrawer extends StatelessWidget {
-  HomeDrawer({Key key}) : super(key: key);
+  HomeDrawer({required Key key}) : super(key: key);
 
   final secureStorage = SecureStorage();
 
   final List<DrawerList> drawerList = <DrawerList>[
-    DrawerList(Icon(FontAwesomeIcons.userCircle, color: AppTheme.lightPurple), 'Profile',
-        'Edit personal details', '/profile'),
-    DrawerList(Icon(FontAwesomeIcons.bible, color: AppTheme.darkGrey), 'Bible',
-        'Bible in different languages', '/bible'),
-    DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL',
-        'COOL group details', '/cool-group'),
-    DrawerList(Icon(FontAwesomeIcons.comments, color: AppTheme.blueText), 'Feedback',
-        'Send us feedback or questions', '/feedback'),
-    DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.mandarin), 'Settings',
-        'Personal settings, App settings', '/settings'),
+    DrawerList(Icon(FontAwesomeIcons.userCircle, color: AppTheme.lightPurple), 'Profile', 'Edit personal details', '/profile'),
+    DrawerList(Icon(FontAwesomeIcons.bible, color: AppTheme.darkGrey), 'Bible', 'Bible in different languages', '/bible'),
+    DrawerList(Icon(FontAwesomeIcons.users, color: AppTheme.greenText), 'COOL', 'COOL group details', '/cool-group'),
+    DrawerList(Icon(FontAwesomeIcons.comments, color: AppTheme.blueText), 'Feedback', 'Send us feedback or questions', '/feedback'),
+    DrawerList(Icon(FontAwesomeIcons.cog, color: AppTheme.mandarin), 'Settings', 'Personal settings, App settings', '/settings'),
     // DrawerList(Icon(FontAwesomeIcons.fileAlt, color: AppTheme.blueText), 'Sample Pages',
     //     'Other pages template', '/pages'),
   ];
@@ -53,15 +48,17 @@ class HomeDrawer extends StatelessWidget {
     return FutureBuilder(
       future: loadProfile(),
       builder: (context, snapshot) {
-        if (ConnectionState.active != null && !snapshot.hasData) {
+        if (!snapshot.hasData) {
           return buildSignUpPage(context);
         }
-        if (ConnectionState.done != null && snapshot.hasError) {
+        if (snapshot.hasError) {
           return buildSignUpPage(context);
         }
-        if (ConnectionState.done != null && snapshot.data != null) {
-          Profile profile = snapshot.data['profile'];
-          bool isLoggedIn = snapshot.data['isLoggedIn'];
+
+        if (snapshot.data != null) {
+          var data = snapshot.data as Map<String, dynamic>;
+          Profile profile = data['profile'];
+          bool isLoggedIn = data['isLoggedIn'];
           if (profile.isEmpty()) {
             return buildSignUpPage(context);
           }
@@ -105,7 +102,7 @@ class HomeDrawer extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: <BoxShadow>[
                   BoxShadow(
-                    color: AppTheme.grey.withOpacity(0.6),
+                    color: AppTheme.grey.withAlpha((0.6 * 255).toInt()),
                     offset: const Offset(2.0, 4.0),
                     blurRadius: 8,
                   ),
@@ -203,8 +200,8 @@ class HomeDrawer extends StatelessWidget {
     );
   }
 
-  Future<bool> _showLogoutDialog(BuildContext context) async {
-    return showDialog<bool>(
+  Future<bool?> _showLogoutDialog(BuildContext context) async {
+    return showDialog<bool?>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -221,9 +218,8 @@ class HomeDrawer extends StatelessWidget {
                   }
                   // remove all history from the navigation stack and go to home
                   // tapping back button will not replay history, this is what we want
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
-                  return true;
+                  Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                  Navigator.of(context).pop(true);
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: AppTheme.darkGreen,
@@ -238,7 +234,7 @@ class HomeDrawer extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  return false;
+                  Navigator.of(context).pop(false);
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: AppTheme.redText,

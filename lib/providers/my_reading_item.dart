@@ -4,7 +4,7 @@ import '../models/daily_reading.dart';
 import '../services/daily_reading.dart';
 
 class MyReadingItemProvider with ChangeNotifier {
-  MyReadingItemProvider({this.date, this.bibleVersionId});
+  MyReadingItemProvider({required this.date, required this.bibleVersionId});
 
   DateTime date;
   int bibleVersionId;
@@ -18,7 +18,6 @@ class MyReadingItemProvider with ChangeNotifier {
   }
 
   String generateSummary() {
-    return List.generate(readingItemList.length, (i) => readingItemList[i].shortSummary())
-        .join('\n');
+    return List.generate(readingItemList.length, (i) => readingItemList[i].shortSummary()).join('\n');
   }
 }

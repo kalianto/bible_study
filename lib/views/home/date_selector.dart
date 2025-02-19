@@ -5,7 +5,7 @@ import '../../app_theme.dart';
 import '../../helpers/date_helper.dart' as DateHelper;
 
 class DateSelector extends StatefulWidget {
-  DateSelector({Key key, this.date, this.setDate}) : super(key: key);
+  DateSelector({required Key key, required this.date, required this.setDate}) : super(key: key);
 
   final DateTime date;
   final setDate;
@@ -15,7 +15,7 @@ class DateSelector extends StatefulWidget {
 }
 
 class _DateSelectorState extends State<DateSelector> {
-  DateTime today;
+  late DateTime today;
 
   void initState() {
     super.initState();
@@ -40,9 +40,8 @@ class _DateSelectorState extends State<DateSelector> {
               onPressed: () => pickDate(context),
               style: TextButton.styleFrom(
                 enableFeedback: true,
-                primary: AppTheme.lightGreen,
+                foregroundColor: AppTheme.lightGreen,
                 shadowColor: AppTheme.lightGreen,
-                onSurface: AppTheme.lightGreen,
               ),
             ),
           ),
@@ -70,7 +69,7 @@ class _DateSelectorState extends State<DateSelector> {
   }
 
   void pickDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: today,
       firstDate: today.subtract(const Duration(days: 365)),

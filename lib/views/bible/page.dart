@@ -10,7 +10,7 @@ import 'bible_content.dart';
 import 'bible_selector_drawer.dart';
 
 class BiblePage extends StatefulWidget {
-  BiblePage({Key key}) : super(key: key);
+  BiblePage({required Key key}) : super(key: key);
 
   @override
   _BiblePageState createState() => _BiblePageState();
@@ -19,7 +19,7 @@ class BiblePage extends StatefulWidget {
 class _BiblePageState extends State<BiblePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  DailyReading readingItem;
+  late DailyReading readingItem;
 
   double swipeLeft = -10.0;
   double swipeRight = 10.0;
@@ -29,7 +29,7 @@ class _BiblePageState extends State<BiblePage> {
   }
 
   void _openDrawer() {
-    _scaffoldKey.currentState.openDrawer();
+    _scaffoldKey.currentState?.openDrawer();
   }
 
   void goToPreviousChaper() {
@@ -53,7 +53,7 @@ class _BiblePageState extends State<BiblePage> {
           key: _scaffoldKey,
           body: GestureDetector(
             onHorizontalDragEnd: (details) {
-              if (details.primaryVelocity > 0) {
+              if (details.primaryVelocity != null && details.primaryVelocity! > 0) {
                 goToPreviousChaper();
                 // Navigator.of(context).pop();
               } else {
@@ -62,7 +62,7 @@ class _BiblePageState extends State<BiblePage> {
             },
             child: Stack(
               children: <Widget>[
-                BibleAppBar(action: _openDrawer),
+                BibleAppBar(key: GlobalKey(), action: _openDrawer),
                 BibleContent(),
               ],
             ),
@@ -72,7 +72,7 @@ class _BiblePageState extends State<BiblePage> {
           ),
           bottomNavigationBar: Consumer<BibleVerseListProvider>(
             builder: (context, bibleVerseList, child) {
-              return new BibleBottomBar(bibleVerseList: bibleVerseList, date: DateTime.now());
+              return new BibleBottomBar(key: GlobalKey(), bibleVerseList: bibleVerseList, date: DateTime.now());
             },
           ),
         ),

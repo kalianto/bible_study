@@ -17,7 +17,11 @@ class _CoolGroupState extends State<CoolGroup> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                ChildPageAppBar(title: 'COOL Group'),
+                ChildPageAppBar(
+                  key: Key('coolGroupAppBar'),
+                  title: 'COOL Group',
+                  textColor: Colors.black,
+                ),
                 Container(
                   padding: const EdgeInsets.only(top: 50),
                   child: SingleChildScrollView(

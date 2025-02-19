@@ -45,7 +45,7 @@ class _NotesPageState extends State<NotesPage> {
                 color: AppTheme.purple,
               ),
             ),
-            ChildPageAppBar(title: 'Sample Pages', textColor: AppTheme.white),
+            ChildPageAppBar(key: UniqueKey(), title: 'Sample Pages', textColor: AppTheme.white),
             buildPageContent(context),
           ],
         ),
@@ -129,7 +129,7 @@ class _NotesPageState extends State<NotesPage> {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: AppTheme.lightGrey.withOpacity(0.2),
+          color: AppTheme.lightGrey.withAlpha((0.2 * 255).toInt()),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(4.0),
             bottomLeft: Radius.circular(4.0),
@@ -235,13 +235,13 @@ class _NotesPageState extends State<NotesPage> {
               padding: const EdgeInsets.all(6),
               // margin: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: AppTheme.blueText.withOpacity(0.8),
+                color: AppTheme.blueText.withAlpha((0.8 * 255).toInt()),
                 borderRadius: BorderRadius.all(
                   Radius.circular(30),
                 ),
               ),
               child: IconButton(
-                icon: element['icon'],
+                icon: element['icon'] as FaIcon,
                 onPressed: null,
                 iconSize: 28,
               ),
@@ -249,7 +249,7 @@ class _NotesPageState extends State<NotesPage> {
             Container(
               padding: const EdgeInsets.all(8),
               child: Text(
-                element['text'],
+                element['text'] as String,
                 style: TextStyle(
                   fontSize: 12,
                   color: AppTheme.lightGrey,

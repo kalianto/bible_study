@@ -38,24 +38,25 @@ class SecureStorage {
   }
 
   Future<Profile> getProfile() async {
-    String profileValue = await storage.read(key: _profileKey);
-    Profile profile =
-        profileValue == null ? new Profile() : Profile.fromJson(jsonDecode(profileValue));
+    String? profileValue = await storage.read(key: _profileKey);
+    Profile profile = profileValue == null
+        ? new Profile(firstName: '', lastName: '', nickname: '', email: '', mobile: '', address: '', suburb: '', state: '', postcode: '', profileIcon: '')
+        : Profile.fromJson(jsonDecode(profileValue));
     return profile;
   }
 
   Future<int> getBibleVersion() async {
-    String bibleVersionValue = await storage.read(key: _bibleVersionKey);
+    String? bibleVersionValue = await storage.read(key: _bibleVersionKey);
     return bibleVersionValue != null ? int.parse(bibleVersionValue) : DEFAULT_BIBLE_VERSION;
   }
 
   Future<int> getLastBibleVerse() async {
-    String lastBibleVerseValue = await storage.read(key: _lastBibleVerseKey);
+    String? lastBibleVerseValue = await storage.read(key: _lastBibleVerseKey);
     return lastBibleVerseValue != null ? int.parse(lastBibleVerseValue) : FIRST_VERSE;
   }
 
   Future<bool> getIsLoggedIn() async {
-    String isLoggedInValue = await storage.read(key: _isLoggedInKey);
+    String? isLoggedInValue = await storage.read(key: _isLoggedInKey);
     return isLoggedInValue == 'true' ? true : false;
   }
 }

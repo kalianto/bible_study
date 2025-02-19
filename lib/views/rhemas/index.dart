@@ -20,7 +20,7 @@ class RhemaPage extends StatefulWidget {
 }
 
 class _RhemaPageState extends State<RhemaPage> {
-  DateTime rhemaDate;
+  late DateTime rhemaDate;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -72,12 +72,13 @@ class _RhemaPageState extends State<RhemaPage> {
         if (ConnectionState.active != null && !snapshot.hasData) {
           return buildSignUpPage(context);
         }
-        if (ConnectionState.done != null && snapshot.hasError) {
+        if (snapshot.hasError) {
           return buildSignUpPage(context);
         }
-        if (ConnectionState.done != null && snapshot.data != null) {
-          Profile profile = snapshot.data['profile'];
-          bool isLoggedIn = snapshot.data['isLoggedIn'];
+        if (snapshot.data != null) {
+          var data = snapshot.data as Map<String, dynamic>;
+          Profile profile = data['profile'];
+          bool isLoggedIn = (snapshot.data as Map<String, dynamic>)['isLoggedIn'] ?? false;
           if (profile.isEmpty()) {
             return buildSignUpPage(context);
           }
@@ -124,7 +125,7 @@ class _RhemaPageState extends State<RhemaPage> {
     return FutureBuilder(
         future: RhemaModule.getRhemaByDate(rhemaDate), // RhemaModule.getAllRhemaSummary(),
         builder: (context, snapshot) {
-          if (ConnectionState.active != null && !snapshot.hasData) {
+          if (!snapshot.hasData) {
             return Center(
               child: Column(
                 children: <Widget>[
@@ -137,7 +138,7 @@ class _RhemaPageState extends State<RhemaPage> {
             );
           }
 
-          if (ConnectionState.done != null && snapshot.hasError) {
+          if (snapshot.hasError) {
             return Center(
               child: Container(
                 padding: const EdgeInsets.all(15),
@@ -147,7 +148,9 @@ class _RhemaPageState extends State<RhemaPage> {
             );
           }
 
-          if (ConnectionState.done != null && snapshot.data.length == 0) {
+          final snapshotData = snapshot.data as List;
+
+          if (snapshotData.isEmpty) {
             return Row(children: <Widget>[
               Expanded(
                 child: Container(
@@ -207,7 +210,7 @@ class _RhemaPageState extends State<RhemaPage> {
           return ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: snapshot.data.length,
+            itemCount: snapshotData.length,
             itemBuilder: (context, index) {
               return Container(
                 child: Column(children: <Widget>[
@@ -234,109 +237,100 @@ class _RhemaPageState extends State<RhemaPage> {
                                   ),
                                   //color: AppTheme.nearlyDarkBlue.withOpacity(0.3),
                                 ),
-                                child: Row(
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: FaIcon(
+                                          FontAwesomeIcons.angleLeft,
+                                          color: AppTheme.mandarin,
+                                        ),
+                                        onPressed: previousDay,
+                                      ),
+                                      TextButton(
+                                          onPressed: () => pickDate(context),
+                                          child: Text(
+                                            DateHelper.formatDate(DateTime.parse(snapshotData[index].summaryDate), 'dd MMM yyyy'),
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.15,
+                                              color: AppTheme.mandarin,
+                                            ),
+                                          )),
+                                      IconButton(
+                                        icon: FaIcon(
+                                          FontAwesomeIcons.angleRight,
+                                          color: AppTheme.mandarin,
+                                        ),
+                                        onPressed: nextDay,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      Row(
-                                        children: <Widget>[
-                                          IconButton(
-                                            icon: FaIcon(
-                                              FontAwesomeIcons.angleLeft,
-                                              color: AppTheme.mandarin,
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: InkWell(
+                                          onTap: () {
+                                            String summary = generateRhemaSummary(snapshotData[index].rhemas);
+                                            Clipboard.setData(new ClipboardData(text: summary));
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.only(right: 20),
+                                            child: Icon(
+                                              Icons.copy,
+                                              color: AppTheme.nearlyBlack,
                                             ),
-                                            onPressed: previousDay,
                                           ),
-                                          TextButton(
-                                              onPressed: () => pickDate(context),
-                                              child: Text(
-                                                DateHelper.formatDate(
-                                                    DateTime.parse(
-                                                        snapshot.data[index].summaryDate),
-                                                    'dd MMM yyyy'),
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  fontWeight: FontWeight.w600,
-                                                  letterSpacing: 0.15,
-                                                  color: AppTheme.mandarin,
-                                                ),
-                                              )),
-                                          IconButton(
-                                            icon: FaIcon(
-                                              FontAwesomeIcons.angleRight,
-                                              color: AppTheme.mandarin,
-                                            ),
-                                            onPressed: nextDay,
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Align(
-                                            alignment: Alignment.centerRight,
-                                            child: InkWell(
-                                              onTap: () {
-                                                String summary = generateRhemaSummary(
-                                                    snapshot.data[index].rhemas);
-                                                Clipboard.setData(new ClipboardData(text: summary));
-                                              },
-                                              child: Container(
-                                                padding: const EdgeInsets.only(right: 20),
-                                                child: Icon(
-                                                  Icons.copy,
-                                                  color: AppTheme.nearlyBlack,
-                                                ),
-                                              ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: InkWell(
+                                          onTap: () {
+                                            String summary = generateRhemaSummary(snapshotData[index].rhemas);
+                                            Share.share(summary);
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.only(right: 20),
+                                            child: Icon(
+                                              Icons.share,
+                                              color: AppTheme.nearlyBlack,
                                             ),
                                           ),
-                                          Align(
-                                            alignment: Alignment.centerRight,
-                                            child: InkWell(
-                                              onTap: () {
-                                                String summary = generateRhemaSummary(
-                                                    snapshot.data[index].rhemas);
-                                                Share.share(summary);
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: InkWell(
+                                          onTap: () async {
+                                            showDeleteConfirmation(context).then(
+                                              (answer) {
+                                                if (answer != null && answer) {
+                                                  RhemaModule.deleteRhema(snapshotData[index].rhemas).then((_) {
+                                                    setState(() {
+                                                      snapshotData.removeAt(index);
+                                                    });
+                                                  });
+                                                }
                                               },
-                                              child: Container(
-                                                padding: const EdgeInsets.only(right: 20),
-                                                child: Icon(
-                                                  Icons.share,
-                                                  color: AppTheme.nearlyBlack,
-                                                ),
-                                              ),
-                                            ),
+                                            );
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: AppTheme.redText,
                                           ),
-                                          Align(
-                                            alignment: Alignment.centerRight,
-                                            child: InkWell(
-                                              onTap: () async {
-                                                showDeleteConfirmation(context).then(
-                                                  (answer) {
-                                                    if (answer) {
-                                                      RhemaModule.deleteRhema(
-                                                              snapshot.data[index].rhemas)
-                                                          .then((_) {
-                                                        setState(() {
-                                                          snapshot.data.removeAt(index);
-                                                        });
-                                                      });
-                                                    }
-                                                  },
-                                                );
-                                              },
-                                              child: Icon(
-                                                Icons.delete,
-                                                color: AppTheme.redText,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ]),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ]),
                               ),
                               SizedBox(height: 10),
-                              RhemaDetailsPage(data: snapshot.data[index], dataIndex: index),
+                              RhemaDetailsPage(key: UniqueKey(), data: snapshotData[index], dataIndex: index),
                             ]))
                       ])),
                   SizedBox(
@@ -349,7 +343,7 @@ class _RhemaPageState extends State<RhemaPage> {
         });
   }
 
-  Future<bool> showDeleteConfirmation(BuildContext context) async {
+  Future<bool?> showDeleteConfirmation(BuildContext context) async {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -395,15 +389,15 @@ class _RhemaPageState extends State<RhemaPage> {
   }
 
   void pickDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: rhemaDate,
       firstDate: rhemaDate.subtract(const Duration(days: 365)),
       lastDate: rhemaDate.add(const Duration(days: 365)),
     );
-    if (picked != null && picked != rhemaDate) {
+    if (picked != rhemaDate) {
       setState(() {
-        rhemaDate = picked;
+        rhemaDate = picked!;
         setRhemaDate(rhemaDate);
       });
     }
@@ -424,8 +418,7 @@ class _RhemaPageState extends State<RhemaPage> {
   }
 
   String generateRhemaSummary(List<Rhema> rhemaList) {
-    String header =
-        'DAILY READING REPORT\n*' + DateHelper.formatDate(rhemaDate, 'dd MMM yyyy') + '*\n\n';
+    String header = 'DAILY READING REPORT\n*' + DateHelper.formatDate(rhemaDate, 'dd MMM yyyy') + '*\n\n';
     List<String> messages = [];
     for (Rhema rhema in rhemaList) {
       messages.add('*' + rhema.bibleVersesHeader + '*');

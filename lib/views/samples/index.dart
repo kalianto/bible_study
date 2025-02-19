@@ -24,6 +24,7 @@ class _SamplePagesState extends State<SamplePages> {
               ),
             ),
             ChildPageAppBar(
+              key: Key('samplePagesAppBar'),
               title: 'Sample Pages',
               textColor: AppTheme.white,
             ),
@@ -128,11 +129,11 @@ class _SamplePagesState extends State<SamplePages> {
           padding: const EdgeInsets.all(6),
           // margin: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            color: AppTheme.blueText.withOpacity(0.8),
+            color: AppTheme.blueText.withAlpha((0.8 * 255).toInt()),
             borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
           child: IconButton(
-            icon: element['icon'],
+            icon: element['icon'] as FaIcon,
             onPressed: null,
             iconSize: 28,
           ),
@@ -140,7 +141,7 @@ class _SamplePagesState extends State<SamplePages> {
         Container(
           padding: const EdgeInsets.all(8),
           child: Text(
-            element['text'],
+            element['text'] as String,
             style: TextStyle(fontSize: 12, color: AppTheme.lightGrey, fontWeight: FontWeight.w400),
           ),
         )

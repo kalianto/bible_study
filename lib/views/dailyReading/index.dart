@@ -15,7 +15,7 @@ import '../bible/bible_bottom_bar.dart';
 import './daily_reading_appbar.dart';
 
 class DailyReadingPage extends StatefulWidget {
-  DailyReadingPage({Key key, this.arguments}) : super(key: key);
+  DailyReadingPage({required Key key, required this.arguments}) : super(key: key);
 
   final DailyReadingArguments arguments;
 
@@ -26,12 +26,12 @@ class DailyReadingPage extends StatefulWidget {
 class _DailyReadingPageState extends State<DailyReadingPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  AutoScrollController scrollController;
+  late AutoScrollController scrollController;
   double swipeLeft = -10.0;
   double swipeRight = 10.0;
-  DailyReading readingItem;
-  int dailyReadingIndex;
-  DateTime dailyReadingDate;
+  late DailyReading readingItem;
+  late int dailyReadingIndex;
+  late DateTime dailyReadingDate;
 
   @override
   void initState() {
@@ -73,7 +73,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
           key: _scaffoldKey,
           body: GestureDetector(
             onHorizontalDragUpdate: (dragEndDetails) {
-              if (dragEndDetails.primaryDelta < swipeLeft) {
+              if (dragEndDetails.primaryDelta != null && dragEndDetails.primaryDelta! < swipeLeft) {
                 int nextIndex = dailyReadingIndex + 1;
                 if (nextIndex >= widget.arguments.itemList.length) {
                   Navigator.of(context).pop(); //popAndPushNamed('/home', arguments: dailyReadingDate);
@@ -82,7 +82,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
                       new DailyReadingArguments(index: nextIndex, item: widget.arguments.itemList[nextIndex], date: widget.arguments.date, itemList: widget.arguments.itemList);
                   Navigator.of(context).popAndPushNamed('/daily-reading', arguments: arguments);
                 }
-              } else if (dragEndDetails.primaryDelta > swipeRight) {
+              } else if (dragEndDetails.primaryDelta != null && dragEndDetails.primaryDelta! > swipeRight) {
                 int prevIndex = dailyReadingIndex - 1;
                 if (prevIndex < 0) {
                   Navigator.of(context).pop(); //popAndPushNamed('/home', arguments: dailyReadingDate);
@@ -95,7 +95,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
             },
             child: Stack(
               children: <Widget>[
-                DailyReadingAppBar(item: readingItem),
+                DailyReadingAppBar(key: Key('dailyReadingAppBar'), item: readingItem),
 
                 /// Bible Content
                 Container(
@@ -111,7 +111,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
           ),
           bottomNavigationBar: Consumer<BibleVerseListProvider>(
             builder: (context, bibleVerseList, child) {
-              return new BibleBottomBar(bibleVerseList: bibleVerseList, date: readingItem.fullDate);
+              return new BibleBottomBar(key: Key('bibleBottomBar'), bibleVerseList: bibleVerseList, date: readingItem.fullDate);
             },
           ),
         ),
@@ -125,7 +125,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
         return FutureBuilder(
           future: BibleViewModule.getDailyReadingContent(readingItem, myBible.version),
           builder: (context, snapshot) {
-            if (ConnectionState.active != null && !snapshot.hasData) {
+            if (!snapshot.hasData) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -139,27 +139,29 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
               );
             }
 
-            if (ConnectionState.done != null && snapshot.hasError) {
-              return Center(child: Text(snapshot.error));
+            if (snapshot.hasError) {
+              return Center(child: Text(snapshot.error.toString()));
             }
+
+            final snapshotData = snapshot.data as List<BibleView>;
 
             return ListView.builder(
               padding: const EdgeInsets.only(top: 10, bottom: 10),
               scrollDirection: Axis.vertical,
               controller: scrollController,
               shrinkWrap: true,
-              itemCount: snapshot.data.length,
+              itemCount: snapshotData.length,
               itemBuilder: (context, index) {
-                if (snapshot.data[index].bookVerse == 1) {
+                if (snapshotData[index].bookVerse == 1) {
                   return _wrapScrollTag(
                     index: index,
-                    child: _getRowWithHeading(index, snapshot.data[index], bibleVerseList),
+                    child: _getRowWithHeading(index, snapshotData[index], bibleVerseList),
                   );
                 }
 
                 return _wrapScrollTag(
                   index: index,
-                  child: _getRowOnly(index, snapshot.data[index], bibleVerseList),
+                  child: _getRowOnly(index, snapshotData[index], bibleVerseList),
                 );
                 // return _getRow(index, snapshot.data);
               },
@@ -174,7 +176,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
     if (data.bibleCode.toLowerCase() == 'web') {
       List<String> matchedText = [];
       String text = data.bookText.replaceAllMapped(new RegExp(r'({.*?})'), (match) {
-        matchedText.add(match.group(0));
+        matchedText.add(match.group(0) ?? '');
         return '*';
       });
       if (matchedText.length > 0) {
@@ -251,7 +253,7 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
           padding: const EdgeInsets.all(8),
           decoration: bibleVerseList.isSelected(data.id)
               ? BoxDecoration(
-                  color: AppTheme.darkGrey.withOpacity(0.5),
+                  color: AppTheme.darkGrey.withAlpha((0.5 * 255).toInt()),
                 )
               : BoxDecoration(),
           child: Row(
@@ -286,12 +288,12 @@ class _DailyReadingPageState extends State<DailyReadingPage> {
         ],
       );
 
-  Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
+  Widget _wrapScrollTag({required int index, required Widget child}) => AutoScrollTag(
         key: ValueKey(index),
         controller: scrollController,
         index: index,
         child: child,
-        highlightColor: AppTheme.darkGrey.withOpacity(0.5),
+        highlightColor: AppTheme.darkGrey.withAlpha((0.5 * 255).toInt()),
       );
 
   /*Future _scrollToIndex(context) async {

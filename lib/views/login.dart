@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  String errorMessage;
+  String errorMessage = '';
   final secureStorage = SecureStorage();
 
   @override
@@ -97,7 +97,7 @@ class _LoginState extends State<LoginPage> {
                     ),
                   ),
                   style: TextButton.styleFrom(
-                    primary: AppTheme.darkGreen,
+                    foregroundColor: AppTheme.darkGreen,
                     backgroundColor: AppTheme.darkGreen,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                   ),
@@ -162,10 +162,9 @@ class _LoginState extends State<LoginPage> {
                       }
 
                       Profile profile = await secureStorage.getProfile();
-                      if (profile.email == null) {
+                      if (profile.email == '') {
                         setState(() {
-                          errorMessage =
-                              'There is no profile found. Please register to use this app.';
+                          errorMessage = 'There is no profile found. Please register to use this app.';
                         });
                       } else if (profile.email == _usernameController.text) {
                         await secureStorage.setIsLoggedIn(true);
@@ -201,7 +200,7 @@ class _LoginState extends State<LoginPage> {
               padding: const EdgeInsets.only(top: 20),
               alignment: Alignment.center,
               child: Text(
-                errorMessage ?? '',
+                errorMessage,
                 style: TextStyle(
                   color: AppTheme.redText,
                 ),

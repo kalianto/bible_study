@@ -19,8 +19,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin {
-  AnimationController animationController;
-  bool _editing;
+  late AnimationController animationController;
+  bool _editing = false;
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -84,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
             color: AppTheme.darkGreen,
           ),
         ),
-        ChildPageAppBar(title: 'Profile'),
+        ChildPageAppBar(key: Key('profilePageAppBar'), title: 'Profile', textColor: Colors.white),
         Container(
           padding: const EdgeInsets.only(top: 50),
           child: SingleChildScrollView(
@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            ChildPageAppBar(title: 'Profile'),
+            ChildPageAppBar(key: Key('profilePageAppBar'), title: 'Profile', textColor: Colors.white),
             profileHeader(context),
             loadProfileWidget(context),
           ],
@@ -129,14 +129,14 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
 
   void _setProfile(Profile profile) {
     setState(() {
-      _firstNameController.text = profile.firstName ?? null;
-      _lastNameController.text = profile.lastName ?? null;
-      _emailController.text = profile.email ?? null;
-      _mobileController.text = profile.mobile ?? null;
-      _suburbController.text = profile.suburb ?? null;
-      _addressController.text = profile.address ?? null;
-      _stateController.text = profile.state ?? null;
-      _postcodeController.text = profile.postcode ?? null;
+      _firstNameController.text = profile.firstName ?? '';
+      _lastNameController.text = profile.lastName ?? '';
+      _emailController.text = profile.email ?? '';
+      _mobileController.text = profile.mobile ?? '';
+      _suburbController.text = profile.suburb ?? '';
+      _addressController.text = profile.address ?? '';
+      _stateController.text = profile.state ?? '';
+      _postcodeController.text = profile.postcode ?? '';
       profileIcon = profile.getProfileIcon();
     });
   }
@@ -311,6 +311,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                   state: _stateController.text,
                   postcode: _postcodeController.text,
                   profileIcon: profileIcon,
+                  nickname: '', // Add the required nickname parameter
                 );
 
                 /// save profile to SharedPreferences
@@ -326,7 +327,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                   _editing = !_editing;
                 });
               },
-              child: Text('SAVE', style: TextStyle(fontSize: 20)),
+              child: Text('SAVE', style: TextStyle(fontSize: 20, color: Colors.white)),
               style: ButtonStyle(
                 // textColor: Colors.white,
                 // padding: const EdgeInsets.all(0.0),
@@ -652,7 +653,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
             Container(
               height: 32,
               width: 32,
-              color: AppTheme.darkGrey.withOpacity(0.1),
+              color: AppTheme.darkGrey.withAlpha((0.1 * 255).toInt()),
               child: Padding(
                 padding: const EdgeInsets.all(4),
                 child: ClipRRect(

@@ -17,16 +17,17 @@ class Rhema {
   bool isExpanded;
 
   Rhema({
-    this.id,
-    this.rhemaDate,
-    this.rhemaText,
-    this.bibleVersionId,
-    this.rhemaVerses,
-    this.dateKey,
-    this.bibleTable,
-    this.bibleLang,
-    this.bibleAbbreviation,
-    this.bibleVerses,
+    required this.id,
+    required this.rhemaDate,
+    required this.rhemaText,
+    required this.bibleVersionId,
+    required this.rhemaVerses,
+    required this.dateKey,
+    required this.bibleTable,
+    required this.bibleLang,
+    required this.bibleAbbreviation,
+    required this.bibleVerses,
+    this.bibleVersesHeader = '',
     this.isExpanded = false,
   });
 
@@ -40,7 +41,8 @@ class Rhema {
       bibleTable: item["bibleTable"],
       bibleLang: item["bibleLang"],
       bibleAbbreviation: item["bibleAbbreviation"],
-      // rhemaVerses: RhemaVerse.fromMapEntry(item),
+      rhemaVerses: (item["rhemaVerses"] as List).map((verse) => RhemaVerse.fromMapEntry(verse)).toList(),
+      bibleVerses: item["bibleVerses"],
     );
   }
 
@@ -60,7 +62,13 @@ class RhemaVerse {
   String verse;
   BibleView bibleView;
 
-  RhemaVerse({this.rhemaId, this.verseId, this.verseOrder, this.verse, this.bibleView});
+  RhemaVerse({
+    required this.rhemaId,
+    required this.verseId,
+    required this.verseOrder,
+    required this.verse,
+    required this.bibleView,
+  });
 
   Map<String, dynamic> toMap() => {
         'rhemaId': rhemaId,
@@ -74,6 +82,7 @@ class RhemaVerse {
       verseId: item["verseId"],
       verseOrder: item["verseOrder"],
       verse: item['verse'],
+      bibleView: BibleView.fromMapEntry(item['bibleView']),
     );
   }
 }
@@ -82,7 +91,7 @@ class RhemaSummary {
   String summaryDate;
   List<Rhema> rhemas;
 
-  RhemaSummary({this.summaryDate, this.rhemas});
+  RhemaSummary({required this.summaryDate, required this.rhemas});
 
   void generateVerseSummary() {
     for (Rhema rhema in rhemas) {
@@ -91,8 +100,8 @@ class RhemaSummary {
         bibleViewList.add(rhemaVerse.bibleView);
       }
       Map<String, String> summary = BibleHelper.generateBibleVerses(bibleViewList);
-      rhema.bibleVerses = summary['body'];
-      rhema.bibleVersesHeader = summary['header'];
+      rhema.bibleVerses = summary['body'] as String;
+      rhema.bibleVersesHeader = summary['header'] as String;
     }
   }
 }

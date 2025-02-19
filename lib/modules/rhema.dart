@@ -60,9 +60,16 @@ Future<Rhema> addRhema(DateTime rhemaDate, String rhemaText, List<BibleView> bib
   int bibleVersionId = bibleViewList[0].bibleVersionId;
 
   Rhema rhema = new Rhema(
+    id: 0, // or provide an appropriate id
     rhemaDate: rhemaDate,
     rhemaText: rhemaText,
     bibleVersionId: bibleVersionId,
+    rhemaVerses: [],
+    dateKey: DateHelper.formatDate(rhemaDate, 'y-MM-dd'),
+    bibleTable: '',
+    bibleLang: '',
+    bibleAbbreviation: '',
+    bibleVerses: '',
   );
 
   await dbClient.insertRhema(rhema, bibleViewList);
